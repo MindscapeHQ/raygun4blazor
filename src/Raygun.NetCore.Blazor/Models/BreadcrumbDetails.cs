@@ -56,6 +56,11 @@ namespace Raygun.NetCore.Blazor.Models
         public string MethodName { get; internal set; }
 
         /// <summary>
+        /// Specifies the platform that the breadcrumb was recorded on. Possible values are "DotNet", and "JavaScript.
+        /// </summary>
+        public string Platform { get; set; }
+
+        /// <summary>
         /// Milliseconds since the Unix Epoch.
         /// </summary>
         [JsonPropertyName("timeStamp")]
@@ -91,10 +96,12 @@ namespace Raygun.NetCore.Blazor.Models
         /// <param name="type">The <see cref="BreadcrumbType"> for the message. Defaults to <see cref="BreadcrumbType.Manual"/>.</param>
         /// <param name="category">A custom value used to arbitrarily group this Breadcrumb.</param>
         /// <param name="customData">Any custom data you want to record about application state when the breadcrumb was recorded.</param>
-        public BreadcrumbDetails(string message, BreadcrumbType type = BreadcrumbType.Manual, string category = null, Dictionary<string, object> customData = null)
+        /// <param name="platform">Specifies the platform that the breadcrumb was recorded on. Possible values are "DotNet", and "JavaScript.</param>
+        public BreadcrumbDetails(string message, BreadcrumbType type = BreadcrumbType.Manual, string category = null, Dictionary<string, object> customData = null, string platform = "DotNet")
         {
             Message = message;
             Type = type;
+            Platform = platform;
             Category = category;
             CustomData = customData;
 

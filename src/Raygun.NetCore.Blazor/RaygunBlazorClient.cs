@@ -11,7 +11,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Raygun.NetCore.Blazor
 {
@@ -130,18 +129,10 @@ namespace Raygun.NetCore.Blazor
         /// <code>
         /// TBD
         /// </code>
-        public void RecordBreadcrumb(string message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual, string category = null, Dictionary<string, object> customData = null)
-        {
-            //RWM: We want to keep track of where the reporting came from, since you can report on either side of the platform.
-            if (customData is null)
-            {
-                customData = new Dictionary<string, object> { { "InitiatedBy", ".NET" } };
-            }
-            else if (!customData.ContainsKey("InitiatedBy"))
-            {
-                customData.Add("InitiatedBy", ".NET");
-            }      
-            _breadcrumbs.Add(new BreadcrumbDetails(message, breadcrumbType, category, customData));
+        public void RecordBreadcrumb(string message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual, string category = null, 
+            Dictionary<string, object> customData = null, string platform = "DotNet")
+        { 
+            _breadcrumbs.Add(new BreadcrumbDetails(message, breadcrumbType, category, customData, platform));
         }
 
 

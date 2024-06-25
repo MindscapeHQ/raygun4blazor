@@ -25,7 +25,7 @@ namespace Raygun.NetCore.Blazor
         private readonly IJSRuntime _jsRuntime;
         private readonly RaygunSettings _raygunSettings;
         private readonly IWindowService _windowService;
-        private Action<string, BreadcrumbType, string?, Dictionary<string, object>?> _breadcrumbAction;
+        private Action<string, BreadcrumbType, string?, Dictionary<string, object>?, string?> _breadcrumbAction;
         private Func<Exception, List<string>?, bool, Dictionary<string, string>?, CancellationToken, Task> _exceptionAction;
 
         #endregion
@@ -98,18 +98,10 @@ namespace Raygun.NetCore.Blazor
         /// <param name="customData"></param>
         /// <returns></returns>
         [JSInvokable]
-        public async ValueTask RecordJsBreadcrumb(string message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual, string category = null, Dictionary<string, object> customData = null)
+        public async ValueTask RecordJsBreadcrumb(string message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual, 
+            string category = null, Dictionary<string, object> customData = null)
         {
-            //RWM: We want to keep track of where the reporting came from, since you can report on either side of the platform.
-            if (customData is null)
-            {
-                customData = new Dictionary<string, object> { { "InitiatedBy", "JavaScript" } };
-            }
-            else if (!customData.ContainsKey("InitiatedBy"))
-            {
-                customData.Add("InitiatedBy", "JavaScript");
-            } 
-            _breadcrumbAction.Invoke(message, breadcrumbType, category, customData);
+            _breadcrumbAction.Invoke(message, breadcrumbType, category, customData, "JavaScript");
         }
 
         /// <summary>
@@ -150,8 +142,10 @@ namespace Raygun.NetCore.Blazor
         /// Properly configures Raygun Blazor for use with JavaScript.
         /// </summary>
         /// <param name="onUnhandledJsException"></param>
+        /// <param name="breadcrumbAction"></param>
+        /// <param name="exceptionAction"></param>
         internal async Task InitializeAsync(Func<ErrorEvent, Task> onUnhandledJsException,
-            Action<string, BreadcrumbType, string?, Dictionary<string, object>?> breadcrumbAction,
+            Action<string, BreadcrumbType, string?, Dictionary<string, object>?, string?> breadcrumbAction,
             Func<Exception, List<string>?, bool, Dictionary<string, string>?, CancellationToken, Task> exceptionAction)
         {
             _breadcrumbAction = breadcrumbAction;
