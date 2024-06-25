@@ -1,0 +1,78 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.34929.205
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.NetCore.Blazor", "Raygun.NetCore.Blazor\Raygun.NetCore.Blazor.csproj", "{8A3CFEA0-2E8B-4C45-91A8-2FD075486B11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{4DC8B2BE-3AB9-4068-BC72-F97B75716E85}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B100EB75-8D39-4595-8B7E-8FF2B330273B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{3726E175-4147-432F-BDCA-087F7B9DD873}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{A27A5729-C507-433E-8A2B-DEB55C3B6B66}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.NetCore.Blazor.WebAssembly", "Raygun.NetCore.Blazor.WebAssembly\Raygun.NetCore.Blazor.WebAssembly.csproj", "{AA9AC6CD-D344-42E7-908B-8252466CB26D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9275CC2B-11CA-4D7D-B2EC-2227F410599B}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		global.json = global.json
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.NetCore.Tests.Blazor", "Raygun.NetCore.Tests.Blazor\Raygun.NetCore.Tests.Blazor.csproj", "{D21D30DD-3133-483E-ABF9-F1AA552B11B4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.NetCore.Tests.Blazor.WebAssembly", "Raygun.NetCore.Tests.Blazor.WebAssembly\Raygun.NetCore.Tests.Blazor.WebAssembly.csproj", "{A9A0782E-395E-413B-80E3-BE2C18E25ECB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.NetCore.Blazor.Server", "Raygun.NetCore.Blazor.Server\Raygun.NetCore.Blazor.Server.csproj", "{F05FD8B3-E379-4520-9008-013D0CD3C983}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.NetCore.Samples.Blazor.WebAssembly", "Raygun.NetCore.Samples.Blazor.WebAssembly\Raygun.NetCore.Samples.Blazor.WebAssembly.csproj", "{CDBE774B-4AEA-4277-9044-A9718C03CEF6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A3CFEA0-2E8B-4C45-91A8-2FD075486B11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A3CFEA0-2E8B-4C45-91A8-2FD075486B11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A3CFEA0-2E8B-4C45-91A8-2FD075486B11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A3CFEA0-2E8B-4C45-91A8-2FD075486B11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA9AC6CD-D344-42E7-908B-8252466CB26D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA9AC6CD-D344-42E7-908B-8252466CB26D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA9AC6CD-D344-42E7-908B-8252466CB26D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA9AC6CD-D344-42E7-908B-8252466CB26D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D21D30DD-3133-483E-ABF9-F1AA552B11B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D21D30DD-3133-483E-ABF9-F1AA552B11B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D21D30DD-3133-483E-ABF9-F1AA552B11B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D21D30DD-3133-483E-ABF9-F1AA552B11B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9A0782E-395E-413B-80E3-BE2C18E25ECB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9A0782E-395E-413B-80E3-BE2C18E25ECB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9A0782E-395E-413B-80E3-BE2C18E25ECB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9A0782E-395E-413B-80E3-BE2C18E25ECB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F05FD8B3-E379-4520-9008-013D0CD3C983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F05FD8B3-E379-4520-9008-013D0CD3C983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F05FD8B3-E379-4520-9008-013D0CD3C983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F05FD8B3-E379-4520-9008-013D0CD3C983}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDBE774B-4AEA-4277-9044-A9718C03CEF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDBE774B-4AEA-4277-9044-A9718C03CEF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDBE774B-4AEA-4277-9044-A9718C03CEF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDBE774B-4AEA-4277-9044-A9718C03CEF6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8A3CFEA0-2E8B-4C45-91A8-2FD075486B11} = {4DC8B2BE-3AB9-4068-BC72-F97B75716E85}
+		{AA9AC6CD-D344-42E7-908B-8252466CB26D} = {4DC8B2BE-3AB9-4068-BC72-F97B75716E85}
+		{D21D30DD-3133-483E-ABF9-F1AA552B11B4} = {B100EB75-8D39-4595-8B7E-8FF2B330273B}
+		{A9A0782E-395E-413B-80E3-BE2C18E25ECB} = {B100EB75-8D39-4595-8B7E-8FF2B330273B}
+		{F05FD8B3-E379-4520-9008-013D0CD3C983} = {4DC8B2BE-3AB9-4068-BC72-F97B75716E85}
+		{CDBE774B-4AEA-4277-9044-A9718C03CEF6} = {A27A5729-C507-433E-8A2B-DEB55C3B6B66}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07FC9E40-0B7C-4088-934B-9204C2719530}
+	EndGlobalSection
+EndGlobal

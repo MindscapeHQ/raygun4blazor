@@ -1,0 +1,45 @@
+﻿@page "/counter"
+@inject CounterViewModel viewModel
+@inject RaygunBlazorClient raygunClient
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+<p>Every 3rd time you click the "Count Up" button, it throws an exception from a try-catch that is manually reported.</p>
+
+<p role="status">Current count: @viewModel.CurrentCount</p>
+
+<button class="btn btn-primary" @onclick="@IncrementAsync">Count Up</button>
+<button class="btn btn-primary" @onclick="@Throw">Throw JS Exception</button>
+<button class="btn btn-primary" @onclick="@(() => { var y = 0; var x = 3; var z = x / y; })">Throw .NET Exception</button>
+<button class="btn btn-primary" onclick="window.raygunBlazor.recordBreadcrumb('Clicked manual button', 'click-event');">Record JS Breadcrumb</button>
+<button class="btn btn-primary"@onclick="@(() => { var y = 0; var x = 3; var z = x / y; })">Record JS Exception</button>
+
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        viewModel.StateHasChanged = StateHasChanged;
+        //throw new Exception();
+    }
+
+    protected async Task IncrementAsync()
+    {
+        try
+        {
+            raygunClient.RecordBreadcrumb("Incrementing count", BreadcrumbType.ClickEvent);
+            await viewModel.IncrementCountAsync();
+        }
+        catch (Exception ex)
+        {
+            await raygunClient.RecordExceptionAsync(ex);
+        }
+    }
+
+    protected async Task Throw()
+    {
+        await viewModel.ThrowException();
+    }
+
+}

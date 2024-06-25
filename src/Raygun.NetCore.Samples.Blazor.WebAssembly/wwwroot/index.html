@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Raygun.NetCore.Samples.Blazor.WebAssembly</title>
+    <base href="/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="Raygun.NetCore.Samples.Blazor.WebAssembly.styles.css" rel="stylesheet" />
+    <link href="manifest.webmanifest" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+    <script>
+        // This is used to cause an error, because throwing an exception from the console does not invoke the handler.
+        window.onmessage = (e) => {
+            if (e.data == "causeError") {
+                if (Math.random() < 0.33) {
+                    undefinedfunction1();
+                    //throw new SyntaxError("Message 1 was not caught.");
+                }
+                else if (Math.random() < 0.6) {
+                    undefinedfunction2();
+                    //throw new DOMException("Message 2 was not caught.", "OperationError");
+                }
+                else {
+                    undefinedfunction3();
+                    //throw new DOMException("Message 3 was not caught.", "SyntaxError");
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+</body>
+
+</html>
