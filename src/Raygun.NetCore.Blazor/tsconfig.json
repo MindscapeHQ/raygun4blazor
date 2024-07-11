@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "alwaysStrict": false,
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": false,
+    "target": "ES6",
+    "module": "ES2015"
+  },
+  "include": [
+    "wwwroot/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

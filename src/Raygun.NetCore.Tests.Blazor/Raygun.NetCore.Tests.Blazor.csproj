@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;</TargetFrameworks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Breakdance.Blazor" Version="7.*-*" />
+		<PackageReference Include="bunit" Version="1.*" />
+		<PackageReference Include="bunit.web" Version="1.*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Raygun.NetCore.Blazor\Raygun.NetCore.Blazor.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Baselines\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="appsettings.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+</Project>

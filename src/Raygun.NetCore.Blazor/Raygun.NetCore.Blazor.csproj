@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;</TargetFrameworks>
+		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>		
+		
+		<TypeScriptModuleKind>commonjs</TypeScriptModuleKind>
+		<TypeScriptTarget>ES2020</TypeScriptTarget>
+		<TypeScriptOutDir>wwwroot</TypeScriptOutDir>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Ben.Demystifier" Version="[0.*, 1.0.0)" />
+		<PackageReference Include="KristofferStrube.Blazor.Window" Version="0.*-*" />
+		<PackageReference Include="MyCSharp.HttpUserAgentParser" Version="[3.*, 4.0.0]" />
+		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.5.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="[8.*, 9.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="[8.*, 9.0.0)" />
+		<PackageReference Include="Microsoft.JSInterop" Version="[8.*, 9.0.0)" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="[7.*, 8.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="[7.*, 8.0.0)" />
+		<PackageReference Include="Microsoft.JSInterop" Version="[7.*, 8.0.0)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>Raygun.NetCore.Blazor.WebAssembly, $(StrongNamePublicKey)</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+</Project>
