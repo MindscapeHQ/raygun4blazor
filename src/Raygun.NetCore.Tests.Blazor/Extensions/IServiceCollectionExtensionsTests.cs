@@ -13,7 +13,7 @@ namespace Raygun.NetCore.Tests.Blazor.Extensions
     /// 
     /// </summary>
     [TestClass]
-    public class IServiceCollectionExtensionsTests : BreakdanceTestBase
+    public class ServiceCollectionExtensionsTests : BreakdanceTestBase
     {
 
         #region Test Lifecycle

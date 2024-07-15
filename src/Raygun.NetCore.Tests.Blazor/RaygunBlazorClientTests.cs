@@ -14,7 +14,7 @@ namespace Raygun.NetCore.Tests.Blazor
     /// Tests the functionality of the code that registers Raygun resources with the DI container.
     /// </summary>
     [TestClass]
-    public class IServiceCollectionExtensionsTests : BreakdanceTestBase
+    public class ServiceCollectionExtensionsTests : BreakdanceTestBase
     {
 
         #region Test Lifecycle

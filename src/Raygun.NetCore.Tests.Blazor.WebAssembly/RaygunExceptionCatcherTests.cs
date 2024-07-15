@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Raygun4Net.Tests.Blazor.WebAssembly
+namespace Raygun.NetCore.Tests.Blazor.WebAssembly
 {
 
     /// <summary>
