@@ -1,23 +1,20 @@
-﻿using CloudNimble.Breakdance.Assemblies;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Raygun.NetCore.Blazor;
 using System.Net.Http;
-using Microsoft.JSInterop;
-using Moq;
+using Bunit;
+using CloudNimble.Breakdance.Blazor;
 
 namespace Raygun.NetCore.Tests.Blazor.Extensions
 {
-
     /// <summary>
     /// 
     /// </summary>
     [TestClass]
-    public class ServiceCollectionExtensionsTests : BreakdanceTestBase
+    public class ServiceCollectionExtensionsTests : BlazorBreakdanceTestBase
     {
-
         #region Test Lifecycle
 
         [TestInitialize]
@@ -25,11 +22,9 @@ namespace Raygun.NetCore.Tests.Blazor.Extensions
         {
             TestHostBuilder.ConfigureServices((context, services) =>
             {
-                var jsRuntimeMock = new Mock<IJSRuntime>();
-                services.AddSingleton(jsRuntimeMock.Object);
                 services.AddRaygunBlazor(context.Configuration);
-			});
-            TestSetup();
+            });
+            TestSetup(JSRuntimeMode.Loose);
         }
 
         [TestCleanup]
@@ -56,8 +51,5 @@ namespace Raygun.NetCore.Tests.Blazor.Extensions
         // TODO: RWM: What happens if the ApiKey is null or whitespace?
 
         #endregion
-
-
     }
-
 }
