@@ -191,7 +191,7 @@ namespace Raygun.NetCore.Blazor.Models
             DeviceName = !string.IsNullOrWhiteSpace(specs.DeviceName) ? specs.DeviceName : null; ;
             Locale = specs.Locale;
             OSVersion = !string.IsNullOrWhiteSpace(specs.UAHints?.CalculatedOSVersion) ? specs.UAHints.CalculatedOSVersion : specs.CalculatedOSVersion;
-            Platform = specs.UAHints.CalculatedPlatform ?? specs.Platform;
+            Platform = specs.UAHints?.CalculatedPlatform ?? specs.Platform;
             ProcessorCount = specs.ProcessorCount;
             ResolutionScale = stats.DevicePixelRatio;
             ScreenHeight = specs.ScreenHeight;

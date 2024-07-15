@@ -11,14 +11,12 @@ using Moq;
 
 namespace Raygun.NetCore.Tests.Blazor
 {
-
     /// <summary>
     /// Tests the functionality of the code that registers Raygun resources with the DI container.
     /// </summary>
     [TestClass]
     public class ServiceCollectionExtensionsTests : BreakdanceTestBase
     {
-
         #region Test Lifecycle
 
         [TestInitialize]
@@ -27,6 +25,24 @@ namespace Raygun.NetCore.Tests.Blazor
             TestHostBuilder.ConfigureServices((context, services) =>
             {
                 var jsRuntimeMock = new Mock<IJSRuntime>();
+                var ijsObjectReference = new Mock<IJSObjectReference>();
+                var browserSpecs = new BrowserSpecs();
+                var browserStats = new BrowserStats();
+                browserSpecs.UserAgent =
+                    "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0";
+
+                jsRuntimeMock
+                    .Setup(js => js.InvokeAsync<IJSObjectReference>(It.IsAny<string>(), It.IsAny<object[]>()))
+                    .Returns(ValueTask.FromResult(ijsObjectReference.Object));
+
+                ijsObjectReference
+                    .Setup(js => js.InvokeAsync<BrowserSpecs>(It.IsAny<string>(), It.IsAny<object[]>()))
+                    .Returns(ValueTask.FromResult(browserSpecs));
+                
+                ijsObjectReference
+                    .Setup(js => js.InvokeAsync<BrowserStats>(It.IsAny<string>(), It.IsAny<object[]>()))
+                    .Returns(ValueTask.FromResult(browserStats));
+
                 services.AddSingleton(jsRuntimeMock.Object);
                 services.AddRaygunBlazor(context.Configuration);
             });
@@ -69,7 +85,5 @@ namespace Raygun.NetCore.Tests.Blazor
         }
 
         #endregion
-
     }
-
 }
