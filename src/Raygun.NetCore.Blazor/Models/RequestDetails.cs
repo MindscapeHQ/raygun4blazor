@@ -36,7 +36,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// The HTTP method used to request the URL (GET, POST, PUT, etc).
         /// </summary>
         [JsonInclude]
-        public HttpMethod HttpMethod { get; set; }
+        public string HttpMethod { get; set; }
 
         /// <summary>
         /// The IP address of the client that initiated the request.
