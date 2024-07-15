@@ -8,6 +8,7 @@
 		<PackageReference Include="Breakdance.Blazor" Version="7.*-*" />
 		<PackageReference Include="bunit" Version="1.*" />
 		<PackageReference Include="bunit.web" Version="1.*" />
+		<PackageReference Include="Moq" Version="4.20.70" />
 	</ItemGroup>
 
 	<ItemGroup>

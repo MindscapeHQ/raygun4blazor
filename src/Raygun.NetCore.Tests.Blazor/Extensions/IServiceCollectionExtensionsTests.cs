@@ -5,6 +5,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Raygun.NetCore.Blazor;
 using System.Net.Http;
+using Microsoft.JSInterop;
+using Moq;
 
 namespace Raygun.NetCore.Tests.Blazor.Extensions
 {
@@ -22,7 +24,9 @@ namespace Raygun.NetCore.Tests.Blazor.Extensions
         public void Setup()
         {
             TestHostBuilder.ConfigureServices((context, services) =>
-			{
+            {
+                var jsRuntimeMock = new Mock<IJSRuntime>();
+                services.AddSingleton(jsRuntimeMock.Object);
                 services.AddRaygunBlazor(context.Configuration);
 			});
             TestSetup();

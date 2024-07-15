@@ -6,6 +6,8 @@ using Raygun.NetCore.Blazor;
 using Raygun.NetCore.Blazor.Models;
 using System;
 using System.Threading.Tasks;
+using Microsoft.JSInterop;
+using Moq;
 
 namespace Raygun.NetCore.Tests.Blazor
 {
@@ -24,6 +26,8 @@ namespace Raygun.NetCore.Tests.Blazor
         {
             TestHostBuilder.ConfigureServices((context, services) =>
             {
+                var jsRuntimeMock = new Mock<IJSRuntime>();
+                services.AddSingleton(jsRuntimeMock.Object);
                 services.AddRaygunBlazor(context.Configuration);
             });
             TestSetup();
