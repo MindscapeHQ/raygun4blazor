@@ -11,11 +11,13 @@ using System.Threading.Tasks;
 
 namespace Raygun.NetCore.Blazor
 {
+
     /// <summary>
     /// Handles interoperability between the <see cref="RaygunBlazorClient" /> and JavaScript.
     /// </summary>
     public class RaygunBrowserInterop : IAsyncDisposable
     {
+
         #region Private Members
 
         private readonly DotNetObjectReference<RaygunBrowserInterop> _dotNetReference;
@@ -24,9 +26,7 @@ namespace Raygun.NetCore.Blazor
         private readonly RaygunSettings _raygunSettings;
         private readonly IWindowService _windowService;
         private Action<string, BreadcrumbType, string?, Dictionary<string, object>?, string?> _breadcrumbAction;
-
-        private Func<Exception, List<string>?, bool, Dictionary<string, string>?, CancellationToken, Task>
-            _exceptionAction;
+        private Func<Exception, List<string>?, bool, Dictionary<string, string>?, CancellationToken, Task> _exceptionAction;
 
         #endregion
 
@@ -77,8 +77,7 @@ namespace Raygun.NetCore.Blazor
         //      See https://learn.microsoft.com/en-us/aspnet/core/blazor/javascript-interoperability/call-dotnet-from-javascript?view=aspnetcore-8.0#avoid-trimming-javascript-invokable-net-methods
         [DynamicDependency(nameof(RecordJsBreadcrumb))]
         [DynamicDependency(nameof(RecordJsException))]
-        public RaygunBrowserInterop(IJSRuntime jsRuntime, IWindowService windowService,
-            IOptions<RaygunSettings> raygunSettings)
+        public RaygunBrowserInterop(IJSRuntime jsRuntime, IWindowService windowService, IOptions<RaygunSettings> raygunSettings)
         {
             _dotNetReference = DotNetObjectReference.Create(this);
             _jsRuntime = jsRuntime;
@@ -99,7 +98,7 @@ namespace Raygun.NetCore.Blazor
         /// <param name="customData"></param>
         /// <returns></returns>
         [JSInvokable]
-        public async ValueTask RecordJsBreadcrumb(string message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual,
+        public async ValueTask RecordJsBreadcrumb(string message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual, 
             string category = null, Dictionary<string, object> customData = null)
         {
             _breadcrumbAction.Invoke(message, breadcrumbType, category, customData, "JavaScript");
@@ -114,8 +113,7 @@ namespace Raygun.NetCore.Blazor
         /// <param name="customData"></param>
         /// <returns></returns>
         [JSInvokable]
-        public async ValueTask RecordJsException(Exception exception, List<string>? tags = null,
-            bool sendUserData = false, Dictionary<string, string>? customData = null)
+        public async ValueTask RecordJsException(Exception exception, List<string>? tags = null, bool sendUserData = false, Dictionary<string, string>? customData = null)
         {
             await _exceptionAction.Invoke(exception, tags, sendUserData, customData, CancellationToken.None);
         }
@@ -155,9 +153,8 @@ namespace Raygun.NetCore.Blazor
 
             // RWM: We're going to register the Raygun script and get the BrowserSpecs first. The reason why is because if we
             //      handle JS errors & they start coming in before we're ready, then there will be wailing and gnashing of teeth.
-            RaygunScriptReference = await _jsRuntime.InvokeAsync<IJSObjectReference>("import",
-                "./_content/Raygun.NetCore.Blazor/Raygun.NetCore.Blazor.js");
-
+            RaygunScriptReference = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Raygun.NetCore.Blazor/Raygun.NetCore.Blazor.js");
+            
             // RWM: Register the .NET reference with JS so that JS code can also manually create Bookmarks and report Exceptions.
             await _jsRuntime.InvokeVoidAsync("window.raygunBlazor.initialize", _dotNetReference);
 
@@ -188,17 +185,14 @@ namespace Raygun.NetCore.Blazor
                 await Window.RemoveOnErrorEventListenerAsync(_errorEventListener);
                 await _errorEventListener.DisposeAsync();
             }
-
             if (Window is not null)
             {
                 await Window.DisposeAsync();
             }
-
             if (RaygunScriptReference is not null)
             {
                 await RaygunScriptReference.DisposeAsync();
             }
-
             if (_dotNetReference is not null)
             {
                 _dotNetReference.Dispose();
@@ -206,5 +200,7 @@ namespace Raygun.NetCore.Blazor
         }
 
         #endregion
+
     }
+
 }
