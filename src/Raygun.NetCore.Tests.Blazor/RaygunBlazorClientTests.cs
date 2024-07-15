@@ -1,5 +1,4 @@
-﻿using CloudNimble.Breakdance.Assemblies;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Raygun.NetCore.Blazor;
@@ -8,9 +7,6 @@ using System;
 using System.Threading.Tasks;
 using Bunit;
 using CloudNimble.Breakdance.Blazor;
-using KristofferStrube.Blazor.DOM.Extensions;
-using Microsoft.JSInterop;
-using Moq;
 
 namespace Raygun.NetCore.Tests.Blazor
 {
