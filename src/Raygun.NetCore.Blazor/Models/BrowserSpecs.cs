@@ -1,6 +1,5 @@
 ﻿using MyCSharp.HttpUserAgentParser;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace Raygun.NetCore.Blazor.Models
 {
