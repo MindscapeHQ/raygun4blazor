@@ -6,6 +6,9 @@ using Raygun.NetCore.Blazor;
 using Raygun.NetCore.Blazor.Models;
 using System;
 using System.Threading.Tasks;
+using Bunit;
+using CloudNimble.Breakdance.Blazor;
+using KristofferStrube.Blazor.DOM.Extensions;
 using Microsoft.JSInterop;
 using Moq;
 
@@ -15,7 +18,7 @@ namespace Raygun.NetCore.Tests.Blazor
     /// Tests the functionality of the code that registers Raygun resources with the DI container.
     /// </summary>
     [TestClass]
-    public class ServiceCollectionExtensionsTests : BreakdanceTestBase
+    public class ServiceCollectionExtensionsTests : BlazorBreakdanceTestBase
     {
         #region Test Lifecycle
 
@@ -24,29 +27,21 @@ namespace Raygun.NetCore.Tests.Blazor
         {
             TestHostBuilder.ConfigureServices((context, services) =>
             {
-                var jsRuntimeMock = new Mock<IJSRuntime>();
-                var ijsObjectReference = new Mock<IJSObjectReference>();
+                // Prepare fakes for BrowserSpecs and BrowserStats
                 var browserSpecs = new BrowserSpecs();
                 var browserStats = new BrowserStats();
                 browserSpecs.UserAgent =
                     "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0";
-
-                jsRuntimeMock
-                    .Setup(js => js.InvokeAsync<IJSObjectReference>(It.IsAny<string>(), It.IsAny<object[]>()))
-                    .Returns(ValueTask.FromResult(ijsObjectReference.Object));
-
-                ijsObjectReference
-                    .Setup(js => js.InvokeAsync<BrowserSpecs>(It.IsAny<string>(), It.IsAny<object[]>()))
-                    .Returns(ValueTask.FromResult(browserSpecs));
                 
-                ijsObjectReference
-                    .Setup(js => js.InvokeAsync<BrowserStats>(It.IsAny<string>(), It.IsAny<object[]>()))
-                    .Returns(ValueTask.FromResult(browserStats));
+                // BlazorBreakdanceTestBase exposes bunit JSInterop
+                BUnitTestContext.JSInterop.Setup<BrowserSpecs>("getBrowserSpecs").SetResult(browserSpecs);
+                BUnitTestContext.JSInterop.Setup<BrowserStats>("getBrowserStats").SetResult(browserStats);
 
-                services.AddSingleton(jsRuntimeMock.Object);
                 services.AddRaygunBlazor(context.Configuration);
             });
-            TestSetup();
+
+            // See: https://bunit.dev/docs/test-doubles/emulating-ijsruntime.html
+            TestSetup(JSRuntimeMode.Loose);
         }
 
         [TestCleanup]
