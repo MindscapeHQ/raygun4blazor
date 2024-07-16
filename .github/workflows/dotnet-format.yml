@@ -9,13 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Add dotnet-format problem matcher
-        uses: xt0rted/dotnet-format-problem-matcher@v1
-
-      - name: Restore dotnet tools
-        uses: xt0rted/dotnet-tool-restore@v1
-
-      - name: Run dotnet format
-        uses: xt0rted/dotnet-format@v1
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+          
+      - name: Format
+        working-directory: ./src
+        run: dotnet format --verify-no-changes 
         
