@@ -16,7 +16,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// The name of the class this stack frame is in.
         /// </summary>
         [JsonInclude]
-        public string ClassName { get; set; }
+        public string? ClassName { get; set; }
 
         /// <summary>
         /// The column of the file that this stack frame is in.
@@ -28,19 +28,19 @@ namespace Raygun.NetCore.Blazor.Models
         /// The name of the file this stack frame is in.
         /// </summary>
         [JsonInclude]
-        public string FileName { get; set; }
+        public string? FileName { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [JsonInclude]
-        public int ILOffset { get; set; }
+        public int IlOffset { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [JsonInclude]
-        public string ImageSignature { get; set; }
+        public string? ImageSignature { get; set; }
 
         /// <summary>
         /// The line number of this stack frame.
@@ -52,13 +52,13 @@ namespace Raygun.NetCore.Blazor.Models
         /// The name of the method this stack frame is in.
         /// </summary>
         [JsonInclude]
-        public string MethodName { get; set; }
+        public string? MethodName { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [JsonInclude]
-        public int MethodToken { get; set; }
+        public int? MethodToken { get; set; }
 
         #endregion
 
@@ -86,11 +86,11 @@ namespace Raygun.NetCore.Blazor.Models
             ClassName = names.ClassName;
             ColumnNumber = frame.GetFileColumnNumber();
             FileName = frame.GetFileName();
-            ILOffset = frame.GetILOffset();
+            IlOffset = frame.GetILOffset();
             //ImageSignature = frame.ImageSignature;
             LineNumber = frame.GetFileLineNumber();
             MethodName = names.MethodName;
-            MethodToken = frame.GetMethod().MetadataToken;
+            MethodToken = frame.GetMethod()?.MetadataToken;
         }
 
         #endregion

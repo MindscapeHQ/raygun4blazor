@@ -54,7 +54,7 @@ namespace Raygun.NetCore.Tests.Blazor
             result.Details.Error.StackTrace[0].MethodName.Should().Be("BreakEverything()");
             result.Details.Environment.Should().NotBeNull();
             result.Details.Environment.ProcessorCount.Should().Be(4);
-            result.Details.Environment.OSVersion.Should().Be("Windows 10");
+            result.Details.Environment.OsVersion.Should().Be("Windows 10");
             result.Details.Environment.WindowBoundsWidth.Should().Be(2560);
             result.Details.Environment.WindowBoundsHeight.Should().Be(1440);
             result.Details.Environment.BrowserWidth.Should().Be(2560);
@@ -94,7 +94,7 @@ namespace Raygun.NetCore.Tests.Blazor
             result.Details.Request.HostName.Should().Be("https://raygun.io");
             result.Details.Request.Url.Should().Be("/documentation/integrations/api");
             result.Details.Request.HttpMethod.Should().Be("POST");
-            result.Details.Request.IPAddress.Should().Be("127.0.0.1");
+            result.Details.Request.IpAddress.Should().Be("127.0.0.1");
             result.Details.Request.QueryString.Should().NotBeNull().And.HaveCount(1);
             result.Details.Request.QueryString["q"].Should().Be("searchParams");
             result.Details.Request.Form.Should().NotBeNull().And.HaveCount(3);

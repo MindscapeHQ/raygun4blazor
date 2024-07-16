@@ -24,7 +24,7 @@ namespace Raygun.NetCore.Blazor.WebAssembly.Controls
         /// 
         /// </summary>
         [Inject]
-        internal IJSRuntime JSRuntime { get; set; }
+        internal IJSRuntime JsRuntime { get; set; }
 
         /// <summary>
         /// 
@@ -46,7 +46,7 @@ namespace Raygun.NetCore.Blazor.WebAssembly.Controls
         /// 
         /// </summary>
         [Parameter]
-        public bool ShowExceptionUI { get; set; }
+        public bool ShowExceptionUi { get; set; }
 
         #endregion
 
@@ -71,7 +71,7 @@ namespace Raygun.NetCore.Blazor.WebAssembly.Controls
         /// </remarks>
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            if (CurrentException is not null && ShowExceptionUI)
+            if (CurrentException is not null && ShowExceptionUi)
             {
                 if (ErrorContent is not null)
                 {

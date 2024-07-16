@@ -20,7 +20,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// If you use the user's email address as the identifier, enter it here as well as the Email field.
         /// </remarks>
         [JsonPropertyName("identifier")]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         /// <summary>
         /// Flag indicating whether or not a user is anonymous.
@@ -30,7 +30,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// User's email address
         /// </summary>
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         /// <summary>
         /// User's full name.
@@ -38,12 +38,12 @@ namespace Raygun.NetCore.Blazor.Models
         /// <remarks>
         /// If you are going to set any names, you should probably set this one too.
         /// </remarks>
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
         /// <summary>
         /// User's first name.
         /// </summary>
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         /// <summary>
         /// The unique identifier for the device.
@@ -52,7 +52,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// Could be used to identify users across devices, or machines that are breaking for many users.
         /// </remarks>
         [JsonPropertyName("uuid")]
-        public string DeviceId { get; set; }
+        public string? DeviceId { get; set; }
 
         #endregion
 

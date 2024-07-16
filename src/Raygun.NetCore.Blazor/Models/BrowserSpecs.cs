@@ -14,12 +14,10 @@ namespace Raygun.NetCore.Blazor.Models
     {
         #region Private Members
 
-        private string calculatedBrowserVersion;
-        private string calculatedBrowserName;
-        private string calculatedOSVersion;
-        private string deviceModel;
-        private string deviceName;
-        private string browserManufacturer;
+        private string? _calculatedBrowserVersion;
+        private string? _calculatedBrowserName;
+        private string? _calculatedOsVersion;
+        // private string? _browserManufacturer;
 
         #endregion
 
@@ -33,12 +31,12 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// 
         /// </summary>
-        public string CalculatedBrowserName => calculatedBrowserName;
+        public string? CalculatedBrowserName => _calculatedBrowserName;
 
         /// <summary>
         /// 
         /// </summary>
-        public string CalculatedBrowserVersion => calculatedBrowserVersion;
+        public string? CalculatedBrowserVersion => _calculatedBrowserVersion;
 
         /// <summary>
         /// 
@@ -48,22 +46,22 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// 
         /// </summary>
-        public string DeviceManufacturer { get; set; }
+        public string? DeviceManufacturer { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string DeviceModel => deviceModel;
+        public string? DeviceModel { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string DeviceName => deviceName;
+        public string? DeviceName { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public decimal DeviceMemoryInGB { get; set; }
+        public decimal DeviceMemoryInGb { get; set; }
 
         /// <summary>
         /// 
@@ -76,12 +74,12 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// 
         /// </summary>
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string CalculatedOSVersion => calculatedOSVersion;
+        public string? CalculatedOsVersion => _calculatedOsVersion;
 
         /// <summary>
         /// 
@@ -91,7 +89,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// 
         /// </summary>
-        public string Platform { get; set; }
+        public string? Platform { get; set; }
 
         /// <summary>
         /// 
@@ -111,12 +109,12 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// 
         /// </summary>
-        public BrowserUserAgentData UAHints { get; set; }
+        public BrowserUserAgentData? UaHints { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string UserAgent { get; set; }
+        public string? UserAgent { get; set; }
 
         /// <summary>
         /// 
@@ -132,10 +130,10 @@ namespace Raygun.NetCore.Blazor.Models
         /// </summary>
         internal void ParseUserAgent()
         {
-            var result = HttpUserAgentParser.Parse(UserAgent);
-            calculatedBrowserName = result.Name;
-            calculatedBrowserVersion = result.Version;
-            calculatedOSVersion = result.Platform.Value.Name;
+            var result = HttpUserAgentParser.Parse(UserAgent!);
+            _calculatedBrowserName = result.Name;
+            _calculatedBrowserVersion = result.Version;
+            _calculatedOsVersion = result.Platform?.Name;
             Console.WriteLine(result.MobileDeviceType);
         }
 

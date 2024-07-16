@@ -16,19 +16,19 @@ namespace Raygun.NetCore.Blazor.Models
         /// The name of this Client library.
         /// </summary>
         [JsonInclude]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// The version of this Client library.
         /// </summary>
         [JsonInclude]
-        public string Version { get; set; }
+        public string? Version { get; set; }
 
         /// <summary>
         /// The URL for the repository this Client library is maintained in.
         /// </summary>
         [JsonInclude]
-        public string ClientUrl { get; set; }
+        public string? ClientUrl { get; set; }
 
         #endregion
 
@@ -52,7 +52,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <remarks>
         /// Sets the Name to "Raygun4Blazor", the Version to the current version of the assembly, and the ClientUrl to the GitHub repository for this project.
         /// </remarks>
-        internal ClientDetails(string name = "Raygun4Blazor")
+        internal ClientDetails(string? name = "Raygun4Blazor")
         {
             Name = name;
             Version = Assembly.GetExecutingAssembly()
@@ -67,7 +67,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <param name="name">The name of this Client library.</param>
         /// <param name="version">The version of this Client library.</param>
         /// <param name="clientUrl">The URL for the repository this Client library is maintained in.</param>
-        internal ClientDetails(string name, string version, string clientUrl)
+        internal ClientDetails(string? name, string? version, string? clientUrl)
         {
             Name = name;
             Version = version;

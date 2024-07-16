@@ -11,7 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection
     /// <summary>
     /// Extension methods for adding Raygun components to Dependency Injection <see cref="IServiceCollection" /> containers.
     /// </summary>
-    public static class Raygun_Blazor_IServiceCollectionExtensions
+    public static class RaygunBlazorIServiceCollectionExtensions
     {
 
         #region Static Fields

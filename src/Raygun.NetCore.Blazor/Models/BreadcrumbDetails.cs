@@ -23,19 +23,19 @@ namespace Raygun.NetCore.Blazor.Models
         /// A custom value used to arbitrarily group this Breadcrumb.
         /// </summary>
         [JsonInclude]
-        public string Category { get; set; }
+        public string? Category { get; set; }
 
         /// <summary>
         /// If relevant, a class name from where the breadcrumb was recorded.
         /// </summary>
         [JsonInclude]
-        public string ClassName { get; internal set; }
+        public string? ClassName { get; internal set; }
 
         /// <summary>
         /// Any custom data you want to record about application state when the Breadcrumb was recorded.
         /// </summary>     
         [JsonInclude]
-        public Dictionary<string, object> CustomData { get; set; }
+        public Dictionary<string, object>? CustomData { get; set; }
 
         /// <summary>
         /// If relevant, a line number from where the breadcrumb was recorded.
@@ -47,18 +47,18 @@ namespace Raygun.NetCore.Blazor.Models
         /// The message you want to record for this Breadcrumb.
         /// </summary>
         [JsonInclude]
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         /// <summary>
         /// If relevant, a method name from where the Breadcrumb was recorded.
         /// </summary>
         [JsonInclude]
-        public string MethodName { get; internal set; }
+        public string? MethodName { get; internal set; }
 
         /// <summary>
         /// Specifies the platform that the breadcrumb was recorded on. Possible values are "DotNet", and "JavaScript.
         /// </summary>
-        public string Platform { get; set; }
+        public string? Platform { get; set; }
 
         /// <summary>
         /// Milliseconds since the Unix Epoch.
@@ -97,7 +97,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <param name="category">A custom value used to arbitrarily group this Breadcrumb.</param>
         /// <param name="customData">Any custom data you want to record about application state when the breadcrumb was recorded.</param>
         /// <param name="platform">Specifies the platform that the breadcrumb was recorded on. Possible values are "DotNet", and "JavaScript.</param>
-        public BreadcrumbDetails(string message, BreadcrumbType type = BreadcrumbType.Manual, string category = null, Dictionary<string, object> customData = null, string platform = "DotNet")
+        public BreadcrumbDetails(string? message, BreadcrumbType type = BreadcrumbType.Manual, string? category = null, Dictionary<string, object>? customData = null, string? platform = "DotNet")
         {
             Message = message;
             Type = type;

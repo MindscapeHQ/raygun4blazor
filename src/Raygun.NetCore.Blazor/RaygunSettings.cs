@@ -21,7 +21,7 @@
         /// <summary>
         /// The API Key assigned by Raygun for this specific application
         /// </summary>
-        public string ApiKey { get; set; }
+        public string? ApiKey { get; set; }
 
         /// <summary>
         /// The logical version of the application using this Raygun Provider.
@@ -29,7 +29,7 @@
         /// <remarks>
         /// Setting this value takes priority over the AssemblyVersion in the RaygunBlazorClient.
         /// </remarks>
-        public string ApplicationVersion { get; set; }
+        public string? ApplicationVersion { get; set; }
 
         /// <summary>
         /// Specifies whether or not unhandled exceptions should be caught and sent to Raygun. Defaults to true
@@ -49,7 +49,7 @@
         /// <summary>
         /// The human-readable name of this Application.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         #endregion
 

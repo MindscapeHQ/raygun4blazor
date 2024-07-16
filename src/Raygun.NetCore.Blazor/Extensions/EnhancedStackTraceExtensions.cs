@@ -7,7 +7,7 @@ namespace System.Diagnostics
     /// <summary>
     /// Extension methods for the <see cref="EnhancedStackTrace" /> class.
     /// </summary>
-    internal static class Raygun_Blazor_EnhancedStackTraceExtensions
+    internal static class RaygunBlazorEnhancedStackTraceExtensions
     {
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace System.Diagnostics
             //      incorrectly exclude classes if someone else creates classes in their own code that match our class names,
             //      OR changes the namespace of the Raygun4NetCore classes.
             return stackTrace.GetFrames()
-                .Where(c => c.GetMethod().DeclaringType.Assembly.FullName != typeof(Raygun_Blazor_EnhancedStackTraceExtensions).Assembly.FullName);
+                .Where(c => c.GetMethod()?.DeclaringType?.Assembly.FullName != typeof(RaygunBlazorEnhancedStackTraceExtensions).Assembly.FullName);
         }
 
     }

@@ -18,50 +18,50 @@ namespace Raygun.NetCore.Blazor.Models
         /// The form parameters sent through with the request. Not form encoded.
         /// </summary>
         [JsonInclude]
-        public Dictionary<string, object> Form { get; set; }
+        public Dictionary<string, object>? Form { get; set; }
 
         /// <summary>
         /// The HTTP Headers sent as part of the request.
         /// </summary>
         [JsonInclude]
-        public Dictionary<string, string> Headers { get; set; }
+        public Dictionary<string, string>? Headers { get; set; }
 
         /// <summary>
         /// The hostName portion of the URL being requested.
         /// </summary>
         [JsonInclude]
-        public string HostName { get; set; }
+        public string? HostName { get; set; }
 
         /// <summary>
         /// The HTTP method used to request the URL (GET, POST, PUT, etc).
         /// </summary>
         [JsonInclude]
-        public string HttpMethod { get; set; }
+        public string? HttpMethod { get; set; }
 
         /// <summary>
         /// The IP address of the client that initiated the request.
         /// </summary>
         [JsonPropertyName("iPAddress")]
         [JsonInclude]
-        public string IPAddress { get; set; }
+        public string? IpAddress { get; set; }
 
         /// <summary>
         /// The query string portion of the URL.
         /// </summary>
         [JsonInclude]
-        public Dictionary<string, string> QueryString { get; set; }
+        public Dictionary<string, string>? QueryString { get; set; }
 
         /// <summary>
         /// The raw request body. Don't include form values here.
         /// </summary>
         [JsonInclude]
-        public string RawData { get; set; }
+        public string? RawData { get; set; }
 
         /// <summary>
         /// The path portion of the URL being requested
         /// </summary>
         [JsonInclude]
-        public string Url { get; set; }
+        public string? Url { get; set; }
 
         #endregion
 

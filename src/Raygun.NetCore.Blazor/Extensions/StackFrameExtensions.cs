@@ -6,7 +6,7 @@ namespace System.Diagnostics
     /// <summary>
     /// Extension methods for the <see cref="StackFrame" /> class.
     /// </summary>
-    internal static class Raygun_Blazor_StackFrameExtensions
+    internal static class RaygunBlazorStackFrameExtensions
     {
 
         /// <summary>
@@ -22,16 +22,18 @@ namespace System.Diagnostics
         /// both the class and method names in the type name, and the reported method name will be "MoveNext" for async methods.
         /// Obviously this is totally unhelpful for developers, so we need to make it more magical.
         /// </remarks>
-        public static (string ClassName, string MethodName) GetBlazorNames(this StackFrame stackFrame)
+        public static (string? ClassName, string? MethodName) GetBlazorNames(this StackFrame stackFrame)
         {
             var method = stackFrame.GetMethod();
-            var declaringTypeName = method.DeclaringType.FullName;
+            if (method == null) return (null, null);
+            var declaringTypeName = method.DeclaringType?.FullName;
+            if (declaringTypeName == null) return (null, method.Name);
             var isBlazorType = declaringTypeName.Contains("+<");
 
             return isBlazorType ?
                 // RWM: If we're in a .razor file, the real type name will be one level up on the inheritance chain,
                 //      while the real method name will be embedded in the current type's name. Fun!
-                (method.DeclaringType.DeclaringType.FullName, NamingUtilities.GetBlazorMethodName(declaringTypeName).ToString()) :
+                (method.DeclaringType?.DeclaringType?.FullName, NamingUtilities.GetBlazorMethodName(declaringTypeName).ToString()) :
                 // RWM: Otherwise, we're in a normal class, so we can just use the type and method names as-is.
                 (declaringTypeName, method.Name);
         }
