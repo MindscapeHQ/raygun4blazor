@@ -28,7 +28,7 @@ namespace Raygun.NetCore.Tests.Blazor
                 var browserStats = new BrowserStats();
                 browserSpecs.UserAgent =
                     "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0";
-                
+
                 // BlazorBreakdanceTestBase exposes bunit JSInterop
                 BUnitTestContext.JSInterop.Setup<BrowserSpecs>("getBrowserSpecs").SetResult(browserSpecs);
                 BUnitTestContext.JSInterop.Setup<BrowserStats>("getBrowserStats").SetResult(browserStats);

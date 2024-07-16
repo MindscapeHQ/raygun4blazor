@@ -98,7 +98,7 @@ namespace Raygun.NetCore.Blazor
         /// <param name="customData"></param>
         /// <returns></returns>
         [JSInvokable]
-        public async ValueTask RecordJsBreadcrumb(string message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual, 
+        public async ValueTask RecordJsBreadcrumb(string message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual,
             string category = null, Dictionary<string, object> customData = null)
         {
             _breadcrumbAction.Invoke(message, breadcrumbType, category, customData, "JavaScript");
@@ -154,7 +154,7 @@ namespace Raygun.NetCore.Blazor
             // RWM: We're going to register the Raygun script and get the BrowserSpecs first. The reason why is because if we
             //      handle JS errors & they start coming in before we're ready, then there will be wailing and gnashing of teeth.
             RaygunScriptReference = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Raygun.NetCore.Blazor/Raygun.NetCore.Blazor.js");
-            
+
             // RWM: Register the .NET reference with JS so that JS code can also manually create Bookmarks and report Exceptions.
             await _jsRuntime.InvokeVoidAsync("window.raygunBlazor.initialize", _dotNetReference);
 

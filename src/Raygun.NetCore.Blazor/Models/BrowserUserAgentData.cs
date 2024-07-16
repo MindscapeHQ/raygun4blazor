@@ -38,7 +38,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// 
         /// </summary>
         public string CalculatedOSVersion => $"{Platform} {(
-            Platform == "Windows" && Decimal.Parse(PlatformVersion?.Split(".")?[0] ?? "0") >= 13 ? "11" : 
+            Platform == "Windows" && Decimal.Parse(PlatformVersion?.Split(".")?[0] ?? "0") >= 13 ? "11" :
             Platform == "Windows" && Decimal.Parse(PlatformVersion?.Split(".")?[0] ?? "0") < 13 ? "10" :
             PlatformVersion)}";
 

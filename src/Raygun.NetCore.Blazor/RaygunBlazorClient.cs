@@ -129,9 +129,9 @@ namespace Raygun.NetCore.Blazor
         /// <code>
         /// TBD
         /// </code>
-        public void RecordBreadcrumb(string message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual, string category = null, 
+        public void RecordBreadcrumb(string message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual, string category = null,
             Dictionary<string, object> customData = null, string platform = "DotNet")
-        { 
+        {
             _breadcrumbs.Add(new BreadcrumbDetails(message, breadcrumbType, category, customData, platform));
         }
 
