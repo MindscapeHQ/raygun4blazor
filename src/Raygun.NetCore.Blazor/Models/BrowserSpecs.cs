@@ -11,7 +11,11 @@ namespace Raygun.NetCore.Blazor.Models
     /// This exists because we need to parse some stuff from the browser to construct a proper <see cref="EnvironmentDetails" />
     /// instance. Also the <see cref="EnvironmentDetails" /> is a hot mess of JavaScript serialization inconsistency.
     /// </remarks>
-    internal record BrowserSpecs
+    internal record 
+        
+        
+        
+        BrowserSpecs
     {
 
         #region Private Members
