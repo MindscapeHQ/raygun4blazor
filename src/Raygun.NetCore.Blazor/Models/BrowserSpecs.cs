@@ -3,7 +3,6 @@ using System;
 
 namespace Raygun.NetCore.Blazor.Models
 {
-
     /// <summary>
     /// Attributes about the Browser that are <i>highly unlikely</i> to change at runtime.
     /// </summary>
@@ -13,7 +12,6 @@ namespace Raygun.NetCore.Blazor.Models
     /// </remarks>
     internal record BrowserSpecs
     {
-
         #region Private Members
 
         private string calculatedBrowserVersion;
@@ -142,7 +140,5 @@ namespace Raygun.NetCore.Blazor.Models
         }
 
         #endregion
-
     }
-
 }

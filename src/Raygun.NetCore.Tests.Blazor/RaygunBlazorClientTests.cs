@@ -1,22 +1,21 @@
-﻿using CloudNimble.Breakdance.Assemblies;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Raygun.NetCore.Blazor;
 using Raygun.NetCore.Blazor.Models;
 using System;
 using System.Threading.Tasks;
+using Bunit;
+using CloudNimble.Breakdance.Blazor;
 
 namespace Raygun.NetCore.Tests.Blazor
 {
-
     /// <summary>
     /// Tests the functionality of the code that registers Raygun resources with the DI container.
     /// </summary>
     [TestClass]
-    public class IServiceCollectionExtensionsTests : BreakdanceTestBase
+    public class ServiceCollectionExtensionsTests : BlazorBreakdanceTestBase
     {
-
         #region Test Lifecycle
 
         [TestInitialize]
@@ -24,9 +23,21 @@ namespace Raygun.NetCore.Tests.Blazor
         {
             TestHostBuilder.ConfigureServices((context, services) =>
             {
+                // Prepare fakes for BrowserSpecs and BrowserStats
+                var browserSpecs = new BrowserSpecs();
+                var browserStats = new BrowserStats();
+                browserSpecs.UserAgent =
+                    "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0";
+
+                // BlazorBreakdanceTestBase exposes bunit JSInterop
+                BUnitTestContext.JSInterop.Setup<BrowserSpecs>("getBrowserSpecs").SetResult(browserSpecs);
+                BUnitTestContext.JSInterop.Setup<BrowserStats>("getBrowserStats").SetResult(browserStats);
+
                 services.AddRaygunBlazor(context.Configuration);
             });
-            TestSetup();
+
+            // See: https://bunit.dev/docs/test-doubles/emulating-ijsruntime.html
+            TestSetup(JSRuntimeMode.Loose);
         }
 
         [TestCleanup]
@@ -65,7 +76,5 @@ namespace Raygun.NetCore.Tests.Blazor
         }
 
         #endregion
-
     }
-
 }

@@ -22,7 +22,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// A custom value used to arbitrarily group this Breadcrumb.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public string Category { get; set; }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// Any custom data you want to record about application state when the Breadcrumb was recorded.
         /// </summary>     
-        [JsonInclude] 
+        [JsonInclude]
         public Dictionary<string, object> CustomData { get; set; }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// The message you want to record for this Breadcrumb.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public string Message { get; set; }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// The <see cref="BreadcrumbType"> for the message. Defaults to <see cref="BreadcrumbType.Manual"/>.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public BreadcrumbType Type { get; set; }
 
         #endregion

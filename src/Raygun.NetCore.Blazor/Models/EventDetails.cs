@@ -22,19 +22,19 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// A trail of breadcrumbs leading up to this event.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public List<BreadcrumbDetails> Breadcrumbs { get; set; }
 
         /// <summary>
         /// Information about the client library you are using for talking to the Raygun API.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public ClientDetails Client { get; set; }
 
         /// <summary>
         /// Information about the environment at the time of the event.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public EnvironmentDetails Environment { get; set; }
 
         /// <summary>
@@ -49,19 +49,19 @@ namespace Raygun.NetCore.Blazor.Models
         /// <remarks>
         /// Must be 1-100 chars, ideally the result of a hash function e.g MD5
         /// </remarks>
-        [JsonInclude] 
+        [JsonInclude]
         public string GroupingKey { get; set; }
 
         /// <summary>
         /// The name of machine this event occurred on
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public string MachineName { get; set; }
 
         /// <summary>
         /// Information about the HTTP request being processed when the error occurred.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public RequestDetails Request { get; set; }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <remarks>
         /// These will be searchable and filterable on the dashboard.
         /// </remarks>
-        [JsonInclude] 
+        [JsonInclude]
         public List<string> Tags { get; set; }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <remarks>
         /// These will be searchable on the dashboard.
         /// </remarks>
-        [JsonInclude] 
+        [JsonInclude]
         public Dictionary<string, string> UserCustomData { get; set; }
 
         #endregion

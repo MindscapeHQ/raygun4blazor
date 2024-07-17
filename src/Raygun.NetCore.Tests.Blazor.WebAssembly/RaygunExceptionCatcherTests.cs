@@ -1,17 +1,16 @@
-﻿using CloudNimble.Breakdance.Blazor;
+﻿using Bunit;
+using CloudNimble.Breakdance.Blazor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Raygun4Net.Tests.Blazor.WebAssembly
+namespace Raygun.NetCore.Tests.Blazor.WebAssembly
 {
-
     /// <summary>
     /// 
     /// </summary>
     [TestClass]
     public class RaygunExceptionCatcherTests : BlazorBreakdanceTestBase
     {
-
         #region Test Lifecycle
 
         [TestInitialize]
@@ -21,16 +20,12 @@ namespace Raygun4Net.Tests.Blazor.WebAssembly
             {
                 services.AddRaygunBlazor(context.Configuration);
             });
-            TestSetup();
+            TestSetup(JSRuntimeMode.Loose);
         }
 
         [TestCleanup]
         public void TearDown() => TestTearDown();
 
         #endregion
-
-
-
     }
-
 }

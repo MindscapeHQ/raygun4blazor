@@ -40,7 +40,7 @@ namespace Raygun.NetCore.Tests.Blazor
             bc.Timestamp.Should().BePositive();
             bc.Message.Should().Be("Test");
             bc.MethodName.Should().Be(nameof(Breadcrumbs_NewInstance_MessageOverload));
-            bc.LineNumber.Should().Be(25);
+            bc.LineNumber.Should().Be(38);
         }
 
         #endregion
