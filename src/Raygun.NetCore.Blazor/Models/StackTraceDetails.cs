@@ -15,19 +15,19 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// The name of the class this stack frame is in.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public string ClassName { get; set; }
 
         /// <summary>
         /// The column of the file that this stack frame is in.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public int ColumnNumber { get; set; }
 
         /// <summary>
         /// The name of the file this stack frame is in.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public string FileName { get; set; }
 
         /// <summary>

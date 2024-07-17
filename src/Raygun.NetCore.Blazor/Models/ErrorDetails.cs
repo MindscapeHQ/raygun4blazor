@@ -19,37 +19,37 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// The name of the <see langword="class" /> the error was produced in.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public string ClassName { get; set; }
 
         /// <summary>
         /// Data contained in the error object.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public NonGeneric.IDictionary Data { get; set; }
 
         /// <summary>
         /// Details about the symbol files related to the error.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public List<PEDebugDetails> Images { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public ErrorDetails InnerError { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public List<ErrorDetails> InnerErrors { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public string Message { get; set; }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <remarks>
         /// The first one in the list should be the highest on the stack
         /// </remarks>
-        [JsonInclude] 
+        [JsonInclude]
         public List<StackTraceDetails> StackTrace { get; set; }
 
         #endregion

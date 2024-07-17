@@ -187,7 +187,7 @@ namespace Raygun.NetCore.Blazor.Models
             ColorDepth = specs.ColorDepth;
             CurrentOrientation = stats.Orientation.ToString();
             DeviceManufacturer = !string.IsNullOrWhiteSpace(specs.DeviceManufacturer) ? specs.DeviceManufacturer : null;
-            DeviceModel = !string.IsNullOrWhiteSpace(specs.DeviceModel) ? specs.DeviceModel: null;
+            DeviceModel = !string.IsNullOrWhiteSpace(specs.DeviceModel) ? specs.DeviceModel : null;
             DeviceName = !string.IsNullOrWhiteSpace(specs.DeviceName) ? specs.DeviceName : null; ;
             Locale = specs.Locale;
             OSVersion = !string.IsNullOrWhiteSpace(specs.UAHints?.CalculatedOSVersion) ? specs.UAHints.CalculatedOSVersion : specs.CalculatedOSVersion;

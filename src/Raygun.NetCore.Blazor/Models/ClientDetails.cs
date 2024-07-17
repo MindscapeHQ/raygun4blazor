@@ -15,19 +15,19 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// The name of this Client library.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public string Name { get; set; }
 
         /// <summary>
         /// The version of this Client library.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public string Version { get; set; }
 
         /// <summary>
         /// The URL for the repository this Client library is maintained in.
         /// </summary>
-        [JsonInclude] 
+        [JsonInclude]
         public string ClientUrl { get; set; }
 
         #endregion

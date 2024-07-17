@@ -31,7 +31,7 @@ namespace Raygun.NetCore.Blazor.Models
         public RequestQueueStatus QueueStatus { get; set; }
 
         #endregion
-        
+
         #region Constructors
 
         /// <summary>
