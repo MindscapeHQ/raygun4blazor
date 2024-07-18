@@ -75,7 +75,7 @@ namespace Raygun.NetCore.Blazor.WebAssembly.Controls
             {
                 if (ErrorContent is not null)
                 {
-                     builder.AddContent(1, ErrorContent(CurrentException));
+                    builder.AddContent(1, ErrorContent(CurrentException));
                 }
                 else
                 {
