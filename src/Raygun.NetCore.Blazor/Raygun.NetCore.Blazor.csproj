@@ -3,12 +3,18 @@
 	<PropertyGroup>
 		<TargetFrameworks>net8.0;</TargetFrameworks>
 		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>		
 		
 		<TypeScriptModuleKind>commonjs</TypeScriptModuleKind>
 		<TypeScriptTarget>ES2020</TypeScriptTarget>
 		<TypeScriptOutDir>wwwroot</TypeScriptOutDir>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Package Readme File at root of repo -->
+		<None Include="../../README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Ben.Demystifier" Version="[0.*, 1.0.0)" />
@@ -41,5 +47,6 @@
 			<_Parameter1>Raygun.NetCore.Blazor.WebAssembly, $(StrongNamePublicKey)</_Parameter1>
 		</AssemblyAttribute>
 	</ItemGroup>
+
 
 </Project>
