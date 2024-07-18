@@ -43,7 +43,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// </summary>
         [JsonPropertyName("iPAddress")]
         [JsonInclude]
-        public string? IpAddress { get; set; }
+        public string? IPAddress { get; set; }
 
         /// <summary>
         /// The query string portion of the URL.

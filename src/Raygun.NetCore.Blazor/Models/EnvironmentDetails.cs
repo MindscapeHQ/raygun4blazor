@@ -104,7 +104,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// The version of the operating system this app is running on.
         /// </summary>
-        public string? OsVersion { get; set; }
+        public string? OSVersion { get; set; }
 
         /// <summary>
         /// OS Name.
@@ -190,8 +190,8 @@ namespace Raygun.NetCore.Blazor.Models
             DeviceModel = !string.IsNullOrWhiteSpace(specs?.DeviceModel) ? specs.DeviceModel : null;
             DeviceName = !string.IsNullOrWhiteSpace(specs?.DeviceName) ? specs.DeviceName : null; ;
             Locale = specs?.Locale;
-            OsVersion = !string.IsNullOrWhiteSpace(specs?.UaHints?.CalculatedOsVersion) ? specs.UaHints.CalculatedOsVersion : specs?.CalculatedOsVersion;
-            Platform = specs?.UaHints?.CalculatedPlatform ?? specs?.Platform;
+            OSVersion = !string.IsNullOrWhiteSpace(specs?.UAHints?.CalculatedOSVersion) ? specs.UAHints.CalculatedOSVersion : specs?.CalculatedOSVersion;
+            Platform = specs?.UAHints?.CalculatedPlatform ?? specs?.Platform;
             ProcessorCount = specs?.ProcessorCount;
             ResolutionScale = stats?.DevicePixelRatio;
             ScreenHeight = specs?.ScreenHeight;
@@ -200,11 +200,11 @@ namespace Raygun.NetCore.Blazor.Models
             TotalVirtualMemory = stats != null ? Convert.ToUInt64(stats.MemoryMaxSizeInBytes) : 0;
             UtcOffset = specs?.UtcOffset;
 
-            var uaBrowserVersionKey = (specs?.UaHints?.ComponentVersions?.Keys)?.FirstOrDefault(c => c.EndsWith(specs.CalculatedBrowserName!));
+            var uaBrowserVersionKey = (specs?.UAHints?.ComponentVersions?.Keys)?.FirstOrDefault(c => c.EndsWith(specs.CalculatedBrowserName!));
             if (uaBrowserVersionKey is null) return;
 
             BrowserManufacturer = uaBrowserVersionKey.Split(' ')[0];
-            BrowserVersion = specs?.UaHints?.ComponentVersions?[uaBrowserVersionKey] ?? specs?.CalculatedBrowserVersion;
+            BrowserVersion = specs?.UAHints?.ComponentVersions?[uaBrowserVersionKey] ?? specs?.CalculatedBrowserVersion;
         }
 
         #endregion

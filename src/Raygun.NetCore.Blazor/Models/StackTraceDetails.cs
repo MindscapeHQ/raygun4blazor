@@ -34,7 +34,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// 
         /// </summary>
         [JsonInclude]
-        public int IlOffset { get; set; }
+        public int ILOffset { get; set; }
 
         /// <summary>
         /// 
@@ -86,7 +86,7 @@ namespace Raygun.NetCore.Blazor.Models
             ClassName = names.ClassName;
             ColumnNumber = frame.GetFileColumnNumber();
             FileName = frame.GetFileName();
-            IlOffset = frame.GetILOffset();
+            ILOffset = frame.GetILOffset();
             //ImageSignature = frame.ImageSignature;
             LineNumber = frame.GetFileLineNumber();
             MethodName = names.MethodName;

@@ -32,7 +32,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// Details about the symbol files related to the error.
         /// </summary>
         [JsonInclude]
-        public List<PeDebugDetails>? Images { get; set; }
+        public List<PEDebugDetails>? Images { get; set; }
 
         /// <summary>
         /// 

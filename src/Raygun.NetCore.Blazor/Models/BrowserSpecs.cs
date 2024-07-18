@@ -16,7 +16,7 @@ namespace Raygun.NetCore.Blazor.Models
 
         private string? _calculatedBrowserVersion;
         private string? _calculatedBrowserName;
-        private string? _calculatedOsVersion;
+        private string? _calculatedOSVersion;
         // private string? _browserManufacturer;
 
         #endregion
@@ -79,7 +79,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// 
         /// </summary>
-        public string? CalculatedOsVersion => _calculatedOsVersion;
+        public string? CalculatedOSVersion => _calculatedOSVersion;
 
         /// <summary>
         /// 
@@ -109,7 +109,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// 
         /// </summary>
-        public BrowserUserAgentData? UaHints { get; set; }
+        public BrowserUserAgentData? UAHints { get; set; }
 
         /// <summary>
         /// 
@@ -133,7 +133,7 @@ namespace Raygun.NetCore.Blazor.Models
             var result = HttpUserAgentParser.Parse(UserAgent!);
             _calculatedBrowserName = result.Name;
             _calculatedBrowserVersion = result.Version;
-            _calculatedOsVersion = result.Platform?.Name;
+            _calculatedOSVersion = result.Platform?.Name;
             Console.WriteLine(result.MobileDeviceType);
         }
 

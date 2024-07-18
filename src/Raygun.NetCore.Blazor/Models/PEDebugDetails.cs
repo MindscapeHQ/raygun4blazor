@@ -6,7 +6,7 @@ namespace Raygun.NetCore.Blazor.Models
     /// <summary>
     /// 
     /// </summary>
-    internal class PeDebugDetails
+    internal class PEDebugDetails
     {
 
         /// <summary>
