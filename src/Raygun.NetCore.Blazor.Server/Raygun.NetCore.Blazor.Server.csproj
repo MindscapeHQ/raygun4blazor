@@ -3,6 +3,12 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Package Readme File at root of repo -->
+		<None Include="../../README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
 
 </Project>
