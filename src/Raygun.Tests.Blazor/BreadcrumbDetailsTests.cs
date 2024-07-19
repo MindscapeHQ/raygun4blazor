@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text.Json;
-using Raygun.Blazor;
-using Raygun.Blazor.Extensions;
 using Raygun.Blazor.Models;
 
 namespace Raygun.Tests.Blazor

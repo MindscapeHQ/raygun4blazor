@@ -40,7 +40,13 @@
 
 	<ItemGroup>
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-			<_Parameter1>Raygun.NetCore.Blazor.WebAssembly, $(StrongNamePublicKey)</_Parameter1>
+			<_Parameter1>Raygun.Blazor.WebAssembly, $(StrongNamePublicKey)</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>Raygun.Tests.Blazor, $(StrongNamePublicKey)</_Parameter1>
 		</AssemblyAttribute>
 	</ItemGroup>
 
