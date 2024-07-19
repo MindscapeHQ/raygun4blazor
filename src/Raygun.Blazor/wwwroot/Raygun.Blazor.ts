@@ -123,7 +123,7 @@ export async function getBrowserStats(): Promise<BrowserStats> {
 }
 
 /**
- * Represents the JS version of the BrowserSpecs class in the Raygun.NetCore.Blazor project. It is designed to store details
+ * Represents the JS version of the BrowserSpecs class in the Raygun.Blazor project. It is designed to store details
  * about the browser that don't usually change during the user's session.
  */
 export interface BrowserSpecs {
@@ -143,7 +143,7 @@ export interface BrowserSpecs {
 }
 
 /**
- * Represents the JS version of the BrowserStats class in the Raygun.NetCore.Blazor project. It is designed to store details
+ * Represents the JS version of the BrowserStats class in the Raygun.Blazor project. It is designed to store details
  * about the browser that change frequently during the user's session.
  */
 export interface BrowserStats {
@@ -159,7 +159,7 @@ export interface BrowserStats {
 }
 
 /**
- * Represents the JS version of the BrowserUserAgentData class in the Raygun.NetCore.Blazor project. It is designed to store
+ * Represents the JS version of the BrowserUserAgentData class in the Raygun.Blazor project. It is designed to store
  * the output of the navigator.userAgentData.getHighEntropyValues() method.
  */
 export interface BrowserUserAgentData {

@@ -1,6 +1,6 @@
 {
-  "name": "Raygun.NetCore.Samples.Blazor.WebAssembly",
-  "short_name": "Raygun.NetCore.Samples.Blazor.WebAssembly",
+  "name": "Raygun.Samples.Blazor.WebAssembly",
+  "short_name": "Raygun.Samples.Blazor.WebAssembly",
   "id": "./",
   "start_url": "./",
   "display": "standalone",

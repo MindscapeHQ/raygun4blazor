@@ -108,7 +108,7 @@
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.*" PrivateAssets="All" />
 
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-			<_Parameter1>$(AssemblyName.Replace("Raygun.NetCore.", "Raygun.NetCore.Tests.")), $(StrongNamePublicKey)</_Parameter1>
+			<_Parameter1>$(AssemblyName.Replace("Raygun.", "Raygun.Tests.")), $(StrongNamePublicKey)</_Parameter1>
 		</AssemblyAttribute>
 	</ItemGroup>
 

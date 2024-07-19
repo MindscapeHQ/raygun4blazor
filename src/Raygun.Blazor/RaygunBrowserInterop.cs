@@ -157,7 +157,7 @@ namespace Raygun.Blazor
             // RWM: We're going to register the Raygun script and get the BrowserSpecs first. The reason why is because if we
             //      handle JS errors & they start coming in before we're ready, then there will be wailing and gnashing of teeth.
             RaygunScriptReference = await _jsRuntime.InvokeAsync<IJSObjectReference>("import",
-                "./_content/Raygun.NetCore.Blazor/Raygun.NetCore.Blazor.js");
+                "./_content/Raygun.Blazor/Raygun.Blazor.js");
 
             // RWM: Register the .NET reference with JS so that JS code can also manually create Bookmarks and report Exceptions.
             await _jsRuntime.InvokeVoidAsync("window.raygunBlazor.initialize", _dotNetReference);
