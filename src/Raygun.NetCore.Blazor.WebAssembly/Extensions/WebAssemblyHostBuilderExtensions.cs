@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Raygun.Blazor;
+using Raygun.Blazor.Extensions;
 
 namespace Microsoft.AspNetCore.Components.WebAssembly.Hosting
 {

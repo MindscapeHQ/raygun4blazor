@@ -2,6 +2,7 @@
 using CloudNimble.Breakdance.Blazor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Raygun.Blazor.Extensions;
 
 namespace Raygun.NetCore.Tests.Blazor.WebAssembly
 {

@@ -2,11 +2,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Raygun.NetCore.Blazor;
-using Raygun.NetCore.Blazor.Models;
 using System;
 using System.Threading.Tasks;
 using Bunit;
 using CloudNimble.Breakdance.Blazor;
+using Raygun.Blazor;
+using Raygun.Blazor.Extensions;
+using Raygun.Blazor.Models;
 
 namespace Raygun.NetCore.Tests.Blazor
 {

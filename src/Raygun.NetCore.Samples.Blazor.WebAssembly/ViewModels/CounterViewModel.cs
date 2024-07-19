@@ -2,6 +2,7 @@
 using Raygun.NetCore.Blazor;
 using System;
 using System.Threading.Tasks;
+using Raygun.Blazor;
 
 namespace Raygun.NetCore.Samples.Blazor.WebAssembly.ViewModels
 {

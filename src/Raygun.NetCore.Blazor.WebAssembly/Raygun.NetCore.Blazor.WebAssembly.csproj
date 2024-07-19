@@ -14,7 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Raygun.NetCore.Blazor\Raygun.NetCore.Blazor.csproj" />
+		<ProjectReference Include="..\Raygun.Blazor\Raygun.Blazor.csproj" />
 	</ItemGroup>
 	
 </Project>

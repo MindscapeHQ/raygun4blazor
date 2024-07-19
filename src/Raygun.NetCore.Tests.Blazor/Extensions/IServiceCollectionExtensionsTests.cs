@@ -6,6 +6,8 @@ using Raygun.NetCore.Blazor;
 using System.Net.Http;
 using Bunit;
 using CloudNimble.Breakdance.Blazor;
+using Raygun.Blazor;
+using Raygun.Blazor.Extensions;
 
 namespace Raygun.NetCore.Tests.Blazor.Extensions
 {

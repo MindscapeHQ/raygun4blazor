@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Raygun.Blazor;
 
 namespace Raygun.NetCore.Blazor.WebAssembly.Controls
 {
