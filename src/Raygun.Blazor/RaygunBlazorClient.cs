@@ -11,7 +11,6 @@ using KristofferStrube.Blazor.WebIDL.Exceptions;
 using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.Options;
 using Raygun.Blazor.Models;
-using Raygun.NetCore.Blazor;
 
 namespace Raygun.Blazor
 {

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+	
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;</TargetFrameworks>
+		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+		<RootNamespace>Raygun.Blazor.WebAssembly</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Raygun.Blazor\Raygun.Blazor.csproj" />
+	</ItemGroup>
+	
+</Project>

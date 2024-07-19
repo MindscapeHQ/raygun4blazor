@@ -18,7 +18,7 @@ namespace Raygun.Blazor.Extensions
         /// </returns>
         /// <remarks>
         /// RWM: This exists because the Razor-based stack traces will contain names like 
-        /// "Raygun.NetCore.Samples.Blazor.WebAssembly.ViewModels.CounterViewModel+<IncrementCountAsync>d__10" which contains
+        /// "Raygun.Samples.Blazor.WebAssembly.ViewModels.CounterViewModel+<IncrementCountAsync>d__10" which contains
         /// both the class and method names in the type name, and the reported method name will be "MoveNext" for async methods.
         /// Obviously this is totally unhelpful for developers, so we need to make it more magical.
         /// </remarks>

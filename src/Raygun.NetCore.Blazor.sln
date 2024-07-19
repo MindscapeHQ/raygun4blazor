@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{A27A5729-C507-433E-8A2B-DEB55C3B6B66}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.NetCore.Blazor.WebAssembly", "Raygun.NetCore.Blazor.WebAssembly\Raygun.NetCore.Blazor.WebAssembly.csproj", "{AA9AC6CD-D344-42E7-908B-8252466CB26D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.Blazor.WebAssembly", "Raygun.Blazor.WebAssembly\Raygun.Blazor.WebAssembly.csproj", "{AA9AC6CD-D344-42E7-908B-8252466CB26D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9275CC2B-11CA-4D7D-B2EC-2227F410599B}"
 	ProjectSection(SolutionItems) = preProject
@@ -22,13 +22,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.NetCore.Tests.Blazor", "Raygun.NetCore.Tests.Blazor\Raygun.NetCore.Tests.Blazor.csproj", "{D21D30DD-3133-483E-ABF9-F1AA552B11B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.Tests.Blazor", "Raygun.Tests.Blazor\Raygun.Tests.Blazor.csproj", "{D21D30DD-3133-483E-ABF9-F1AA552B11B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.NetCore.Tests.Blazor.WebAssembly", "Raygun.NetCore.Tests.Blazor.WebAssembly\Raygun.NetCore.Tests.Blazor.WebAssembly.csproj", "{A9A0782E-395E-413B-80E3-BE2C18E25ECB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.Tests.Blazor.WebAssembly", "Raygun.Tests.Blazor.WebAssembly\Raygun.Tests.Blazor.WebAssembly.csproj", "{A9A0782E-395E-413B-80E3-BE2C18E25ECB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.NetCore.Blazor.Server", "Raygun.NetCore.Blazor.Server\Raygun.NetCore.Blazor.Server.csproj", "{F05FD8B3-E379-4520-9008-013D0CD3C983}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.Blazor.Server", "Raygun.Blazor.Server\Raygun.Blazor.Server.csproj", "{F05FD8B3-E379-4520-9008-013D0CD3C983}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.NetCore.Samples.Blazor.WebAssembly", "Raygun.NetCore.Samples.Blazor.WebAssembly\Raygun.NetCore.Samples.Blazor.WebAssembly.csproj", "{CDBE774B-4AEA-4277-9044-A9718C03CEF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.Samples.Blazor.WebAssembly", "Raygun.Samples.Blazor.WebAssembly\Raygun.Samples.Blazor.WebAssembly.csproj", "{CDBE774B-4AEA-4277-9044-A9718C03CEF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

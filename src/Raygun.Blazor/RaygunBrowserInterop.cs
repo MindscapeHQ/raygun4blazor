@@ -8,7 +8,6 @@ using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 using Raygun.Blazor.Models;
-using Raygun.NetCore.Blazor;
 
 namespace Raygun.Blazor
 {
