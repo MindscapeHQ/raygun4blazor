@@ -14,8 +14,13 @@ public class ErrorDetailsTest
     [TestMethod]
     public void ErrorDetails_NewInstance_DotnetException()
     {
+        // Define Dotnet exception
         var exception = new Exception("Test");
+
+        // Parse exception
         var errorDetails = new ErrorDetails(exception);
+
+        // Check details
         errorDetails.ClassName.Should().Be("System.Exception");
         errorDetails.Message.Should().Be("Test");
     }
@@ -28,15 +33,15 @@ public class ErrorDetailsTest
         window.onmessage@http://localhost:5010/:21:17
         EventHandlerNonNull*@http://localhost:5010/:18:9";
         var exception = new WebIDLException("Test", stacktrace, null!);
-        
+
         // Parse exception
         var errorDetails = new ErrorDetails(exception);
-        
+
         // Check details
         errorDetails.ClassName.Should().Be("KristofferStrube.Blazor.WebIDL.Exceptions.WebIDLException");
         errorDetails.Message.Should().Be("Test");
-        
-        // Check stack trace
+
+        // Check parsed stack trace
         errorDetails.StackTrace!.Count.Should().Be(3);
         var traceDetails = errorDetails.StackTrace!.First();
         traceDetails.ColumnNumber.Should().Be(9);
