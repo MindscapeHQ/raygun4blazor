@@ -95,16 +95,13 @@ namespace Raygun.Blazor.Models
             if (ex is WebIDLException webIdlException)
             {
                 // JS Exception
-                //TODO: Process JS exceptions differently so the stack trace isn't stripped.
-                Console.WriteLine("WebIDLException: " + webIdlException);
                 ClassName = webIdlException.GetType().FullName;
                 Data = webIdlException.Data;
                 Message = webIdlException.Message;
                 if (webIdlException.StackTrace != null)
                 {
-                    Console.WriteLine("StackTrace: " + webIdlException.StackTrace);
-                    // MB: The first line in the JS Stacktrace should be discarded when parsing
-                    var frames = webIdlException.StackTrace.Split('\n');
+                    var frames = webIdlException.StackTrace.Split('\n')
+                        .Where(frame => !string.IsNullOrWhiteSpace(frame));
                     StackTrace = frames.Select(frame => new StackTraceDetails(frame)).ToList();
                 }
                 if (webIdlException.InnerException is not null)
