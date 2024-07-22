@@ -19,6 +19,8 @@
      * 
      */
     recordException: async function(exception: DOMException, tags: string[], sendUserData: boolean, customData: Record<string, string>) {
+        // MB: TODO: Remove console.error()
+        console.error(exception);
         await this._raygunInterop.invokeMethodAsync('RecordJsException', exception, tags, sendUserData, customData);
     },
 };

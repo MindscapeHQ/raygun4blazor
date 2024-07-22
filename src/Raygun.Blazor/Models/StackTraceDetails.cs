@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Text.Json.Serialization;
 using Raygun.Blazor.Extensions;
 
@@ -92,6 +93,16 @@ namespace Raygun.Blazor.Models
             LineNumber = frame.GetFileLineNumber();
             MethodName = names.MethodName;
             MethodToken = frame.GetMethod()?.MetadataToken;
+        }
+        
+        /// <summary>
+        /// Creates a new instance of the <see cref="StackTraceDetails" /> class from a JavaScript stack trace.
+        /// </summary>
+        /// <param name="frame">JavaScript stack trace</param>
+        internal StackTraceDetails(string frame)
+        {
+            // MB: TODO: Properly parse JavaScript stacktrace lines
+            FileName = frame;
         }
 
         #endregion
