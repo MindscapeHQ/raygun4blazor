@@ -28,8 +28,6 @@ window.raygunBlazor = {
      */
     recordException: function (exception, tags, sendUserData, customData) {
         return __awaiter(this, void 0, void 0, function* () {
-            // MB: TODO: Remove console.error()
-            console.error(exception);
             yield this._raygunInterop.invokeMethodAsync('RecordJsException', exception, tags, sendUserData, customData);
         });
     },
