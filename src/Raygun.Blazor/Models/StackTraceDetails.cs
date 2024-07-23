@@ -114,7 +114,6 @@ namespace Raygun.Blazor.Models
             }
             else
             {
-                Console.WriteLine("Failed to parse JavaScript stack frame: " + frame);
                 FileName = frame;
             }
         }
