@@ -1,8 +1,10 @@
 ﻿using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Raygun.NetCore.Blazor;
 using System;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Raygun.Blazor.Extensions;
+
 
 namespace Raygun.Blazor.WebAssembly.Extensions
 {
