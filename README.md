@@ -24,7 +24,7 @@ builder.UseRaygunBlazor();
 
 The `RaygunSettings` will be obtained from the `appsettings.json` under the configuration section name `Raygun`.
 
-For all configuration values, check the `RaygunSettings` class under `src/Raygun.NetCore.Blazor/RaygunSettings.cs`.
+For all configuration values, check the `RaygunSettings` class under `src/Raygun.Blazor/RaygunSettings.cs`.
 
 #### Initalize the client
 
@@ -36,34 +36,34 @@ Inject the `RaygunBlazorClient` in your code:
 
 And call to `raygunClient.InitializeAsync()` at least once.
 
-- [ ] TODO: Add more info. See `src/Raygun.NetCore.Blazor/RaygunBlazorClient.cs` for more information.
+- [ ] TODO: Add more info. See `src/Raygun.Blazor/RaygunBlazorClient.cs` for more information.
 
 ### Recording an error
 
 Call to `raygunClient.RecordExceptionAsync(...)`
 
-- [ ] TODO: Add more info. See `src/Raygun.NetCore.Blazor/RaygunBlazorClient.cs` for more information.
+- [ ] TODO: Add more info. See `src/Raygun.Blazor/RaygunBlazorClient.cs` for more information.
 
 ### Recording a breadcrumb
 
 Call to `raygunClient.RecordBreadcrumb(...);`
 
-- [ ] TODO: Add more info. See `src/Raygun.NetCore.Blazor/RaygunBlazorClient.cs` for more information.
+- [ ] TODO: Add more info. See `src/Raygun.Blazor/RaygunBlazorClient.cs` for more information.
 
 ### `RaygunErrorBoundary`
 
 - [ ] TODO: Document when to use the `RaygunErrorBoundary`.
 
-Currently used in `src/Raygun.NetCore.Samples.Blazor.WebAssembly/App.razor`
+Currently used in `src/Raygun.Samples.Blazor.WebAssembly/App.razor`
 
 ## Example Project
 
-Example project is located in `src/Raygun.NetCore.Samples.Blazor.WebAssembly`
+Example project is located in `src/Raygun.Samples.Blazor.WebAssembly`
 
 To run the example:
 
 1. Install `dotnet-sdk` minimum version supported in `8.0.300`.
-2. Add the `ApiKey` property to in `src/Raygun.NetCore.Samples.Blazor.WebAssembly/wwwroot/appsettings.json`
+2. Add the `ApiKey` property to in `src/Raygun.Samples.Blazor.WebAssembly/wwwroot/appsettings.json`
 
 ```
 {
