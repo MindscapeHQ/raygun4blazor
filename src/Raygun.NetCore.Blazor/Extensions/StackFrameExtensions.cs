@@ -6,7 +6,7 @@ namespace System.Diagnostics
     /// <summary>
     /// Extension methods for the <see cref="StackFrame" /> class.
     /// </summary>
-    internal static class RaygunBlazorStackFrameExtensions
+    internal static class Raygun_Blazor_StackFrameExtensions
     {
 
         /// <summary>
