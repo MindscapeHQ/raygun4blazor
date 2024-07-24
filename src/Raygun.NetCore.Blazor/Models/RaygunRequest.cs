@@ -16,7 +16,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// 
         /// </summary>
         [JsonInclude]
-        public EventDetails Details { get; set; }
+        public EventDetails? Details { get; set; }
 
         /// <summary>
         /// Date and time that the error occurred in ISO-8601 format.

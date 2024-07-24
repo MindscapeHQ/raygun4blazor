@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Microsoft.AspNetCore.Builder
+﻿namespace Raygun.NetCore.Blazor.Server.Extensions
 {
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static class HostBuilderExtensions
     {
     }

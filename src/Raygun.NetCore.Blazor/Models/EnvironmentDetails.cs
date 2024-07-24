@@ -17,7 +17,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// CPU architecture (ARMv8, AMD64, etc).
         /// </summary>
-        public string Architecture { get; set; }
+        public string? Architecture { get; set; }
 
         /// <summary>
         /// Available RAM in MB.
@@ -39,19 +39,19 @@ namespace Raygun.NetCore.Blazor.Models
         /// The company who manufactured the browser.
         /// </summary>
         [JsonPropertyName("browser")]
-        public string BrowserManufacturer { get; set; }
+        public string? BrowserManufacturer { get; set; }
 
         /// <summary>
         /// The Product Name of the browser.
         /// </summary>
         [JsonPropertyName("browserName")]
-        public string BrowserName { get; set; }
+        public string? BrowserName { get; set; }
 
         /// <summary>
         /// The full user agent string.
         /// </summary>
         [JsonPropertyName("browser-Version")]
-        public string BrowserVersion { get; set; }
+        public string? BrowserVersion { get; set; }
 
         /// <summary>
         /// The width of the browser window.
@@ -68,48 +68,48 @@ namespace Raygun.NetCore.Blazor.Models
         /// <summary>
         /// The type of CPU in the machine
         /// </summary>
-        public string Cpu { get; set; }
+        public string? Cpu { get; set; }
 
         /// <summary>
         /// The orientation of the screen.
         /// </summary>
-        public string CurrentOrientation { get; set; }
+        public string? CurrentOrientation { get; set; }
 
         /// <summary>
         /// The company who manufactured the device.
         /// </summary>
-        public string DeviceManufacturer { get; set; }
+        public string? DeviceManufacturer { get; set; }
 
         /// <summary>
         /// The model of the device.
         /// </summary>
         [JsonPropertyName("model")]
-        public string DeviceModel { get; set; }
+        public string? DeviceModel { get; set; }
 
         /// <summary>
         /// Name of the device (phone name for instance).
         /// </summary>
-        public string DeviceName { get; set; }
+        public string? DeviceName { get; set; }
 
         /// <summary>
         /// Free disk space in GB.
         /// </summary>
-        public List<double> DiskSpaceFree { get; set; }
+        public List<double>? DiskSpaceFree { get; set; }
 
         /// <summary>
         /// Locale setting of the system.
         /// </summary>
-        public string Locale { get; set; }
+        public string? Locale { get; set; }
 
         /// <summary>
         /// The version of the operating system this app is running on.
         /// </summary>
-        public string OSVersion { get; set; }
+        public string? OSVersion { get; set; }
 
         /// <summary>
         /// OS Name.
         /// </summary>
-        public string Platform { get; set; }
+        public string? Platform { get; set; }
 
         /// <summary>
         /// The number of processors present on the target machine.
@@ -178,33 +178,33 @@ namespace Raygun.NetCore.Blazor.Models
         /// </summary>
         /// <param name="specs"></param>
         /// <param name="stats"></param>
-        internal EnvironmentDetails(BrowserSpecs specs, BrowserStats stats)
+        internal EnvironmentDetails(BrowserSpecs? specs, BrowserStats? stats)
         {
-            AvailableVirtualMemory = Convert.ToUInt64((stats.MemoryMaxSizeInBytes - stats.MemoryUsedSizeInBytes));
-            BrowserHeight = stats.AppHeight;
-            BrowserName = specs.CalculatedBrowserName;
-            BrowserWidth = stats.AppWidth;
-            ColorDepth = specs.ColorDepth;
-            CurrentOrientation = stats.Orientation.ToString();
-            DeviceManufacturer = !string.IsNullOrWhiteSpace(specs.DeviceManufacturer) ? specs.DeviceManufacturer : null;
-            DeviceModel = !string.IsNullOrWhiteSpace(specs.DeviceModel) ? specs.DeviceModel : null;
-            DeviceName = !string.IsNullOrWhiteSpace(specs.DeviceName) ? specs.DeviceName : null; ;
-            Locale = specs.Locale;
-            OSVersion = !string.IsNullOrWhiteSpace(specs.UAHints?.CalculatedOSVersion) ? specs.UAHints.CalculatedOSVersion : specs.CalculatedOSVersion;
-            Platform = specs.UAHints?.CalculatedPlatform ?? specs.Platform;
-            ProcessorCount = specs.ProcessorCount;
-            ResolutionScale = stats.DevicePixelRatio;
-            ScreenHeight = specs.ScreenHeight;
-            ScreenWidth = specs.ScreenWidth;
-            TotalPhysicalMemory = Convert.ToUInt64(specs.DeviceMemoryInGB * 1024 * 1024 * 1024);
-            TotalVirtualMemory = Convert.ToUInt64(stats.MemoryMaxSizeInBytes);
-            UtcOffset = specs.UtcOffset;
+            AvailableVirtualMemory = stats != null ? Convert.ToUInt64((stats.MemoryMaxSizeInBytes - stats.MemoryUsedSizeInBytes)) : 0;
+            BrowserHeight = stats?.AppHeight;
+            BrowserName = specs?.CalculatedBrowserName;
+            BrowserWidth = stats?.AppWidth;
+            ColorDepth = specs?.ColorDepth;
+            CurrentOrientation = stats?.Orientation.ToString();
+            DeviceManufacturer = !string.IsNullOrWhiteSpace(specs?.DeviceManufacturer) ? specs.DeviceManufacturer : null;
+            DeviceModel = !string.IsNullOrWhiteSpace(specs?.DeviceModel) ? specs.DeviceModel : null;
+            DeviceName = !string.IsNullOrWhiteSpace(specs?.DeviceName) ? specs.DeviceName : null; ;
+            Locale = specs?.Locale;
+            OSVersion = !string.IsNullOrWhiteSpace(specs?.UAHints?.CalculatedOSVersion) ? specs.UAHints.CalculatedOSVersion : specs?.CalculatedOSVersion;
+            Platform = specs?.UAHints?.CalculatedPlatform ?? specs?.Platform;
+            ProcessorCount = specs?.ProcessorCount;
+            ResolutionScale = stats?.DevicePixelRatio;
+            ScreenHeight = specs?.ScreenHeight;
+            ScreenWidth = specs?.ScreenWidth;
+            TotalPhysicalMemory = specs != null ? Convert.ToUInt64(specs.DeviceMemoryInGb * 1024 * 1024 * 1024) : 0;
+            TotalVirtualMemory = stats != null ? Convert.ToUInt64(stats.MemoryMaxSizeInBytes) : 0;
+            UtcOffset = specs?.UtcOffset;
 
-            var uaBrowserVersionKey = specs.UAHints?.ComponentVersions?.Keys.Where(c => c.EndsWith(specs.CalculatedBrowserName)).FirstOrDefault();
+            var uaBrowserVersionKey = (specs?.UAHints?.ComponentVersions?.Keys)?.FirstOrDefault(c => c.EndsWith(specs.CalculatedBrowserName!));
             if (uaBrowserVersionKey is null) return;
 
             BrowserManufacturer = uaBrowserVersionKey.Split(' ')[0];
-            BrowserVersion = specs.UAHints?.ComponentVersions?[uaBrowserVersionKey] ?? specs.CalculatedBrowserVersion;
+            BrowserVersion = specs?.UAHints?.ComponentVersions?[uaBrowserVersionKey] ?? specs?.CalculatedBrowserVersion;
         }
 
         #endregion

@@ -17,7 +17,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// </summary>
         [JsonInclude]
         [JsonPropertyName("version")]
-        public string ApplicationVersion { get; set; }
+        public string? ApplicationVersion { get; set; }
 
         /// <summary>
         /// A trail of breadcrumbs leading up to this event.
@@ -35,13 +35,13 @@ namespace Raygun.NetCore.Blazor.Models
         /// Information about the environment at the time of the event.
         /// </summary>
         [JsonInclude]
-        public EnvironmentDetails Environment { get; set; }
+        public EnvironmentDetails? Environment { get; set; }
 
         /// <summary>
         /// Information about the error associated with the event.
         /// </summary>
         [JsonInclude]
-        public ErrorDetails Error { get; set; }
+        public ErrorDetails? Error { get; set; }
 
         /// <summary>
         /// Client defined error grouping key.
@@ -50,19 +50,19 @@ namespace Raygun.NetCore.Blazor.Models
         /// Must be 1-100 chars, ideally the result of a hash function e.g MD5
         /// </remarks>
         [JsonInclude]
-        public string GroupingKey { get; set; }
+        public string? GroupingKey { get; set; }
 
         /// <summary>
         /// The name of machine this event occurred on
         /// </summary>
         [JsonInclude]
-        public string MachineName { get; set; }
+        public string? MachineName { get; set; }
 
         /// <summary>
         /// Information about the HTTP request being processed when the error occurred.
         /// </summary>
         [JsonInclude]
-        public RequestDetails Request { get; set; }
+        public RequestDetails? Request { get; set; }
 
         /// <summary>
         /// User-specified tags that should be applied to the event.
@@ -71,13 +71,13 @@ namespace Raygun.NetCore.Blazor.Models
         /// These will be searchable and filterable on the dashboard.
         /// </remarks>
         [JsonInclude]
-        public List<string> Tags { get; set; }
+        public List<string>? Tags { get; set; }
 
         /// <summary>
         /// Information about the user that caused the error.
         /// </summary>
         [JsonInclude]
-        public UserDetails User { get; set; }
+        public UserDetails? User { get; set; }
 
         /// <summary>
         /// User-specified custom data you would like to attach to this event.
@@ -86,7 +86,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// These will be searchable on the dashboard.
         /// </remarks>
         [JsonInclude]
-        public Dictionary<string, string> UserCustomData { get; set; }
+        public Dictionary<string, string>? UserCustomData { get; set; }
 
         #endregion
 
@@ -96,7 +96,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// Creates a new instance of the <see cref="EventDetails" /> class.
         /// </summary>
         /// <param name="applicationVersion">The logical version of your application.</param>
-        public EventDetails(string applicationVersion = null)
+        public EventDetails(string? applicationVersion = null)
         {
             Breadcrumbs = [];
             Tags = [];

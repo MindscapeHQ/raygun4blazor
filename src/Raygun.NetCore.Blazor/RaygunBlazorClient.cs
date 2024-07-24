@@ -27,10 +27,10 @@ namespace Raygun.NetCore.Blazor
         private readonly RaygunBrowserInterop _browserInterop;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly JsonSerializerOptions _jsonOptions;
-        private readonly IRaygunOfflineStore _offlineStore;
-        private readonly IRaygunQueueManager _queueManager;
+        // private readonly IRaygunOfflineStore? _offlineStore;
+        // private readonly IRaygunQueueManager? _queueManager;
         private readonly RaygunSettings _raygunSettings;
-        private readonly IRaygunUserManager _userManager;
+        // private readonly IRaygunUserManager? _userManager;
 
         #endregion
 
@@ -51,6 +51,7 @@ namespace Raygun.NetCore.Blazor
             _raygunSettings = raygunSettings.Value;
             if (string.IsNullOrWhiteSpace(_raygunSettings.ApiKey))
             {
+                // ReSharper disable once NotResolvedInText
                 throw new ArgumentNullException("RaygunSettings.ApiKey", "A Raygun API Key was not provided. Please check your settings and try again.");
             }
 
@@ -129,8 +130,8 @@ namespace Raygun.NetCore.Blazor
         /// <code>
         /// TBD
         /// </code>
-        public void RecordBreadcrumb(string message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual, string category = null,
-            Dictionary<string, object> customData = null, string platform = "DotNet")
+        public void RecordBreadcrumb(string? message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual, string? category = null,
+            Dictionary<string, object>? customData = null, string? platform = "DotNet")
         {
             _breadcrumbs.Add(new BreadcrumbDetails(message, breadcrumbType, category, customData, platform));
         }
@@ -154,7 +155,7 @@ namespace Raygun.NetCore.Blazor
             await InitializeAsync();
 
             var appVersion = _raygunSettings.ApplicationVersion ??
-                System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString() ??
+                System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ??
                 null;
 
             var userDetails = addUserDetails ? new UserDetails() : null;

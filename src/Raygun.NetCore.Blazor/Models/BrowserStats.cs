@@ -51,7 +51,7 @@
         /// <summary>
         /// 
         /// </summary>
-        public string NetworkEffectiveType { get; set; }
+        public string? NetworkEffectiveType { get; set; }
 
         /// <summary>
         /// 

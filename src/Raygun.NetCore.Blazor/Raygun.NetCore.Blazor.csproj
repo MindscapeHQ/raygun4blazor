@@ -3,7 +3,8 @@
 	<PropertyGroup>
 		<TargetFrameworks>net8.0;</TargetFrameworks>
 		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
-		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>		
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+		<Nullable>enable</Nullable>
 		
 		<TypeScriptModuleKind>commonjs</TypeScriptModuleKind>
 		<TypeScriptTarget>ES2020</TypeScriptTarget>
