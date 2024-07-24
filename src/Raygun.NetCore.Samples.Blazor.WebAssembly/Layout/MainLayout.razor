@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@inject RaygunBlazorClient raygunClient;
+@inject RaygunBlazorClient RaygunClient;
 
 <div class="page">
     <div class="sidebar">
@@ -22,7 +22,7 @@
     {
         if (firstRender)
         {
-            await raygunClient.InitializeAsync();
+            await RaygunClient.InitializeAsync();
         }
         await base.OnAfterRenderAsync(firstRender);
     }

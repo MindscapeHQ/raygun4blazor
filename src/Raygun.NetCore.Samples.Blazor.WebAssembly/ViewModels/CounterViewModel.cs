@@ -23,12 +23,13 @@ namespace Raygun.NetCore.Samples.Blazor.WebAssembly.ViewModels
         /// <summary>
         /// 
         /// </summary>
-        public Action StateHasChanged { get; set; }
+        public Action? StateHasChanged { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="raygunClient"></param>
+        /// <param name="windowService"></param>
         public CounterViewModel(RaygunBlazorClient raygunClient, IWindowService windowService)
         {
             _raygunClient = raygunClient;
@@ -39,7 +40,7 @@ namespace Raygun.NetCore.Samples.Blazor.WebAssembly.ViewModels
         /// 
         /// </summary>
         /// <returns></returns>
-        public async Task IncrementCountAsync()
+        public Task IncrementCountAsync()
         {
             CurrentCount++;
             if (CurrentCount % 3 == 0)
@@ -47,6 +48,7 @@ namespace Raygun.NetCore.Samples.Blazor.WebAssembly.ViewModels
                 CurrentCount /= 0;
             }
             StateHasChanged?.Invoke();
+            return Task.CompletedTask;
         }
 
         public async Task ThrowException()

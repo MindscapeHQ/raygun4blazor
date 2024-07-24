@@ -20,37 +20,37 @@ namespace Raygun.NetCore.Blazor.Models
         /// The name of the <see langword="class" /> the error was produced in.
         /// </summary>
         [JsonInclude]
-        public string ClassName { get; set; }
+        public string? ClassName { get; set; }
 
         /// <summary>
         /// Data contained in the error object.
         /// </summary>
         [JsonInclude]
-        public NonGeneric.IDictionary Data { get; set; }
+        public NonGeneric.IDictionary? Data { get; set; }
 
         /// <summary>
         /// Details about the symbol files related to the error.
         /// </summary>
         [JsonInclude]
-        public List<PEDebugDetails> Images { get; set; }
+        public List<PEDebugDetails>? Images { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [JsonInclude]
-        public ErrorDetails InnerError { get; set; }
+        public ErrorDetails? InnerError { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [JsonInclude]
-        public List<ErrorDetails> InnerErrors { get; set; }
+        public List<ErrorDetails>? InnerErrors { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [JsonInclude]
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         /// <summary>
         /// The collection of stack traces.
@@ -59,7 +59,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// The first one in the list should be the highest on the stack
         /// </remarks>
         [JsonInclude]
-        public List<StackTraceDetails> StackTrace { get; set; }
+        public List<StackTraceDetails>? StackTrace { get; set; }
 
         #endregion
 
@@ -80,7 +80,7 @@ namespace Raygun.NetCore.Blazor.Models
         /// 
         /// </summary>
         /// <param name="message"></param>
-        internal ErrorDetails(string message)
+        internal ErrorDetails(string? message)
         {
             Message = message;
             StackTrace = [new StackTraceDetails()];

@@ -5,6 +5,7 @@
 		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>		
+		<Nullable>enable</Nullable>
 		
 		<TypeScriptModuleKind>commonjs</TypeScriptModuleKind>
 		<TypeScriptTarget>ES2020</TypeScriptTarget>
