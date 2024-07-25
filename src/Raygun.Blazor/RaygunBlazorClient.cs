@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using KristofferStrube.Blazor.WebIDL.Exceptions;
 using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.Options;
+using Raygun.Blazor.Logging;
 using Raygun.Blazor.Models;
 
 namespace Raygun.Blazor
@@ -31,6 +32,7 @@ namespace Raygun.Blazor
         // private readonly IRaygunQueueManager? _queueManager;
         private readonly RaygunSettings _raygunSettings;
         // private readonly IRaygunUserManager? _userManager;
+        private readonly IRaygunLogger _raygunLogger;
 
         #endregion
 
@@ -45,12 +47,14 @@ namespace Raygun.Blazor
         /// <remarks>
         /// You should not usually create a new instance yourself, instead get a usable instance from the DI container by injecting it into the Blazor page directly.
         /// </remarks>
-        public RaygunBlazorClient(IOptions<RaygunSettings> raygunSettings, IHttpClientFactory httpClientFactory, RaygunBrowserInterop browserInterop/*, IRaygunQueueManager queueManager, IRaygunUserManager userManager, IRaygunOfflineStore offlineStore*/)
+        public RaygunBlazorClient(IOptions<RaygunSettings> raygunSettings, IHttpClientFactory httpClientFactory, RaygunBrowserInterop browserInterop, IRaygunLogger raygunLogger/*, IRaygunQueueManager queueManager, IRaygunUserManager userManager, IRaygunOfflineStore offlineStore*/)
         {
+            _raygunLogger = raygunLogger;
             // RWM: We do this first because there is no point consuming CPU cycles setting properties if the API key is missing.
             _raygunSettings = raygunSettings.Value;
             if (string.IsNullOrWhiteSpace(_raygunSettings.ApiKey))
             {
+                _raygunLogger.Error("A Raygun API Key was not provided. Please check your settings and try again.");
                 // ReSharper disable once NotResolvedInText
                 throw new ArgumentNullException("RaygunSettings.ApiKey", "A Raygun API Key was not provided. Please check your settings and try again.");
             }
@@ -63,6 +67,7 @@ namespace Raygun.Blazor
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
+            _raygunLogger.Debug("[RaygunBlazorClient] Initialized.");
         }
 
         #endregion
@@ -114,6 +119,7 @@ namespace Raygun.Blazor
             if (_browserInterop.RaygunScriptReference is null)
             {
                 await _browserInterop.InitializeAsync(OnUnhandledJsException, RecordBreadcrumb, RecordExceptionAsync);
+                _raygunLogger.Debug("[RaygunBlazorClient] JavaScript Interop initialized.");
             }
         }
 
@@ -134,6 +140,7 @@ namespace Raygun.Blazor
             Dictionary<string, object>? customData = null, string? platform = "DotNet")
         {
             _breadcrumbs.Add(new BreadcrumbDetails(message, breadcrumbType, category, customData, platform));
+            _raygunLogger.Verbose("[RaygunBlazorClient] Breadcrumb recorded: " + message);
         }
 
 
@@ -152,6 +159,7 @@ namespace Raygun.Blazor
         public async Task RecordExceptionAsync(Exception ex, List<string>? tags = null, bool addUserDetails = false, Dictionary<string, string>? userCustomData = null,
             CancellationToken cancellationToken = default)
         {
+            _raygunLogger.Verbose("[RaygunBlazorClient] Recording exception: " + ex);
             await InitializeAsync();
 
             var appVersion = _raygunSettings.ApplicationVersion ??
@@ -173,6 +181,8 @@ namespace Raygun.Blazor
                 }
             };
             _breadcrumbs.Clear();
+            
+            _raygunLogger.Debug("[RaygunBlazorClient] Sending request to Raygun: " + request);
 
             // TODO: RWM: Queue the request to be sent out-of-band.
             //queueManager.Enqueue(request);
@@ -187,6 +197,15 @@ namespace Raygun.Blazor
             //            403 Invalid API Key - The value specified in the header X-ApiKey did not match with a user.
             //            413 Request entity too large - The maximum size of a JSON payload is 128KB.
             //            429 Too Many Requests - Plan limit exceeded for month or plan expired
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                _raygunLogger.Error("[RaygunBlazorClient] Failed to send request to Raygun: " + response.StatusCode);
+            }
+            else
+            {
+                _raygunLogger.Debug("[RaygunBlazorClient] Request sent to Raygun: " + response.StatusCode);
+            }
         }
 
 
@@ -214,8 +233,13 @@ namespace Raygun.Blazor
         /// </remarks>
         internal async Task OnUnhandledJsException(ErrorEvent errorEvent)
         {
+            _raygunLogger.Verbose("[RaygunBlazorClient] Unhandled JavaScript exception caught: " + errorEvent);
             WebIDLException? exception = await errorEvent.GetErrorAsExceptionAsync();
-            if (exception is null) return;
+            if (exception is null)
+            {
+                _raygunLogger.Warning("[RaygunBlazorClient] Failed to convert JavaScript error to WebIDLException.");
+                return;
+            }
             await RecordExceptionAsync(exception, ["UnhandledException", "Blazor", "JavaScript"]);
         }
 

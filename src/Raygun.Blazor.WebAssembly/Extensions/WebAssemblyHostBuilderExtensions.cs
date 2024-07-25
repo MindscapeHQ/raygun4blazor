@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using System;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Raygun.Blazor.Extensions;
+using Raygun.Blazor.Logging;
 
 
 namespace Raygun.Blazor.WebAssembly.Extensions
@@ -33,6 +34,7 @@ namespace Raygun.Blazor.WebAssembly.Extensions
         {
             builder.Services.Configure<RaygunSettings>(builder.Configuration.GetSection(configSectionName));
             builder.Services.AddSingleton<RaygunBrowserInterop>();
+            builder.Services.AddSingleton<IRaygunLogger, RaygunLogger>();
             builder.Services.AddSingleton<IWindowService, WindowService>();
 
             builder.Services.AddHttpClient("Raygun")

@@ -4,6 +4,7 @@ using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Raygun.Blazor.Logging;
 
 namespace Raygun.Blazor.Extensions
 {
@@ -43,6 +44,7 @@ namespace Raygun.Blazor.Extensions
         public static void AddRaygunBlazor(this IServiceCollection services, IConfiguration configuration, string configSectionName = "Raygun")
         {
             services.Configure<RaygunSettings>(configuration.GetSection(configSectionName));
+            services.AddScoped<IRaygunLogger, RaygunLogger>();
             services.AddScoped<RaygunBrowserInterop>();
             services.AddWindowService();
 
