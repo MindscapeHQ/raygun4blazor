@@ -54,7 +54,7 @@ namespace Raygun.Blazor
             _raygunSettings = raygunSettings.Value;
             if (string.IsNullOrWhiteSpace(_raygunSettings.ApiKey))
             {
-                _raygunLogger.Error("A Raygun API Key was not provided. Please check your settings and try again.");
+                _raygunLogger.Error("[RaygunBlazorClient] A Raygun API Key was not provided. Please check your settings and try again.");
                 // ReSharper disable once NotResolvedInText
                 throw new ArgumentNullException("RaygunSettings.ApiKey", "A Raygun API Key was not provided. Please check your settings and try again.");
             }
