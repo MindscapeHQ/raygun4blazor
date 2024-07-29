@@ -9,7 +9,7 @@ namespace Raygun.Blazor.Logging
     /// </summary>
     public class RaygunLogger : IRaygunLogger
     {
-        private readonly RaygunSettings _raygunSettings;
+        private readonly RaygunLogLevel _logLevel;
 
         /// <summary>
         /// 
@@ -17,8 +17,8 @@ namespace Raygun.Blazor.Logging
         /// <param name="raygunSettings"></param>
         public RaygunLogger(IOptions<RaygunSettings> raygunSettings)
         {
-            _raygunSettings = raygunSettings.Value;
-            Info("[RaygunLogger] Logger initialized with log level: " + _raygunSettings.LogLevel);
+            _logLevel = raygunSettings.Value.LogLevel;
+            Info("[RaygunLogger] Logger initialized with log level: " + _logLevel);
         }
 
         private const string RaygunPrefix = "Raygun:";
@@ -55,21 +55,22 @@ namespace Raygun.Blazor.Logging
 
         private void Log(RaygunLogLevel level, string message)
         {
-            if (_raygunSettings.LogLevel == RaygunLogLevel.None)
+            if (_logLevel == RaygunLogLevel.None)
             {
                 return;
             }
 
-            if (level <= _raygunSettings.LogLevel)
+            if (level > _logLevel) return;
+
+            try
             {
-                try
-                {
-                    Console.WriteLine($"{RaygunPrefix} [{level}] {message}");
-                }
-                catch
-                {
-                    // ignored
-                }
+                // Only log the first letter of the log level e.g. "I" for Info
+                var initial = level.ToString().Substring(0, 1).ToUpper();
+                Console.WriteLine($"{RaygunPrefix} [{initial}] {message}");
+            }
+            catch
+            {
+                // ignored
             }
         }
     }
