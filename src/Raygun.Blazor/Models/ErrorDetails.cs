@@ -104,6 +104,7 @@ namespace Raygun.Blazor.Models
                         .Where(frame => !string.IsNullOrWhiteSpace(frame));
                     StackTrace = frames.Select(frame => new StackTraceDetails(frame)).ToList();
                 }
+
                 if (webIdlException.InnerException is not null)
                 {
                     InnerError = new ErrorDetails(webIdlException.InnerException);
