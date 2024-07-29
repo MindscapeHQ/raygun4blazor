@@ -114,7 +114,6 @@ namespace Raygun.Blazor.Models
             {
                 // Dotnet Exception
                 var betterEx = ex.Demystify();
-                Console.WriteLine("Exception: " + betterEx);
                 ClassName = betterEx.GetType().FullName;
                 Data = betterEx.Data;
                 Message = betterEx.Message;
