@@ -22,9 +22,27 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.UseRaygunBlazor();
 ```
 
-The `RaygunSettings` will be obtained from the `appsettings.json` under the configuration section name `Raygun`.
+#### Raygun Settings
+
+Raygun for Blazor uses the `appsettings.json` to load configuration settings.
+
+`RaygunSettings` will be obtained from the configuration section name `Raygun`.
+
+For example:
+
+```json
+{
+  "Raygun": {
+    "ApiKey": "YOUR_API_KEY",
+    "CatchUnhandledExceptions": "false",
+    "LogLevel": "Debug"
+  }
+}
+```
 
 For all configuration values, check the `RaygunSettings` class under `src/Raygun.Blazor/RaygunSettings.cs`.
+
+See [Configuration in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-8.0) to learn more about managing application settings.
 
 #### Initalize the client
 
@@ -56,6 +74,26 @@ Call to `raygunClient.RecordBreadcrumb(...);`
 
 Currently used in `src/Raygun.Samples.Blazor.WebAssembly/App.razor`
 
+### Internal logger
+
+Raygun for Blazor uses an internal logger to help facilitate the integration of the package.
+The default log level is `"Warning"`.
+To completely disable the internal logger, set the `"LogLevel"` setting to `"None"`.
+
+For example:
+
+```json
+{
+  "Raygun": {
+    "LogLevel": "None"
+  }
+}
+```
+
+For all configuration values, check the `RaygunLogLevel` enum under `src/Raygun.Blazor/Logging/RaygunLogLevel.cs`.
+
+---
+
 ## Example Project
 
 Example project is located in `src/Raygun.Samples.Blazor.WebAssembly`
@@ -76,6 +114,8 @@ To run the example:
 3. Run `dotnet watch` from the example folder.
 
 A browser window to `http://localhost:5010/` should automatically open.
+
+---
 
 ## Publishing
 
