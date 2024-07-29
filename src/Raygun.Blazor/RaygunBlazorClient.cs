@@ -44,6 +44,7 @@ namespace Raygun.Blazor
         /// <param name="raygunSettings">The <see cref="RaygunSettings" /> injected into the DI container by calling services.AddRaygunBlazor().</param>
         /// <param name="httpClientFactory">The <see cref="IHttpClientFactory" /> injected into the DI container by calling services.AddRaygunBlazor().</param>
         /// <param name="browserInterop"></param>
+        /// <param name="raygunLogger">The <see cref="IRaygunLogger"/> injected into the DI container by calling services.AddRaygunBlazor().</param>
         /// <remarks>
         /// You should not usually create a new instance yourself, instead get a usable instance from the DI container by injecting it into the Blazor page directly.
         /// </remarks>
