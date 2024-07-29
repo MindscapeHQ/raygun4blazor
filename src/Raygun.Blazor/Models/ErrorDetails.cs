@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json.Serialization;
+using KristofferStrube.Blazor.WebIDL.Exceptions;
 using Raygun.Blazor.Extensions;
 using NonGeneric = System.Collections;
 
 namespace Raygun.Blazor.Models
 {
-
     /// <summary>
     /// 
     /// </summary>
     internal class ErrorDetails
     {
-
         #region Public Properties
 
         /// <summary>
@@ -93,27 +92,45 @@ namespace Raygun.Blazor.Models
         /// <param name="ex">The <see cref="Exception" /> to use to populate this <see cref="ErrorDetails" /> instance.</param>
         internal ErrorDetails(Exception ex)
         {
-            //TODO: Process JS exceptions differently so the stack trace isn't stripped.
-            var betterEx = ex.Demystify();
-            ClassName = betterEx.GetType().FullName;
-            Data = betterEx.Data;
-            Message = betterEx.Message;
-
-            // RWM: Let's start with the existing stack trace before we get recursive-ish.
-            StackTrace = new EnhancedStackTrace(ex).GetExternalFrames().Select(frame => new StackTraceDetails(frame)).ToList();
-
-            if (betterEx is AggregateException aggregateEx)
+            if (ex is WebIDLException webIdlException)
             {
-                InnerErrors = aggregateEx.InnerExceptions.Select(innerEx => new ErrorDetails(innerEx)).ToList();
+                // JS Exception
+                ClassName = webIdlException.GetType().FullName;
+                Data = webIdlException.Data;
+                Message = webIdlException.Message;
+                if (webIdlException.StackTrace != null)
+                {
+                    var frames = webIdlException.StackTrace.Split('\n')
+                        .Where(frame => !string.IsNullOrWhiteSpace(frame));
+                    StackTrace = frames.Select(frame => new StackTraceDetails(frame)).ToList();
+                }
+
+                if (webIdlException.InnerException is not null)
+                {
+                    InnerError = new ErrorDetails(webIdlException.InnerException);
+                }
             }
-            else if (betterEx.InnerException is not null)
+            else
             {
-                InnerError = new ErrorDetails(betterEx.InnerException);
+                // Dotnet Exception
+                var betterEx = ex.Demystify();
+                ClassName = betterEx.GetType().FullName;
+                Data = betterEx.Data;
+                Message = betterEx.Message;
+                StackTrace = new EnhancedStackTrace(ex).GetExternalFrames()
+                    .Select(frame => new StackTraceDetails(frame)).ToList();
+
+                if (betterEx is AggregateException aggregateEx)
+                {
+                    InnerErrors = aggregateEx.InnerExceptions.Select(innerEx => new ErrorDetails(innerEx)).ToList();
+                }
+                else if (betterEx.InnerException is not null)
+                {
+                    InnerError = new ErrorDetails(betterEx.InnerException);
+                }
             }
         }
 
         #endregion
-
     }
-
 }
