@@ -181,7 +181,7 @@ namespace Raygun.Blazor
                 }
             };
             _breadcrumbs.Clear();
-            
+
             _raygunLogger.Debug("[RaygunBlazorClient] Sending request to Raygun: " + request);
 
             // TODO: RWM: Queue the request to be sent out-of-band.
@@ -197,7 +197,7 @@ namespace Raygun.Blazor
             //            403 Invalid API Key - The value specified in the header X-ApiKey did not match with a user.
             //            413 Request entity too large - The maximum size of a JSON payload is 128KB.
             //            429 Too Many Requests - Plan limit exceeded for month or plan expired
-            
+
             if (!response.IsSuccessStatusCode)
             {
                 _raygunLogger.Error("[RaygunBlazorClient] Failed to send request to Raygun: " + response.StatusCode);
