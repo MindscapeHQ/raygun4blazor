@@ -5,6 +5,8 @@
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <RootNamespace>Raygun.Samples.Blazor.WebAssembly</RootNamespace>
     <Nullable>enable</Nullable>
+    <!-- disable caching for testing purposes -->
+    <BlazorCacheBootResources>false</BlazorCacheBootResources>
   </PropertyGroup>
 
   <ItemGroup>
