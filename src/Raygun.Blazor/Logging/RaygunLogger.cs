@@ -71,7 +71,7 @@ namespace Raygun.Blazor.Logging
             try
             {
                 // Only log the first letter of the log level e.g. "I" for Info
-                var initial = level.ToString().Substring(0, 1).ToUpper();
+                var initial = level.ToString()[0..1].ToUpper();
                 Console.WriteLine($"{RaygunPrefix} [{initial}] {message}");
             }
             catch
