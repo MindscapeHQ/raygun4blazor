@@ -1,24 +1,30 @@
 using System;
-using System.Diagnostics;
-using Microsoft.Extensions.Options;
 
 namespace Raygun.Blazor.Logging
 {
     /// <summary>
     /// Implementation of the Raygun logger.
     /// </summary>
-    public class RaygunLogger : IRaygunLogger
+    internal class RaygunLogger : IRaygunLogger
     {
         private readonly RaygunLogLevel _logLevel;
+        private static RaygunLogger? _raygunLogger;
 
         /// <summary>
-        /// 
+        /// Create or retrieve instance of IRaygunLogger.
+        /// Returns null if the logLevel is None.
         /// </summary>
-        /// <param name="raygunSettings"></param>
-        public RaygunLogger(IOptions<RaygunSettings> raygunSettings)
+        internal static IRaygunLogger? Create(RaygunLogLevel logLevel)
         {
-            _logLevel = raygunSettings.Value.LogLevel;
-            Info("[RaygunLogger] Logger initialized with log level: " + _logLevel);
+            _raygunLogger = logLevel == RaygunLogLevel.None ? null : _raygunLogger ?? new RaygunLogger(logLevel);
+            return _raygunLogger;
+        }
+
+        private RaygunLogger(RaygunLogLevel logLevel)
+        {
+            _logLevel = logLevel;
+            Warning("[RaygunLogger] Internal logger initialized with log level: " + _logLevel);
+            Warning("[RaygunLogger] Disable internal logger by setting LogLevel to None in Raygun settings");
         }
 
         private const string RaygunPrefix = "Raygun:";

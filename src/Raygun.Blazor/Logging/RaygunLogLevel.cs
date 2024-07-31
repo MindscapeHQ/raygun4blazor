@@ -1,7 +1,7 @@
 namespace Raygun.Blazor.Logging
 {
     /// <summary>
-    /// Hierarchy level for errors
+    /// Hierarchy level for internal logs
     /// </summary>
     public enum RaygunLogLevel
     {

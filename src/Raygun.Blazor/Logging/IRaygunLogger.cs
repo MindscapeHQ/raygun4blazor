@@ -1,10 +1,9 @@
-
 namespace Raygun.Blazor.Logging
 {
     /// <summary>
     /// Raygun logger interface.
     /// </summary>
-    public interface IRaygunLogger
+    internal interface IRaygunLogger
     {
         /// <summary>
         /// Prints an error message with level Error.

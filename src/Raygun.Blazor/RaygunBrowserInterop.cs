@@ -23,7 +23,7 @@ namespace Raygun.Blazor
         private EventListener<ErrorEvent>? _errorEventListener;
         private readonly IJSRuntime _jsRuntime;
         private readonly RaygunSettings _raygunSettings;
-        private readonly IRaygunLogger _raygunLogger;
+        private readonly IRaygunLogger? _raygunLogger;
         private readonly IWindowService _windowService;
         private Action<string, BreadcrumbType, string?, Dictionary<string, object>?, string?>? _breadcrumbAction;
 
@@ -75,20 +75,19 @@ namespace Raygun.Blazor
         /// <param name="raygunSettings">
         /// The <see cref="RaygunSettings" /> instance from DI to use in configuring exception handling
         /// .</param>
-        /// <param name="raygunLogger">Internal logger</param>
         // RWM: The below attributes make sure that these methods are not removed by AOT compilation.
         //      See https://learn.microsoft.com/en-us/aspnet/core/blazor/javascript-interoperability/call-dotnet-from-javascript?view=aspnetcore-8.0#avoid-trimming-javascript-invokable-net-methods
         [DynamicDependency(nameof(RecordJsBreadcrumb))]
         [DynamicDependency(nameof(RecordJsException))]
         public RaygunBrowserInterop(IJSRuntime jsRuntime, IWindowService windowService,
-            IOptions<RaygunSettings> raygunSettings, IRaygunLogger raygunLogger)
+            IOptions<RaygunSettings> raygunSettings)
         {
             _dotNetReference = DotNetObjectReference.Create(this);
             _jsRuntime = jsRuntime;
             _windowService = windowService;
             _raygunSettings = raygunSettings.Value;
-            _raygunLogger = raygunLogger;
-            _raygunLogger.Verbose("[RaygunBrowserInterop] Created.");
+            _raygunLogger = RaygunLogger.Create(raygunSettings.Value.LogLevel);
+            _raygunLogger?.Verbose("[RaygunBrowserInterop] Created.");
         }
 
         #endregion
@@ -107,7 +106,7 @@ namespace Raygun.Blazor
         public ValueTask RecordJsBreadcrumb(string message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual,
             string? category = null, Dictionary<string, object>? customData = null)
         {
-            _raygunLogger.Verbose("[RaygunBrowserInterop] Recording breadcrumb: " + message);
+            _raygunLogger?.Verbose("[RaygunBrowserInterop] Recording breadcrumb: " + message);
             _breadcrumbAction!.Invoke(message, breadcrumbType, category, customData, "JavaScript");
             return ValueTask.CompletedTask;
         }
@@ -124,7 +123,7 @@ namespace Raygun.Blazor
         public async ValueTask RecordJsException(Exception exception, List<string>? tags = null,
             bool sendUserData = false, Dictionary<string, string>? customData = null)
         {
-            _raygunLogger.Verbose("[RaygunBrowserInterop] Recording JS exception: " + exception.Message);
+            _raygunLogger?.Verbose("[RaygunBrowserInterop] Recording JS exception: " + exception.Message);
             await _exceptionAction!.Invoke(exception, tags, sendUserData, customData, CancellationToken.None);
         }
 
@@ -144,7 +143,7 @@ namespace Raygun.Blazor
         internal async Task<EnvironmentDetails> GetBrowserEnvironment()
         {
             LatestBrowserStats ??= await RaygunScriptReference!.InvokeAsync<BrowserStats>("getBrowserStats");
-            _raygunLogger.Verbose("[RaygunBrowserInterop] getBrowserEnvironment: " + LatestBrowserStats);
+            _raygunLogger?.Verbose("[RaygunBrowserInterop] getBrowserEnvironment: " + LatestBrowserStats);
             // RWM: Combine the Specs we got on Initialize() with the stats we just grabbed to build the Environment.
             return new EnvironmentDetails(BrowserSpecs, LatestBrowserStats);
         }
@@ -166,21 +165,21 @@ namespace Raygun.Blazor
             //      handle JS errors & they start coming in before we're ready, then there will be wailing and gnashing of teeth.
             RaygunScriptReference = await _jsRuntime.InvokeAsync<IJSObjectReference>("import",
                 "./_content/Raygun.Blazor/Raygun.Blazor.js");
-            _raygunLogger.Verbose("[RaygunBrowserInterop] Registered Raygun Blazor script.");
+            _raygunLogger?.Verbose("[RaygunBrowserInterop] Registered Raygun Blazor script.");
 
             // RWM: Register the .NET reference with JS so that JS code can also manually create Bookmarks and report Exceptions.
             await _jsRuntime.InvokeVoidAsync("window.raygunBlazor.initialize", _dotNetReference);
-            _raygunLogger.Verbose("[RaygunBrowserInterop] Registered .NET reference with JS.");
+            _raygunLogger?.Verbose("[RaygunBrowserInterop] Registered .NET reference with JS.");
 
             // RWM: Get and cache the BrowserSpecs so we can use them later.
             BrowserSpecs = await RaygunScriptReference.InvokeAsync<BrowserSpecs>("getBrowserSpecs");
             BrowserSpecs.ParseUserAgent();
-            _raygunLogger.Verbose("[RaygunBrowserInterop] Got Browser Specs: " + BrowserSpecs);
+            _raygunLogger?.Verbose("[RaygunBrowserInterop] Got Browser Specs: " + BrowserSpecs);
 
             // RWM: Honor the developer's settings.
             if (!_raygunSettings.CatchUnhandledExceptions)
             {
-                _raygunLogger.Verbose("[RaygunBrowserInterop] Unhandled exceptions configured not being caught.");
+                _raygunLogger?.Verbose("[RaygunBrowserInterop] Unhandled exceptions configured not being caught.");
                 return;
             }
 
@@ -188,7 +187,7 @@ namespace Raygun.Blazor
             Window = await _windowService.GetWindowAsync();
             _errorEventListener = await EventListener<ErrorEvent>.CreateAsync(_jsRuntime, onUnhandledJsException);
             await Window.AddOnErrorEventListenerAsync(_errorEventListener);
-            _raygunLogger.Verbose("[RaygunBrowserInterop] Registered unhandled JS exception handler.");
+            _raygunLogger?.Verbose("[RaygunBrowserInterop] Registered unhandled JS exception handler.");
         }
 
         #endregion
@@ -220,7 +219,7 @@ namespace Raygun.Blazor
             {
                 _dotNetReference.Dispose();
             }
-            _raygunLogger.Verbose("[RaygunBrowserInterop] Disposed.");
+            _raygunLogger?.Verbose("[RaygunBrowserInterop] Disposed.");
         }
 
         #endregion

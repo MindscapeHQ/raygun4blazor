@@ -32,7 +32,6 @@ namespace Raygun.Blazor.WebAssembly.Extensions
         {
             builder.Services.Configure<RaygunSettings>(builder.Configuration.GetSection(configSectionName));
             builder.Services.AddSingleton<RaygunBrowserInterop>();
-            builder.Services.AddSingleton<IRaygunLogger, RaygunLogger>();
             builder.Services.AddSingleton<IWindowService, WindowService>();
 
             builder.Services.AddHttpClient("Raygun")
