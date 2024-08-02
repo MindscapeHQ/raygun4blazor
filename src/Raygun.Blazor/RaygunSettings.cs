@@ -1,4 +1,6 @@
-﻿namespace Raygun.Blazor
+﻿using Raygun.Blazor.Logging;
+
+namespace Raygun.Blazor
 {
 
     /// <summary>
@@ -50,6 +52,11 @@
         /// The human-readable name of this Application.
         /// </summary>
         public string? Name { get; set; }
+
+        /// <summary>
+        /// Internal logging level for the Raygun client. Defaults to Warning.
+        /// </summary>
+        public RaygunLogLevel LogLevel { get; set; } = RaygunLogLevel.Warning;
 
         #endregion
 

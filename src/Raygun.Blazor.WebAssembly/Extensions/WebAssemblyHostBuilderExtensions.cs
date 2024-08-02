@@ -4,17 +4,16 @@ using Microsoft.Extensions.Options;
 using System;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Raygun.Blazor.Extensions;
+using Raygun.Blazor.Logging;
 
 
 namespace Raygun.Blazor.WebAssembly.Extensions
 {
-
     /// <summary>
     /// Extensions for registering RaygunBlazorClient and related services with a Blazor WebAssembly application.
     /// </summary>
     public static class Raygun_WebAssembly_WebAssemblyHostBuilderExtensions
     {
-
         /// <summary>
         /// Configures the RaygunBlazorClient and related services for use in a Blazor WebAssembly application.
         /// </summary>
@@ -41,14 +40,12 @@ namespace Raygun.Blazor.WebAssembly.Extensions
                     var raygunSettings = sp.GetRequiredService<IOptions<RaygunSettings>>().Value;
                     client.BaseAddress = new Uri(raygunSettings.Endpoint);
                     client.DefaultRequestHeaders.Add("X-ApiKey", raygunSettings.ApiKey);
-                    client.DefaultRequestHeaders.CacheControl = Raygun_Blazor_IServiceCollectionExtensions.CacheControlHeaderValue;
+                    client.DefaultRequestHeaders.CacheControl =
+                        Raygun_Blazor_IServiceCollectionExtensions.CacheControlHeaderValue;
                     // TODO: RWM: Set user agent
                 });
 
             builder.Services.AddSingleton<RaygunBlazorClient>();
-
         }
-
     }
-
 }
