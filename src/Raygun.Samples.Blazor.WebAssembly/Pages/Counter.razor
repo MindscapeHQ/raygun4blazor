@@ -11,11 +11,10 @@
 <p role="status">Current count: @ViewModel.CurrentCount</p>
 
 <button class="btn btn-primary" @onclick="@IncrementAsync">Count Up</button>
-<button class="btn btn-primary" @onclick="@Throw">Throw JS Exception</button>
+<button class="btn btn-primary" @onclick="@Throw">Throw Unhandled JS Exception</button>
 <button class="btn btn-primary" @onclick="@(() => { var y = 0; var x = 3; var z = x / y; })">Throw .NET Exception</button>
 <button class="btn btn-primary" onclick="window.raygunBlazor.recordBreadcrumb('Clicked manual button', 'click-event');">Record JS Breadcrumb</button>
-<button class="btn btn-primary"@onclick="@(() => { var y = 0; var x = 3; var z = x / y; })">Record JS Exception</button>
-
+<button class="btn btn-primary" @onclick="@SendCustomJsException">Send Custom JS Exception</button>
 
 @code {
 
@@ -34,13 +33,18 @@
         }
         catch (Exception ex)
         {
-            await RaygunClient.RecordExceptionAsync(ex);
+            await RaygunClient.RecordExceptionAsync(ex, new UserDetails() { Email = "test@example.com", FullName = "Test User", UserId = "123456" });
         }
     }
 
     protected async Task Throw()
     {
         await ViewModel.ThrowException();
+    }
+
+    protected async Task SendCustomJsException()
+    {
+        await ViewModel.SendCustomJsException();
     }
 
 }

@@ -18,8 +18,8 @@
     /**
      * 
      */
-    recordException: async function(exception: DOMException, tags: string[], sendUserData: boolean, customData: Record<string, string>) {
-        await this._raygunInterop.invokeMethodAsync('RecordJsException', exception, tags, sendUserData, customData);
+    recordException: async function(exception: Error, tags: string[], customData: Record<string, string>) {
+        await this._raygunInterop.invokeMethodAsync('RecordJsException', exception, tags, customData);
     },
 };
 

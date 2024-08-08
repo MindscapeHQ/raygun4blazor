@@ -1,4 +1,5 @@
-﻿using Raygun.Blazor.Models;
+﻿using System.Threading.Tasks;
+using Raygun.Blazor.Models;
 
 namespace Raygun.Blazor.Interfaces
 {
@@ -10,10 +11,10 @@ namespace Raygun.Blazor.Interfaces
     {
 
         /// <summary>
-        /// 
+        /// Get the current logged user to attach to error reports.
         /// </summary>
-        /// <returns></returns>
-        public UserDetails GetCurrentUser();
+        /// <returns>UserDetails to attach to error report</returns>
+        public Task<UserDetails?> GetCurrentUser();
 
     }
 

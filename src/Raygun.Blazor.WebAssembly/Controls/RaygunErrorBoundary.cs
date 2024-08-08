@@ -58,7 +58,7 @@ namespace Raygun.Blazor.WebAssembly.Controls
         {
             if (!RaygunSettings.Value.CatchUnhandledExceptions) return;
 
-            await RaygunClient.RecordExceptionAsync(exception, ["UnhandledException", "Blazor", ".NET"]);
+            await RaygunClient.RecordExceptionAsync(exception, null, ["UnhandledException", "Blazor", ".NET"]);
         }
 
         /// <inheritdoc />
