@@ -120,7 +120,19 @@ namespace Raygun.Tests.Blazor
             Func<Task> recordException = async () => await raygunClient.RecordExceptionAsync(new Exception("Test"),
                 userDetails);
             await recordException.Should().NotThrowAsync();
-            // TODO: How to verify that the user data was sent? mocked HTTP Client?
+
+            await Task.Delay(500);
+
+            // Obtain requested data
+            var request = _mockHttp.InvokedRequests[0].Request;
+            var content = await request.Content?.ReadAsStringAsync()!;
+
+            // Deserialize request
+            var raygunMsg = JsonSerializer.Deserialize<RaygunRequest>(content, _jsonSerializerOptions)!;
+
+            // Check user details from userDetails argument in RecordExceptionAsync
+            raygunMsg.Details.User.FullName.Should().Be("Custom Test User");
+            raygunMsg.Details.User.Email.Should().Be("custom@example.com");
 
         }
 
