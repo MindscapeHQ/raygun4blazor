@@ -25,7 +25,7 @@ namespace Raygun.Samples.Blazor.WebAssembly
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddScoped(sp => new HttpClient
-                { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             // Provide a custom implementation of IRaygunUserManager
 
@@ -66,7 +66,7 @@ namespace Raygun.Samples.Blazor.WebAssembly
             })!;
         }
     }
-    
+
     /// <summary>
     /// Test AuthenticationStateProvider that returns a user
     /// </summary>

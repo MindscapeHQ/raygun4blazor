@@ -156,7 +156,7 @@ namespace Raygun.Tests.Blazor
         #endregion
     }
 
-    class MockHttpClientFactory: IHttpClientFactory
+    class MockHttpClientFactory : IHttpClientFactory
     {
         private HttpClient _httpClient = null!;
 
@@ -166,7 +166,8 @@ namespace Raygun.Tests.Blazor
             _httpClient.BaseAddress = new Uri("https://api.raygun.com");
         }
 
-        public HttpClient CreateClient(string name) {
+        public HttpClient CreateClient(string name)
+        {
             return _httpClient;
         }
     }
@@ -175,7 +176,8 @@ namespace Raygun.Tests.Blazor
     {
         public Task<UserDetails> GetCurrentUser()
         {
-            return Task.FromResult(new UserDetails() {
+            return Task.FromResult(new UserDetails()
+            {
                 FullName = "Manager User",
                 Email = "manager@example.com",
             });

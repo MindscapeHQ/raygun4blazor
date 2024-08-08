@@ -217,7 +217,7 @@ namespace Raygun.Blazor
             if (_dotNetReference is not null)
             {
                 _dotNetReference.Dispose();
-            } 
+            }
 
             _raygunLogger?.Verbose("[RaygunBrowserInterop] Disposed.");
         }
