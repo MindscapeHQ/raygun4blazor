@@ -10,6 +10,7 @@
 
 <button class="btn btn-primary" @onclick="SendRecordException">Record Exception</button>
 <button class="btn btn-primary" @onclick="RecordBreadcrumb">Record Breadcrumb</button>
+<button class="btn btn-primary" @onclick="@(() => { var y = 0; var x = 3; var z = x / y; })">Throw .NET Exception</button>
 
 @code {
 
