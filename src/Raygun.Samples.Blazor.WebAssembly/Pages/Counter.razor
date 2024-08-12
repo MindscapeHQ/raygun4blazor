@@ -10,7 +10,8 @@
 
 <p role="status">Current count: @ViewModel.CurrentCount</p>
 
-<button class="btn btn-primary" @onclick="@IncrementAsync">Count Up</button>
+<button class="btn btn-primary" @onclick="@IncrementAsync">Handle Exception</button>
+<button class="btn btn-primary" @onclick="@IncrementUserDetailsAsync">Handle Exception with UserDetails</button>
 <button class="btn btn-primary" @onclick="@Throw">Throw Unhandled JS Exception</button>
 <button class="btn btn-primary" @onclick="@(() => { var y = 0; var x = 3; var z = x / y; })">Throw .NET Exception</button>
 <button class="btn btn-primary" onclick="window.raygunBlazor.recordBreadcrumb('Clicked manual button', 'click-event');">Record JS Breadcrumb</button>
@@ -28,7 +29,20 @@
     {
         try
         {
-            RaygunClient.RecordBreadcrumb("Incrementing count", BreadcrumbType.ClickEvent);
+            RaygunClient.RecordBreadcrumb("Handle Exception", BreadcrumbType.ClickEvent);
+            await ViewModel.IncrementCountAsync();
+        }
+        catch (Exception ex)
+        {
+            await RaygunClient.RecordExceptionAsync(ex);
+        }
+    }
+
+    protected async Task IncrementUserDetailsAsync()
+    {
+        try
+        {
+            RaygunClient.RecordBreadcrumb("Handle Exception with UserDetails", BreadcrumbType.ClickEvent);
             await ViewModel.IncrementCountAsync();
         }
         catch (Exception ex)
@@ -39,11 +53,13 @@
 
     protected async Task Throw()
     {
+        RaygunClient.RecordBreadcrumb("Throw Unhandled JS Exception", BreadcrumbType.ClickEvent);
         await ViewModel.ThrowException();
     }
 
     protected async Task SendCustomJsException()
     {
+        RaygunClient.RecordBreadcrumb("Send Custom JS Exception", BreadcrumbType.ClickEvent);
         await ViewModel.SendCustomJsException();
     }
 
