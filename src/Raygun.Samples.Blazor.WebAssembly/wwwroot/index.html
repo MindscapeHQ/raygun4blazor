@@ -20,6 +20,17 @@
             if (e.data == "causeError") {
                 causeErrors();
             }
+
+            if (e.data == "recordException") {
+                let error = new Error();
+                error.message = 'Custom JS Exception Message';
+                error.name = 'CustomError';
+                window.raygunBlazor.recordException(
+                    error,
+                    ['custom'],
+                    {custom: 'data'}
+                );
+            }
         }
     </script>
 </head>

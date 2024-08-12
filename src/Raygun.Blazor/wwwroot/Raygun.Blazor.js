@@ -26,9 +26,9 @@ window.raygunBlazor = {
     /**
      *
      */
-    recordException: function (exception, tags, sendUserData, customData) {
+    recordException: function (exception, tags, customData) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this._raygunInterop.invokeMethodAsync('RecordJsException', exception, tags, sendUserData, customData);
+            yield this._raygunInterop.invokeMethodAsync('RecordJsException', exception, tags, customData);
         });
     },
 };

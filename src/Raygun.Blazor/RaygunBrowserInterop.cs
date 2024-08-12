@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using KristofferStrube.Blazor.DOM;
+using KristofferStrube.Blazor.WebIDL;
+using KristofferStrube.Blazor.WebIDL.Exceptions;
 using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
@@ -26,9 +28,7 @@ namespace Raygun.Blazor
         private readonly IRaygunLogger? _raygunLogger;
         private readonly IWindowService _windowService;
         private Action<string, BreadcrumbType, string?, Dictionary<string, object>?, string?>? _breadcrumbAction;
-
-        private Func<Exception, List<string>?, bool, Dictionary<string, string>?, CancellationToken, Task>?
-            _exceptionAction;
+        private Func<Exception, UserDetails?, List<string>?, Dictionary<string, string>?, CancellationToken, Task>? _exceptionAction;
 
         #endregion
 
@@ -114,17 +114,16 @@ namespace Raygun.Blazor
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="exception"></param>
+        /// <param name="error">JavaScript Error object</param>
         /// <param name="tags"></param>
-        /// <param name="sendUserData"></param>
         /// <param name="customData"></param>
         /// <returns></returns>
         [JSInvokable]
-        public async ValueTask RecordJsException(Exception exception, List<string>? tags = null,
-            bool sendUserData = false, Dictionary<string, string>? customData = null)
+        public async ValueTask RecordJsException(JSError error, List<string>? tags = null, Dictionary<string, string>? customData = null)
         {
-            _raygunLogger?.Verbose("[RaygunBrowserInterop] Recording JS exception: " + exception.Message);
-            await _exceptionAction!.Invoke(exception, tags, sendUserData, customData, CancellationToken.None);
+            _raygunLogger?.Verbose("[RaygunBrowserInterop] Recording JS exception: " + error.Message);
+            var exception = new WebIDLException($"{error.Name}: \"{error.Message}\"", error.Stack, error.InnerException);
+            await _exceptionAction!.Invoke(exception, null, tags, customData, CancellationToken.None);
         }
 
         #endregion
@@ -156,7 +155,7 @@ namespace Raygun.Blazor
         /// <param name="exceptionAction"></param>
         internal async Task InitializeAsync(Func<ErrorEvent, Task> onUnhandledJsException,
             Action<string, BreadcrumbType, string?, Dictionary<string, object>?, string?>? breadcrumbAction,
-            Func<Exception, List<string>?, bool, Dictionary<string, string>?, CancellationToken, Task>? exceptionAction)
+            Func<Exception, UserDetails?, List<string>?, Dictionary<string, string>?, CancellationToken, Task>? exceptionAction)
         {
             _breadcrumbAction = breadcrumbAction;
             _exceptionAction = exceptionAction;
@@ -219,6 +218,7 @@ namespace Raygun.Blazor
             {
                 _dotNetReference.Dispose();
             }
+
             _raygunLogger?.Verbose("[RaygunBrowserInterop] Disposed.");
         }
 

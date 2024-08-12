@@ -74,6 +74,62 @@ Call to `raygunClient.RecordBreadcrumb(...);`
 
 Currently used in `src/Raygun.Samples.Blazor.WebAssembly/App.razor`
 
+### Attaching user details
+
+Raygun for Blazor provides two ways to attach user details to error reports:
+
+1. Provide `UserDetails` in the `RecordExceptionAsync` method call.
+2. Implement a `IRaygunUserManager`.
+
+#### User details class
+
+The following properties can be provided as user details:
+
+- `UserId`: Unique identifier for the user is the user identifier.
+- `IsAnonymous`: Flag indicating if the user is anonymous or not.
+- `Email`: User's email address.
+- `FullName`: User's full name.
+- `FirstName`: User's first name (what you would use if you were emailing them - "Hi {{firstName}}, ...")
+- `DeviceId`: Device unique identifier. Useful if sending errors from a mobile device.
+
+All properties are strings except isAnonymous, which is a boolean. As well, they are all optional.
+
+#### User details in `RecordExceptionAsync`
+
+The simplest way to attach user details to an error report, is to do it when calling to `RecordExceptionAsync`.
+
+Pass a `UserDetails` object to the method call:
+
+```cs
+var userDetails = new UserDetails() { Email = "test@example.com", FullName = "Test User", UserId = "123456" };
+
+await RaygunClient.RecordExceptionAsync(ex, userDetails);
+```
+
+#### Implementing `IRaygunUserManager`
+
+Providing an instance of `IRaygunUserManager` to the Raygun Blazor client allows you to attach user details also to errors reported automatically, for example, captured unhandled exceptions or exceptions from the JavaScript layer.
+
+Implement an `IRaygunUserManager`, for example:
+
+```cs
+public class MyUserManager : IRaygunUserManager
+{
+    public Task<UserDetails?> GetCurrentUser()
+    {
+        return Task.FromResult(new UserDetails());
+    }
+}
+```
+
+And inject it into the Raygun Blazor client:
+
+```cs
+builder.Services.AddSingleton<IRaygunUserManager, MyUserManager>();
+```
+
+For a complete example on how to implement a `IRaygunUserManager` with the `AuthenticationStateProvider` check the example project file `src/Raygun.Samples.Blazor.WebAssembly/Program.cs`.
+
 ### Internal logger
 
 Raygun for Blazor uses an internal logger to help facilitate the integration of the package.
