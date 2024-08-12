@@ -1,3 +1,4 @@
+using Raygun.Blazor.Server.Extensions;
 using Raygun.Samples.Blazor.Server.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Initialize Raygun
+builder.UseRaygunBlazor();
 
 var app = builder.Build();
 
