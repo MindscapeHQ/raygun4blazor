@@ -81,6 +81,19 @@ Raygun for Blazor provides two ways to attach user details to error reports:
 1. Provide `UserDetails` in the `RecordExceptionAsync` method call.
 2. Implement a `IRaygunUserManager`.
 
+#### User details class
+
+The following properties can be provided as user details:
+
+- `UserId`: Unique identifier for the user is the user identifier.
+- `IsAnonymous`: Flag indicating if the user is anonymous or not.
+- `Email`: User's email address.
+- `FullName`: User's full name.
+- `FirstName`: User's first name (what you would use if you were emailing them - "Hi {{firstName}}, ...")
+- `DeviceId`: Device unique identifier. Useful if sending errors from a mobile device.
+
+All properties are strings except isAnonymous, which is a boolean. As well, they are all optional.
+
 #### User details in `RecordExceptionAsync`
 
 The simplest way to attach user details to an error report, is to do it when calling to `RecordExceptionAsync`.
