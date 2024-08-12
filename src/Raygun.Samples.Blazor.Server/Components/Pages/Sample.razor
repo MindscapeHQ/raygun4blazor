@@ -1,16 +1,26 @@
 ﻿@page "/sample"
+@using Raygun.Blazor
+@using Raygun.Blazor.Models
 @rendermode InteractiveServer
+@inject RaygunBlazorClient RaygunClient
 
 <PageTitle>Raygun Sample</PageTitle>
 
 <h1>Raygun Sample</h1>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="SendRecordException">Record Exception</button>
+<button class="btn btn-primary" @onclick="RecordBreadcrumb">Record Breadcrumb</button>
 
 @code {
-    private void IncrementCount()
+
+    private async void SendRecordException()
     {
-        // Nothing
+        await RaygunClient.RecordExceptionAsync(new Exception("Blazor Server Exception"));
+    }
+
+    private void RecordBreadcrumb()
+    {
+        RaygunClient.RecordBreadcrumb("Breadcrumb from Blazor Server", BreadcrumbType.ClickEvent);
     }
 
 }
