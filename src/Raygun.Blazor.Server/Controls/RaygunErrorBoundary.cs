@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Options;
-using Microsoft.JSInterop;
 
 namespace Raygun.Blazor.Server.Controls
 {
@@ -21,12 +20,6 @@ namespace Raygun.Blazor.Server.Controls
         /// 
         /// </summary>
         [Inject]
-        internal IJSRuntime JSRuntime { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Inject]
         internal RaygunBlazorClient RaygunClient { get; set; }
 
         /// <summary>
@@ -34,7 +27,7 @@ namespace Raygun.Blazor.Server.Controls
         /// </summary>
         [Inject]
         internal IOptions<RaygunSettings> RaygunSettings { get; set; }
-
+        
         #endregion
 
         #region Public Parameters
@@ -56,6 +49,7 @@ namespace Raygun.Blazor.Server.Controls
         /// <returns></returns>
         protected override async Task OnErrorAsync(Exception exception)
         {
+            Console.WriteLine("OnErrorAsync");
             if (!RaygunSettings.Value.CatchUnhandledExceptions) return;
 
             await RaygunClient.RecordExceptionAsync(exception, null, ["UnhandledException", "Blazor", ".NET"]);
