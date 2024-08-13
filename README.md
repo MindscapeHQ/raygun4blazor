@@ -150,7 +150,13 @@ For all configuration values, check the `RaygunLogLevel` enum under `src/Raygun.
 
 ---
 
-## Example Project
+## Blazor WebAssembly
+
+### Setup
+
+- [ ] TODO: setup WebAssembly instructions
+
+### Example
 
 Example project is located in `src/Raygun.Samples.Blazor.WebAssembly`
 
@@ -158,6 +164,90 @@ To run the example:
 
 1. Install `dotnet-sdk` minimum version supported in `8.0.300`.
 2. Add the `ApiKey` property to in `src/Raygun.Samples.Blazor.WebAssembly/wwwroot/appsettings.json`
+
+```
+{
+  "Raygun": {
+    "ApiKey": "YOUR_API_KEY"
+  }
+}
+```
+
+3. Run `dotnet watch` from the example folder.
+
+A browser window to `http://localhost:5010/` should automatically open.
+
+## Blazor Server
+
+### Installation
+
+- [ ] TODO: NuGet install instructions
+
+### Setup
+
+Add a scoped `RaygunBlazorClient` by calling to `UseRaygunBlazor()` with your `WebApplication` builder.
+
+```cs
+var builder = WebApplication.CreateBuilder(args);
+
+...
+
+builder.UseRaygunBlazor();
+```
+
+### Accessing `RaygunBlazorClient`
+
+You can access the `RaygunBlazorClient` using `@inject` in your code:
+
+```cs
+@inject RaygunBlazorClient RaygunClient
+
+...
+
+RaygunClient.RecordExceptionAsync(...)
+```
+
+### Capturing unhandled exceptions
+
+Use `RaygunErrorBoundary` to wrap compoments and capture unhandled exceptions automatically.
+
+Note: You have to set `@rendermode="InteractiveServer"` in your `HeadOutlet` and `Routes` component to enable error capturing, as explained in [Handle errors in ASP.NET Core Blazor apps](https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/handle-errors?view=aspnetcore-8.0#error-boundaries)
+
+For example, in your `MainLayout.razor`:
+
+```cs
+@using Raygun.Blazor.Server.Controls
+
+...
+
+<article class="content px-4">
+  <RaygunErrorBoundary>
+    @Body
+  </RaygunErrorBoundary>
+</article>
+```
+
+You can set `ShowExceptionsUI="true` to display a custom error message:
+
+```cs
+<RaygunErrorBoundary ShowExceptionUI="true">
+  <ChildContent>
+    @Body
+  </ChildContent>
+  <ErrorContent>
+    <p class="errorUI">👾 Error captured by Raygun!</p>
+  </ErrorContent>
+</RaygunErrorBoundary>
+```
+
+### Example
+
+Example project is located in `src/Raygun.Samples.Blazor.Server`
+
+To run the example:
+
+1. Install `dotnet-sdk` minimum version supported in `8.0.300`.
+2. Add the `ApiKey` property to in `src/Raygun.Samples.Blazor.Server/appsettings.Development.json`
 
 ```
 {
