@@ -27,7 +27,7 @@ namespace Raygun.Blazor.Server.Controls
         /// </summary>
         [Inject]
         internal IOptions<RaygunSettings> RaygunSettings { get; set; }
-        
+
         #endregion
 
         #region Public Parameters
