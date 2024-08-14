@@ -53,7 +53,7 @@ namespace Raygun.Tests.Blazor
                 services.AddScoped<RaygunBrowserInterop>();
                 services.AddWindowService();
                 services.AddSingleton<IHttpClientFactory>(new MockHttpClientFactory(_httpClient));
-                services.AddSingleton<IRaygunUserManager>(new FakeRaygunUserManager());
+                services.AddSingleton<IRaygunUserProvider>(new FakeRaygunUserProvider());
                 services.AddScoped<RaygunBlazorClient>();
 
                 // Mock entries requests
@@ -102,7 +102,7 @@ namespace Raygun.Tests.Blazor
             raygunMsg.Details.Error.ClassName.Should().Be("System.Exception");
             raygunMsg.Details.Error.Message.Should().Be("Test");
 
-            // Check user details from FakeRaygunUserManager
+            // Check user details from FakeRaygunUserProvider
             raygunMsg.Details.User.FullName.Should().Be("Manager User");
             raygunMsg.Details.User.Email.Should().Be("manager@example.com");
         }
@@ -184,7 +184,7 @@ namespace Raygun.Tests.Blazor
         }
     }
 
-    class FakeRaygunUserManager : IRaygunUserManager
+    class FakeRaygunUserProvider : IRaygunUserProvider
     {
         public Task<UserDetails> GetCurrentUser()
         {

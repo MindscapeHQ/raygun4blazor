@@ -7,7 +7,7 @@ namespace Raygun.Blazor.Interfaces
     /// <summary>
     /// Defines the contract for a user manager for Raygun error reports.
     /// </summary>
-    public interface IRaygunUserManager
+    public interface IRaygunUserProvider
     {
 
         /// <summary>
