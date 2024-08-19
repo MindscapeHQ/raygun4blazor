@@ -1,21 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
-	
-	<PropertyGroup>
-		<TargetFrameworks>net8.0;</TargetFrameworks>
-		<DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
-		<RootNamespace>Raygun.Blazor.WebAssembly</RootNamespace>
-	</PropertyGroup>
 
-	<ItemGroup>
-		<SupportedPlatform Include="browser" />
-	</ItemGroup>
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;</TargetFrameworks>
+        <DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
+        <RootNamespace>Raygun.Blazor.WebAssembly</RootNamespace>
 
-	<ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.*" />
-	</ItemGroup>
+        <!-- NuGet Package config -->
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Version>0.0.1</Version>
+        <PackageVersion>0.0.1</PackageVersion>
+        <Authors>Raygun Limited</Authors>
+        <Title>Raygun for Blazor WebAssembly</Title>
+        <Description>Raygun's Crash Reporting extension for Blazor WebAssembly</Description>
+        <Product>Raygun4Blazor.WebAssembly</Product>
+        <PackageTags>Raygun; Crash Reporting; Blazor; .NET; dotnet; WebAssembly</PackageTags>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <PackageIcon>Raygun-icon-128x128.png</PackageIcon>
+        <!-- End NuGet Package config -->
+    </PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Raygun.Blazor\Raygun.Blazor.csproj" />
-	</ItemGroup>
-	
+    <ItemGroup>
+        <!-- Package Readme File at root of repo -->
+        <None Include="../../README.md" Pack="true" PackagePath="" />
+        <None Include="../../LICENSE.txt" Pack="true" PackagePath="" />
+        <None Include="../../Raygun-icon-128x128.png" Pack="true" PackagePath="" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Raygun.Blazor\Raygun.Blazor.csproj" />
+    </ItemGroup>
+
 </Project>

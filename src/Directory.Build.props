@@ -30,13 +30,11 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<Product>Raygun</Product>
-		<Authors>Robert McLaws</Authors>
+		<Authors>Raygun Limited</Authors>
 		<Company>Raygun Limited</Company>
 		<RpmPackageVendor>Raygun</RpmPackageVendor>
 		<Copyright>Copyright © 2024-2025 Raygun Limited. All rights reserved.</Copyright>
 		<NeutralLanguage>en-US</NeutralLanguage>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<!--
       Suppress a warning about upcoming deprecation of PackageLicenseUrl. When embedding licenses are supported,
       replace PackageLicenseUrl with PackageLicenseExpression.
@@ -45,13 +43,8 @@
 		<!-- Suppress warnings about using SemVer 2.0. -->
 		<NoWarn>$(NoWarn);NU5105</NoWarn>
 
-		<!-- Contact email address for NuGet packages and Linux installers. -->
-		<!--<MaintainerEmail>odata@nimbleapps.cloud</MaintainerEmail>-->
-
-		<PackageIcon>raygun.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/MindscapeHQ/raygun4blazor</PackageProjectUrl>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<PackageTags>raygun;blazor</PackageTags>
 		<Serviceable>true</Serviceable>
 
 		<RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>

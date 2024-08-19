@@ -5,16 +5,32 @@
         <DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
         <RootNamespace>Raygun.Blazor.Server</RootNamespace>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+
+        <!-- NuGet Package config -->
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Version>0.0.1</Version>
+        <PackageVersion>0.0.1</PackageVersion>
+        <Authors>Raygun Limited</Authors>
+        <Title>Raygun for Blazor Server</Title>
+        <Description>Raygun's Crash Reporting extension for Blazor Server</Description>
+        <Product>Raygun4Blazor.Server</Product>
+        <PackageTags>Raygun; Crash Reporting; Blazor; .NET; dotnet; Server</PackageTags>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <PackageIcon>Raygun-icon-128x128.png</PackageIcon>
+        <!-- End NuGet Package config -->
     </PropertyGroup>
 
     <ItemGroup>
         <!-- Package Readme File at root of repo -->
         <None Include="../../README.md" Pack="true" PackagePath="" />
+        <None Include="../../LICENSE.txt" Pack="true" PackagePath="" />
+        <None Include="../../Raygun-icon-128x128.png" Pack="true" PackagePath="" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Raygun.Blazor\Raygun.Blazor.csproj" />
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
-    
+
 </Project>
