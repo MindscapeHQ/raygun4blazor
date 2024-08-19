@@ -9,6 +9,12 @@
 
     <ItemGroup>
         <!-- Package Readme File at root of repo -->
-        <None Include="../../README.md" Pack="true" PackagePath=""/>
+        <None Include="../../README.md" Pack="true" PackagePath="" />
     </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Raygun.Blazor\Raygun.Blazor.csproj" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+    
 </Project>

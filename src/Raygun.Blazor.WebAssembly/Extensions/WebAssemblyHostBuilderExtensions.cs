@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using System;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Raygun.Blazor.Extensions;
-using Raygun.Blazor.Logging;
 
 
 namespace Raygun.Blazor.WebAssembly.Extensions

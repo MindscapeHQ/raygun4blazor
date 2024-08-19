@@ -1,0 +1,33 @@
+﻿@page "/sample"
+@using Raygun.Blazor
+@using Raygun.Blazor.Models
+@rendermode InteractiveServer
+@inject RaygunBlazorClient RaygunClient
+
+<PageTitle>Raygun Sample</PageTitle>
+
+<h1>Raygun Sample</h1>
+
+<button class="btn btn-primary" @onclick="SendRecordException">Record Exception</button>
+<button class="btn btn-primary" @onclick="RecordBreadcrumb">Record Breadcrumb</button>
+<button class="btn btn-primary" @onclick="@(() => { var y = 0; var x = 3; var z = x / y; })">Throw .NET Exception</button>
+<button class="btn btn-primary" @onclick="ThrowException">Throw Code Exception</button>
+
+@code {
+
+    private async void SendRecordException()
+    {
+        await RaygunClient.RecordExceptionAsync(new Exception("Blazor Server Exception"));
+    }
+
+    private void RecordBreadcrumb()
+    {
+        RaygunClient.RecordBreadcrumb("Breadcrumb from Blazor Server", BreadcrumbType.ClickEvent);
+    }
+
+    private void ThrowException()
+    {
+        throw new Exception("Code exception!");
+    }
+
+}

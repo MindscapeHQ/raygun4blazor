@@ -27,7 +27,7 @@ namespace Raygun.Blazor
         // private readonly IRaygunQueueManager? _queueManager;
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IRaygunLogger? _raygunLogger;
-        private readonly IRaygunUserManager? _userManager;
+        private readonly IRaygunUserProvider? _userManager;
         private readonly JsonSerializerOptions _jsonOptions;
         private readonly List<BreadcrumbDetails> _breadcrumbs;
         private readonly RaygunBrowserInterop _browserInterop;
@@ -48,7 +48,7 @@ namespace Raygun.Blazor
         /// You should not usually create a new instance yourself, instead get a usable instance from the DI container by injecting it into the Blazor page directly.
         /// </remarks>
         public RaygunBlazorClient(IOptions<RaygunSettings> raygunSettings, IHttpClientFactory httpClientFactory,
-            RaygunBrowserInterop browserInterop, IRaygunUserManager? userManager = null)
+            RaygunBrowserInterop browserInterop, IRaygunUserProvider? userManager = null)
         {
             _raygunLogger = RaygunLogger.Create(raygunSettings.Value.LogLevel);
             _userManager = userManager;
@@ -152,7 +152,7 @@ namespace Raygun.Blazor
         /// Queues an exception to be sent to Raygun.
         /// </summary>
         /// <param name="ex">The exception to be sent back to Raygun.</param>
-        /// <param name="userDetails">Attach user details to exception, takes priority over <see cref="IRaygunUserManager" /></param>
+        /// <param name="userDetails">Attach user details to exception, takes priority over <see cref="IRaygunUserProvider" /></param>
         /// <param name="userCustomData">Any custom data that you you like sent with the report to assist with troubleshooting.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken" /> to allow you to cancel the current request, if necessary.</param>
         /// <param name="tags">User-specified tags that should be applied to the error.</param>

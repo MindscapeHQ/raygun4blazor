@@ -54,32 +54,41 @@ Inject the `RaygunBlazorClient` in your code:
 
 And call to `raygunClient.InitializeAsync()` at least once.
 
-- [ ] TODO: Add more info. See `src/Raygun.Blazor/RaygunBlazorClient.cs` for more information.
+This method should be called as early as possible in the course of using the app. The best place to do it is inside the
+`OnAfterRenderAsync` method of the main layout page. However it will also be called automatically before sending any
+exceptions, just in case.
 
 ### Recording an error
 
-Call to `raygunClient.RecordExceptionAsync(...)`
+To send an exception to Raygun call to `raygunClient.RecordExceptionAsync(...)`
 
-- [ ] TODO: Add more info. See `src/Raygun.Blazor/RaygunBlazorClient.cs` for more information.
+This method accepts the following arguments:
+
+- `ex`: The `Exception` to send back to Raygun.
+- `userDetails`: Optional. Attach user details to exception, takes priority over `IRaygunUserProvider`.
+- `tags`: Optional. User-specified tags that should be applied to the error.
+- `userCustomData`: Optional. Any custom data that you you like sent with the report to assist with troubleshooting.
+- `cancellationToken`: Optional. A `CancellationToken` to allow you to cancel the current request, if necessary.
 
 ### Recording a breadcrumb
 
+Records a Breadcrumb to help you track what was going on in your application before an error occurred.
+
 Call to `raygunClient.RecordBreadcrumb(...);`
 
-- [ ] TODO: Add more info. See `src/Raygun.Blazor/RaygunBlazorClient.cs` for more information.
+This method accepts the following arguments:
 
-### `RaygunErrorBoundary`
-
-- [ ] TODO: Document when to use the `RaygunErrorBoundary`.
-
-Currently used in `src/Raygun.Samples.Blazor.WebAssembly/App.razor`
+- `message`: The message you want to record for this Breadcrumb.
+- `type`: The `BreadcrumbType` for the message. Defaults to `BreadcrumbType.Manual`.
+- `category`: A custom value used to arbitrarily group this Breadcrumb.
+- `customData`: Any custom data you want to record about application state when the Breadcrumb was recorded.
 
 ### Attaching user details
 
 Raygun for Blazor provides two ways to attach user details to error reports:
 
 1. Provide `UserDetails` in the `RecordExceptionAsync` method call.
-2. Implement a `IRaygunUserManager`.
+2. Implement a `IRaygunUserProvider`.
 
 #### User details class
 
@@ -106,14 +115,14 @@ var userDetails = new UserDetails() { Email = "test@example.com", FullName = "Te
 await RaygunClient.RecordExceptionAsync(ex, userDetails);
 ```
 
-#### Implementing `IRaygunUserManager`
+#### Implementing `IRaygunUserProvider`
 
-Providing an instance of `IRaygunUserManager` to the Raygun Blazor client allows you to attach user details also to errors reported automatically, for example, captured unhandled exceptions or exceptions from the JavaScript layer.
+Providing an instance of `IRaygunUserProvider` to the Raygun Blazor client allows you to attach user details also to errors reported automatically, for example, captured unhandled exceptions or exceptions from the JavaScript layer.
 
-Implement an `IRaygunUserManager`, for example:
+Implement an `IRaygunUserProvider`, for example:
 
 ```cs
-public class MyUserManager : IRaygunUserManager
+public class MyUserProvider : IRaygunUserProvider
 {
     public Task<UserDetails?> GetCurrentUser()
     {
@@ -125,10 +134,10 @@ public class MyUserManager : IRaygunUserManager
 And inject it into the Raygun Blazor client:
 
 ```cs
-builder.Services.AddSingleton<IRaygunUserManager, MyUserManager>();
+builder.Services.AddSingleton<IRaygunUserProvider, MyUserProvider>();
 ```
 
-For a complete example on how to implement a `IRaygunUserManager` with the `AuthenticationStateProvider` check the example project file `src/Raygun.Samples.Blazor.WebAssembly/Program.cs`.
+For a complete example on how to implement a `IRaygunUserProvider` with the `AuthenticationStateProvider` check the example project file `src/Raygun.Samples.Blazor.WebAssembly/Program.cs`.
 
 ### Internal logger
 
@@ -150,7 +159,13 @@ For all configuration values, check the `RaygunLogLevel` enum under `src/Raygun.
 
 ---
 
-## Example Project
+## Blazor WebAssembly
+
+### Setup
+
+- [ ] TODO: setup WebAssembly instructions
+
+### Example
 
 Example project is located in `src/Raygun.Samples.Blazor.WebAssembly`
 
@@ -158,6 +173,90 @@ To run the example:
 
 1. Install `dotnet-sdk` minimum version supported in `8.0.300`.
 2. Add the `ApiKey` property to in `src/Raygun.Samples.Blazor.WebAssembly/wwwroot/appsettings.json`
+
+```
+{
+  "Raygun": {
+    "ApiKey": "YOUR_API_KEY"
+  }
+}
+```
+
+3. Run `dotnet watch` from the example folder.
+
+A browser window to `http://localhost:5010/` should automatically open.
+
+## Blazor Server
+
+### Installation
+
+- [ ] TODO: NuGet install instructions
+
+### Setup
+
+Add a scoped `RaygunBlazorClient` by calling to `UseRaygunBlazor()` with your `WebApplication` builder.
+
+```cs
+var builder = WebApplication.CreateBuilder(args);
+
+...
+
+builder.UseRaygunBlazor();
+```
+
+### Accessing `RaygunBlazorClient`
+
+You can access the `RaygunBlazorClient` using `@inject` in your code:
+
+```cs
+@inject RaygunBlazorClient RaygunClient
+
+...
+
+RaygunClient.RecordExceptionAsync(...)
+```
+
+### Capturing unhandled exceptions
+
+Use `RaygunErrorBoundary` to wrap compoments and capture unhandled exceptions automatically.
+
+Note: You have to set `@rendermode="InteractiveServer"` in your `HeadOutlet` and `Routes` component to enable error capturing, as explained in [Handle errors in ASP.NET Core Blazor apps](https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/handle-errors?view=aspnetcore-8.0#error-boundaries)
+
+For example, in your `MainLayout.razor`:
+
+```cs
+@using Raygun.Blazor.Server.Controls
+
+...
+
+<article class="content px-4">
+  <RaygunErrorBoundary>
+    @Body
+  </RaygunErrorBoundary>
+</article>
+```
+
+You can set `ShowExceptionsUI="true` to display a custom error message:
+
+```cs
+<RaygunErrorBoundary ShowExceptionUI="true">
+  <ChildContent>
+    @Body
+  </ChildContent>
+  <ErrorContent>
+    <p class="errorUI">👾 Error captured by Raygun!</p>
+  </ErrorContent>
+</RaygunErrorBoundary>
+```
+
+### Example
+
+Example project is located in `src/Raygun.Samples.Blazor.Server`
+
+To run the example:
+
+1. Install `dotnet-sdk` minimum version supported in `8.0.300`.
+2. Add the `ApiKey` property to in `src/Raygun.Samples.Blazor.Server/appsettings.Development.json`
 
 ```
 {

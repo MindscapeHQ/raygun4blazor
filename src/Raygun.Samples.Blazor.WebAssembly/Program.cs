@@ -27,15 +27,15 @@ namespace Raygun.Samples.Blazor.WebAssembly
             builder.Services.AddScoped(sp => new HttpClient
             { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            // Provide a custom implementation of IRaygunUserManager
+            // Provide a custom implementation of IRaygunUserProvider
 
-            // Simple IRaygunUserManager
-            // builder.Services.AddSingleton<IRaygunUserManager, MyUserManager>();
+            // Simple IRaygunUserProvider
+            // builder.Services.AddSingleton<IRaygunUserProvider, MyUserProvider>();
 
-            // IRaygunUserManager with AuthenticationStateProvider
+            // IRaygunUserProvider with AuthenticationStateProvider
             builder.Services.AddAuthorizationCore();
             builder.Services.AddSingleton<AuthenticationStateProvider, TestAuthStateProvider>();
-            builder.Services.AddSingleton<IRaygunUserManager, RaygunUserManagerAuthState>();
+            builder.Services.AddSingleton<IRaygunUserProvider, RaygunUserProviderAuthState>();
 
             builder.UseRaygunBlazor();
             builder.Services.AddSingleton<CounterViewModel>();
@@ -52,15 +52,15 @@ namespace Raygun.Samples.Blazor.WebAssembly
     }
 
     /// <summary>
-    /// Custom IRaygunUserManager that providers user details directly
+    /// Custom IRaygunUserProvider that providers user details directly
     /// </summary>
-    public class MyUserManager : IRaygunUserManager
+    public class MyUserProvider : IRaygunUserProvider
     {
         public Task<UserDetails?> GetCurrentUser()
         {
             return Task.FromResult(new UserDetails()
             {
-                FullName = "Test User from MyUserManager",
+                FullName = "Test User from MyUserProvider",
                 Email = "test-user-manager@example.com",
                 UserId = "67890",
             })!;
@@ -87,8 +87,8 @@ namespace Raygun.Samples.Blazor.WebAssembly
     /// <summary>
     /// Custom IRaygunManager that uses AuthenticationStateProvider to get user information
     /// </summary>
-    public class RaygunUserManagerAuthState(AuthenticationStateProvider authenticationStateProvider)
-        : IRaygunUserManager
+    public class RaygunUserProviderAuthState(AuthenticationStateProvider authenticationStateProvider)
+        : IRaygunUserProvider
     {
         public async Task<UserDetails?> GetCurrentUser()
         {
