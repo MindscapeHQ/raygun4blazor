@@ -4,11 +4,12 @@
         <TargetFrameworks>net8.0;</TargetFrameworks>
         <DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
         <RootNamespace>Raygun.Blazor.WebAssembly</RootNamespace>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
 
         <!-- NuGet Package config -->
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <Version>0.0.1</Version>
-        <PackageVersion>0.0.1</PackageVersion>
+        <Version>0.0.2</Version>
+        <PackageVersion>0.0.2</PackageVersion>
         <Authors>Raygun Limited</Authors>
         <Title>Raygun for Blazor WebAssembly</Title>
         <Description>Raygun's Crash Reporting extension for Blazor WebAssembly</Description>
