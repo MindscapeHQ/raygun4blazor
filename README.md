@@ -4,23 +4,26 @@
 
 ### Installation
 
-- [ ] TODO: Package installation instructions. e.g.
+#### NuGet Package manager
+The best way to install Raygun is to use the NuGet package manager. Right-click on your project and select "**Manage NuGet Packages....**". Navigate to the Browse tab, then use the search box to find **Raygun.Blazor** and install it.
+
+#### .NET Cli
+
+To install the latest version:
+
+``` 
+dotnet add package Raygun.Blazor
+```
+
+Alternatively, you can specify a version tag to install a specific version of the package. See [Raygun.Blazor NuGet Gallery page](https://nuget.org/packages/Raygun.Blazor) for information on available versions.
 
 ```
-dotnet add package <something>
+dotnet add package Raygun.Blazor --version x.y.z
 ```
 
 ### Setup
 
-#### Using `WebAssemblyHostBuilder` to create the client
-
-Use `UseRaygunBlazor` extension to configure the `RaygunBlazorClient` and related services for use in a Blazor WebAssembly application.
-
-```cs
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
-builder.UseRaygunBlazor();
-```
+See the section **Blazor WebAssembly** and **Blazor Server** for specific setup instructions depending on the project type.
 
 #### Raygun Settings
 
@@ -161,6 +164,10 @@ For all configuration values, check the `RaygunLogLevel` enum under `src/Raygun.
 
 ## Blazor WebAssembly
 
+### Installation
+
+Install the package `Raygun.Blazor.WebAssembly` from NuGet.
+
 ### Setup
 
 - [ ] TODO: setup WebAssembly instructions
@@ -190,7 +197,7 @@ A browser window to `http://localhost:5010/` should automatically open.
 
 ### Installation
 
-- [ ] TODO: NuGet install instructions
+Install the package `Raygun.Blazor.Server` from NuGet.
 
 ### Setup
 
@@ -272,6 +279,14 @@ A browser window to `http://localhost:5010/` should automatically open.
 
 ---
 
-## Publishing
+## Development
 
-- [ ] TODO: Packagre publishing instructions, e.g. NuGet publish instructions
+### To build a local nuget package
+
+- Open Visual Studio 22+
+- Open the `Raygun.Blazor.sln` solution
+- Right-click the project and select properties
+- Ensure the produce a NuGet package build option is checked
+- Under package, update the version name
+
+Each time you build your project a .nupkg file will be created in your bin directory.
