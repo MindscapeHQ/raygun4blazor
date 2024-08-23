@@ -18,7 +18,7 @@ dotnet add package Raygun.Blazor
 Alternatively, you can specify a version tag to install a specific version of the package. See [Raygun.Blazor NuGet Gallery page](https://nuget.org/packages/Raygun.Blazor) for information on available versions.
 
 ```
-dotnet add package Raygun.Blazor --version 0.0.1
+dotnet add package Raygun.Blazor --version x.y.z
 ```
 
 ### Setup
