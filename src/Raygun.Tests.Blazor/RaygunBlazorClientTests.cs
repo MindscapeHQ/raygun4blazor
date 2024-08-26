@@ -172,7 +172,7 @@ namespace Raygun.Tests.Blazor
             var raygunClient = TestHost.Services.GetService<RaygunBlazorClient>();
             raygunClient.Should().NotBeNull();
 
-            // Add a handler that cancels the send operation
+            // Add a handler that changes the error message
             raygunClient.OnBeforeSend += (sender, args) => args.Request.Details.Error.Message = "MODIFIED";
 
             Func<Task> recordException = async () => await raygunClient.RecordExceptionAsync(new Exception("Test"));
