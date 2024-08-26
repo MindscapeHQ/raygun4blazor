@@ -148,7 +148,7 @@ The RaygunClient exposes the `OnBeforeSend` event listener, which allows you to 
 
 To cancel sending a request, set the `Cancel` property to `false` inside your listener:
 
-```dotnet
+```cs
 RaygunClient.OnBeforeSend += (sender, args) =>
 {
   // Example of how to cancel sending a message to Raygun
@@ -163,7 +163,7 @@ RaygunClient.OnBeforeSend += (sender, args) =>
 
 As well, you can modify the `Request` payload:
 
-```dotnet
+```cs
 RaygunClient.OnBeforeSend += (sender, args) =>
 {
   args.Request.Details.Error.Message = "Changed message";
