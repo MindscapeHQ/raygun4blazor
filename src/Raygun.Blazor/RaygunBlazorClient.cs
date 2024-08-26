@@ -232,7 +232,7 @@ namespace Raygun.Blazor
                 cancellationToken);
 
             // TODO: RWM: Do something if the request fails:
-            //            202 OK - Request accepted.
+            //            202 OK - Message accepted.
             //            400 Bad message - could not parse the provided JSON. Check all fields are present, especially both occurredOn (ISO 8601 DateTime) and details { } at the top level.
             //            403 Invalid API Key - The value specified in the header X-ApiKey did not match with a user.
             //            413 Request entity too large - The maximum size of a JSON payload is 128KB.
