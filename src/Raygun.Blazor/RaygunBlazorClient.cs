@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using KristofferStrube.Blazor.WebIDL.Exceptions;
 using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.Options;
+using Raygun.Blazor.Events;
 using Raygun.Blazor.Interfaces;
 using Raygun.Blazor.Logging;
 using Raygun.Blazor.Models;
@@ -21,6 +22,15 @@ namespace Raygun.Blazor
     /// </summary>
     public class RaygunBlazorClient
     {
+        #region Public Members
+
+        /// <summary>
+        /// Raised just before a message is sent. This can be used to make final adjustments to the <see cref="RaygunRequest"/>, or to cancel the send.
+        /// </summary>
+        public event EventHandler<RaygunRequestSendEventArgs>? OnBeforeSend;
+
+        #endregion
+
         #region Private Members
 
         // private readonly IRaygunOfflineStore? _offlineStore;
@@ -75,6 +85,7 @@ namespace Raygun.Blazor
         }
 
         #endregion
+
 
         #region Public Methods
 
@@ -197,7 +208,18 @@ namespace Raygun.Blazor
                     UserCustomData = userCustomData,
                 }
             };
-            _breadcrumbs.Clear();
+
+            // Allow user to modify or cancel the send
+            if (OnBeforeSend != null)
+            {
+                var args = new RaygunRequestSendEventArgs(request);
+                OnBeforeSend(this, args);
+                if (args.Cancel)
+                {
+                    _raygunLogger?.Debug("[RaygunBlazorClient] Request send cancelled by event handler.");
+                    return;
+                }
+            }
 
             _raygunLogger?.Debug("[RaygunBlazorClient] Sending request to Raygun: " + request);
 
@@ -210,7 +232,7 @@ namespace Raygun.Blazor
                 cancellationToken);
 
             // TODO: RWM: Do something if the request fails:
-            //            202 OK - Message accepted.
+            //            202 OK - Request accepted.
             //            400 Bad message - could not parse the provided JSON. Check all fields are present, especially both occurredOn (ISO 8601 DateTime) and details { } at the top level.
             //            403 Invalid API Key - The value specified in the header X-ApiKey did not match with a user.
             //            413 Request entity too large - The maximum size of a JSON payload is 128KB.
@@ -222,6 +244,8 @@ namespace Raygun.Blazor
             }
             else
             {
+                // Clear the breadcrumbs after a successful send.
+                _breadcrumbs.Clear();
                 _raygunLogger?.Debug("[RaygunBlazorClient] Request sent to Raygun: " + response.StatusCode);
             }
         }

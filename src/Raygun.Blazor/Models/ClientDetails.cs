@@ -7,7 +7,7 @@ namespace Raygun.Blazor.Models
     /// <summary>
     /// Specifies the details of the client library you are using for talking to the Raygun API.
     /// </summary>
-    internal record ClientDetails
+    public record ClientDetails
     {
 
         #region Public Properties

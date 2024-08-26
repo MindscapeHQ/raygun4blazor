@@ -15,7 +15,7 @@ namespace Raygun.Blazor.Models
     /// Breadcrumbs are used to help understand how your app was being used before an error happened. They are queued up by the
     /// <see cref="RaygunBlazorClient" /> and sent along with the next error report.
     /// </remarks>
-    internal record BreadcrumbDetails
+    public record BreadcrumbDetails
     {
 
         #region Public Properties

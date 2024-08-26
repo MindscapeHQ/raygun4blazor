@@ -7,7 +7,7 @@ namespace Raygun.Blazor.Models
     /// <summary>
     /// 
     /// </summary>
-    internal record EventDetails
+    public record EventDetails
     {
 
         #region Public Properties

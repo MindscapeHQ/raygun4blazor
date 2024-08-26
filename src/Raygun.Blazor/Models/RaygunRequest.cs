@@ -7,7 +7,7 @@ namespace Raygun.Blazor.Models
     /// <summary>
     /// Represents the root object in a Raygun error report.
     /// </summary>
-    internal record RaygunRequest
+    public record RaygunRequest
     {
 
         #region Properties
@@ -28,7 +28,7 @@ namespace Raygun.Blazor.Models
         /// Tracks whether or not this request has been fully-populated and is ready to be sent.
         /// </summary>
         [JsonIgnore]
-        public RequestQueueStatus QueueStatus { get; set; }
+        internal RequestQueueStatus QueueStatus { get; set; }
 
         #endregion
 
