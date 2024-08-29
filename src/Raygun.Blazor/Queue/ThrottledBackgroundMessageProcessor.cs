@@ -37,7 +37,7 @@ namespace Raygun.Blazor.Queue
             int maxWorkerTasks,
             int workerQueueBreakpoint,
             Func<RaygunRequest, CancellationToken, Task> onProcessMessageFunc, 
-            IRaygunLogger? raygunLogger)
+            IRaygunLogger? raygunLogger = null)
         {
             _raygunLogger = raygunLogger;
             _maxQueueSize = maxQueueSize;
