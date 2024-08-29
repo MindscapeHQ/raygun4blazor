@@ -36,7 +36,7 @@ namespace Raygun.Blazor.Queue
         public ThrottledBackgroundMessageProcessor(int maxQueueSize,
             int maxWorkerTasks,
             int workerQueueBreakpoint,
-            Func<RaygunRequest, CancellationToken, Task> onProcessMessageFunc, 
+            Func<RaygunRequest, CancellationToken, Task> onProcessMessageFunc,
             IRaygunLogger? raygunLogger = null)
         {
             _raygunLogger = raygunLogger;
