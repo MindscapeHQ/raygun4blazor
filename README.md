@@ -142,6 +142,28 @@ builder.Services.AddSingleton<IRaygunUserProvider, MyUserProvider>();
 
 For a complete example on how to implement a `IRaygunUserProvider` with the `AuthenticationStateProvider` check the example project file `src/Raygun.Samples.Blazor.WebAssembly/Program.cs`.
 
+### Background processing
+
+You can enable a throttled background message processor for the Raygun provider by setting the `UseBackgroundQueue` to `true`.
+
+```json
+{
+  "Raygun": {
+    "UseBackgroundQueue": true
+  }
+}
+```
+
+**Background processing is disabled by default.**
+
+You can adjust the following background processor settings as well:
+
+- `BackgroundMessageQueueMax` to set the maximum queue size.
+- `BackgroundMessageWorkerCount` to set the maximum number of workers.
+- `BackgroundMessageWorkerBreakpoint` to set a threshold on when a new worker will be added.
+
+Check the `RaygunSettings` class for a complete documentation of these parameters and their default values.
+
 ### Modifying or cancelling requests
 
 The RaygunClient exposes the `OnBeforeSend` event listener, which allows you to modify or cancel error message requests before they are sent to Raygun.

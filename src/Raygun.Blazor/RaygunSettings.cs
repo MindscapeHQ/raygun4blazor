@@ -1,14 +1,14 @@
-﻿using Raygun.Blazor.Logging;
+﻿using System;
+using Raygun.Blazor.Logging;
+using Raygun.Blazor.Queue;
 
 namespace Raygun.Blazor
 {
-
     /// <summary>
     /// Represents the different configuration options for the Raygun client.
     /// </summary>
     public class RaygunSettings
     {
-
         #region Private Members
 
         /// <summary>
@@ -58,8 +58,39 @@ namespace Raygun.Blazor
         /// </summary>
         public RaygunLogLevel LogLevel { get; set; } = RaygunLogLevel.Warning;
 
+        /// <summary>
+        /// The maximum queue size for background exceptions
+        /// </summary>
+        public int BackgroundMessageQueueMax { get; } = ushort.MaxValue;
+
+        /// <summary>
+        /// Controls the maximum number of background threads used to process the raygun message queue
+        /// </summary>
+        /// <remarks>
+        /// Defaults to Environment.ProcessorCount * 2 &gt;= 8 ? 8 : Environment.ProcessorCount * 2
+        /// </remarks>
+        public int BackgroundMessageWorkerCount { get; set; } =
+            Environment.ProcessorCount * 2 >= ThrottledBackgroundMessageProcessor.MaxWorkerCountDefault
+                ? ThrottledBackgroundMessageProcessor.MaxWorkerCountDefault
+                : Environment.ProcessorCount * 2;
+
+        /// <summary>
+        /// Used to determine how many messages are in the queue before the background processor will add another worker to help process the queue.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to 25, workers will be added for every 25 messages in the queue, until the BackgroundMessageWorkerCount is reached.
+        /// </remarks>
+        public int BackgroundMessageWorkerBreakpoint { get; set; } =
+            ThrottledBackgroundMessageProcessor.WorkerQueueBreakpointDefaultValue;
+
+        /// <summary>
+        /// Specifies the use of a background queue for sending messages to Raygun.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to false.
+        /// </remarks>
+        public bool UseBackgroundQueue { get; set; } = false;
+
         #endregion
-
     }
-
 }

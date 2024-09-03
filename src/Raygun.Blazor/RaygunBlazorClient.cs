@@ -14,6 +14,7 @@ using Raygun.Blazor.Events;
 using Raygun.Blazor.Interfaces;
 using Raygun.Blazor.Logging;
 using Raygun.Blazor.Models;
+using Raygun.Blazor.Queue;
 
 namespace Raygun.Blazor
 {
@@ -42,6 +43,7 @@ namespace Raygun.Blazor
         private readonly List<BreadcrumbDetails> _breadcrumbs;
         private readonly RaygunBrowserInterop _browserInterop;
         private readonly RaygunSettings _raygunSettings;
+        private readonly ThrottledBackgroundMessageProcessor? _messageProcessor;
 
         #endregion
 
@@ -60,14 +62,16 @@ namespace Raygun.Blazor
         public RaygunBlazorClient(IOptions<RaygunSettings> raygunSettings, IHttpClientFactory httpClientFactory,
             RaygunBrowserInterop browserInterop, IRaygunUserProvider? userManager = null)
         {
-            _raygunLogger = RaygunLogger.Create(raygunSettings.Value.LogLevel);
+            RaygunSettings settings = raygunSettings.Value;
+            _raygunLogger = RaygunLogger.Create(settings.LogLevel);
             _userManager = userManager;
 
             // RWM: We do this first because there is no point consuming CPU cycles setting properties if the API key is missing.
-            _raygunSettings = raygunSettings.Value;
+            _raygunSettings = settings;
             if (string.IsNullOrWhiteSpace(_raygunSettings.ApiKey))
             {
-                _raygunLogger?.Error("[RaygunBlazorClient] A Raygun API Key was not provided. Please check your settings and try again.");
+                _raygunLogger?.Error(
+                    "[RaygunBlazorClient] A Raygun API Key was not provided. Please check your settings and try again.");
                 // ReSharper disable once NotResolvedInText
                 throw new ArgumentNullException("RaygunSettings.ApiKey",
                     "A Raygun API Key was not provided. Please check your settings and try again.");
@@ -81,6 +85,14 @@ namespace Raygun.Blazor
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
+
+            if (settings.UseBackgroundQueue)
+            {
+                _messageProcessor = new ThrottledBackgroundMessageProcessor(settings.BackgroundMessageQueueMax,
+                    settings.BackgroundMessageWorkerCount, settings.BackgroundMessageWorkerBreakpoint, Send,
+                    _raygunLogger);
+            }
+
             _raygunLogger?.Debug("[RaygunBlazorClient] Initialized.");
         }
 
@@ -223,9 +235,43 @@ namespace Raygun.Blazor
 
             _raygunLogger?.Debug("[RaygunBlazorClient] Sending request to Raygun: " + request);
 
-            // TODO: RWM: Queue the request to be sent out-of-band.
-            //queueManager.Enqueue(request);
+            if (_messageProcessor != null)
+            {
+                // If we're using a background queue, enqueue the request.
+                if (_messageProcessor.Enqueue(request))
+                {
+                    _raygunLogger?.Debug("[RaygunBlazorClient] Request enqueued for background processing.");
+                }
+                else
+                {
+                    _raygunLogger?.Error("[RaygunBlazorClient] Failed to enqueue request for background processing.");
+                }
+            }
+            else
+            {
+                // Otherwise, send the request immediately.
+                await Send(request, cancellationToken);
+            }
+        }
 
+
+        /// <summary>
+        /// Allows you to immediately send any queued data to Raygun.
+        /// </summary>
+        /// <remarks>This is useful if you want to ensure the data is sent before the user navigates away from the app.</remarks>
+        /// <returns></returns>
+        /// <remarks>Will be implemented in the next update.</remarks>
+        public async Task FlushAsync()
+        {
+            await Task.CompletedTask;
+        }
+
+        #endregion
+
+        #region Internal Methods
+
+        private async Task Send(RaygunRequest request, CancellationToken cancellationToken)
+        {
             // RWM: This is temporary for now to ensure the request is properly created.
             var client = _httpClientFactory.CreateClient("Raygun");
             var response = await client.PostAsJsonAsync(RaygunSettings.EntriesEndpoint, request, _jsonOptions,
@@ -249,22 +295,6 @@ namespace Raygun.Blazor
                 _raygunLogger?.Debug("[RaygunBlazorClient] Request sent to Raygun: " + response.StatusCode);
             }
         }
-
-
-        /// <summary>
-        /// Allows you to immediately send any queued data to Raygun.
-        /// </summary>
-        /// <remarks>This is useful if you want to ensure the data is sent before the user navigates away from the app.</remarks>
-        /// <returns></returns>
-        /// <remarks>Will be implemented in the next update.</remarks>
-        public async Task FlushAsync()
-        {
-            await Task.CompletedTask;
-        }
-
-        #endregion
-
-        #region Internal Methods
 
         /// <summary>
         /// Processes unhandled exceptions from JavaScript and reports them to Raygun.
