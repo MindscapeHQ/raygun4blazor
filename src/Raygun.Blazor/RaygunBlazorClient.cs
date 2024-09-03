@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -14,6 +15,7 @@ using Raygun.Blazor.Events;
 using Raygun.Blazor.Interfaces;
 using Raygun.Blazor.Logging;
 using Raygun.Blazor.Models;
+using Raygun.Blazor.Offline;
 using Raygun.Blazor.Queue;
 
 namespace Raygun.Blazor
@@ -44,6 +46,7 @@ namespace Raygun.Blazor
         private readonly RaygunBrowserInterop _browserInterop;
         private readonly RaygunSettings _raygunSettings;
         private readonly ThrottledBackgroundMessageProcessor? _messageProcessor;
+        private readonly OfflineStoreBase? _offlineStore;
 
         #endregion
 
@@ -272,27 +275,59 @@ namespace Raygun.Blazor
 
         private async Task Send(RaygunRequest request, CancellationToken cancellationToken)
         {
-            // RWM: This is temporary for now to ensure the request is properly created.
-            var client = _httpClientFactory.CreateClient("Raygun");
-            var response = await client.PostAsJsonAsync(RaygunSettings.EntriesEndpoint, request, _jsonOptions,
-                cancellationToken);
+            bool shouldStoreMessage = false;
 
-            // TODO: RWM: Do something if the request fails:
-            //            202 OK - Message accepted.
-            //            400 Bad message - could not parse the provided JSON. Check all fields are present, especially both occurredOn (ISO 8601 DateTime) and details { } at the top level.
-            //            403 Invalid API Key - The value specified in the header X-ApiKey did not match with a user.
-            //            413 Request entity too large - The maximum size of a JSON payload is 128KB.
-            //            429 Too Many Requests - Plan limit exceeded for month or plan expired
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                _raygunLogger?.Error("[RaygunBlazorClient] Failed to send request to Raygun: " + response.StatusCode);
+                // RWM: This is temporary for now to ensure the request is properly created.
+                var client = _httpClientFactory.CreateClient("Raygun");
+                var response = await client.PostAsJsonAsync(RaygunSettings.EntriesEndpoint, request, _jsonOptions,
+                    cancellationToken);
+
+                // TODO: RWM: Do something if the request fails:
+                //            202 OK - Message accepted.
+                //            400 Bad message - could not parse the provided JSON. Check all fields are present, especially both occurredOn (ISO 8601 DateTime) and details { } at the top level.
+                //            403 Invalid API Key - The value specified in the header X-ApiKey did not match with a user.
+                //            413 Request entity too large - The maximum size of a JSON payload is 128KB.
+                //            429 Too Many Requests - Plan limit exceeded for month or plan expired
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    _raygunLogger?.Error(
+                        "[RaygunBlazorClient] Failed to send request to Raygun: " + response.StatusCode);
+
+                    // Only store messages that failed to send due to server error (e.g. error 500+)
+                    // Errors like 400 Bad Request are likely due to invalid data and should not be stored.
+                    shouldStoreMessage = response.StatusCode >= HttpStatusCode.InternalServerError;
+                }
+                else
+                {
+                    // Clear the breadcrumbs after a successful send.
+                    _breadcrumbs.Clear();
+                    _raygunLogger?.Debug("[RaygunBlazorClient] Request sent to Raygun: " + response.StatusCode);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // Clear the breadcrumbs after a successful send.
-                _breadcrumbs.Clear();
-                _raygunLogger?.Debug("[RaygunBlazorClient] Request sent to Raygun: " + response.StatusCode);
+                _raygunLogger?.Error(
+                    "[RaygunBlazorClient] Failed to send request to Raygun: " + ex.Message);
+
+                // Could be caused by networking error, so store the message for later.
+                shouldStoreMessage = true;
+            }
+
+            if (shouldStoreMessage)
+            {
+                if (_offlineStore != null)
+                {
+                    // Store the message for later.
+                    await _offlineStore.Save(request, cancellationToken).ConfigureAwait(false);
+                    
+                    // Because the request is now stored to send later, we can clear the breadcrumbs.
+                    _breadcrumbs.Clear();
+                    
+                    _raygunLogger?.Debug("[RaygunBlazorClient] Request stored for offline processing.");
+                }
             }
         }
 
