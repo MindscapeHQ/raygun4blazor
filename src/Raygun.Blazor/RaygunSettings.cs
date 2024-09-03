@@ -1,5 +1,6 @@
 ﻿using System;
 using Raygun.Blazor.Logging;
+using Raygun.Blazor.Queue;
 
 namespace Raygun.Blazor
 {
@@ -77,7 +78,8 @@ namespace Raygun.Blazor
         /// <remarks>
         /// Defaults to 25, workers will be added for every 25 messages in the queue, until the BackgroundMessageWorkerCount is reached.
         /// </remarks>
-        public int BackgroundMessageWorkerBreakpoint { get; set; } = 25;
+        public int BackgroundMessageWorkerBreakpoint { get; set; } =
+            ThrottledBackgroundMessageProcessor.WorkerQueueBreakpointDefaultValue;
 
         /// <summary>
         /// Specifies the use of a background queue for sending messages to Raygun.

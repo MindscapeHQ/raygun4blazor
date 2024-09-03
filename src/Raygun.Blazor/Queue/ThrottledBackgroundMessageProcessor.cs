@@ -14,6 +14,8 @@ namespace Raygun.Blazor.Queue
 {
     internal sealed class ThrottledBackgroundMessageProcessor : IDisposable
     {
+        internal const int WorkerQueueBreakpointDefaultValue = 25;
+        
         // This was a BlockingCollection<T> which used .Take to dequeue items, but since we will have 0 workers when the queue is empty
         // we don't need to block the thread waiting for an item to be enqueued. A concurrent queue is more appropriate.
         private readonly ConcurrentQueue<RaygunRequest> _messageQueue;
@@ -41,7 +43,7 @@ namespace Raygun.Blazor.Queue
         {
             _raygunLogger = raygunLogger;
             _maxQueueSize = maxQueueSize;
-            _workerQueueBreakpoint = workerQueueBreakpoint <= 0 ? 25 : workerQueueBreakpoint;
+            _workerQueueBreakpoint = workerQueueBreakpoint <= 0 ? WorkerQueueBreakpointDefaultValue : workerQueueBreakpoint;
 
             // Drain the queue when it reaches 90% of the max size
             _drainSize = Math.Max(maxQueueSize / 100 * 90, 1);
