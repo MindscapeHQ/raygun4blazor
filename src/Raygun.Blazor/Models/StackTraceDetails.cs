@@ -8,7 +8,7 @@ namespace Raygun.Blazor.Models
     /// <summary>
     /// 
     /// </summary>
-    internal class StackTraceDetails
+    public class StackTraceDetails
     {
         #region Public Properties
 

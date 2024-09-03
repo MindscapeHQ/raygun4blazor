@@ -9,7 +9,7 @@ namespace Raygun.Blazor.Models
     /// <summary>
     /// Information about the environment the app is running in.
     /// </summary>
-    internal record EnvironmentDetails
+    public record EnvironmentDetails
     {
 
         #region Public Properties

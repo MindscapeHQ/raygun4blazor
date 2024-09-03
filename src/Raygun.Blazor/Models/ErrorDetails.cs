@@ -12,7 +12,7 @@ namespace Raygun.Blazor.Models
     /// <summary>
     /// 
     /// </summary>
-    internal class ErrorDetails
+    public class ErrorDetails
     {
         #region Public Properties
 
