@@ -6,12 +6,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Raygun.Blazor.Interfaces;
 using Raygun.Blazor.Logging;
 using Raygun.Blazor.Models;
 
 namespace Raygun.Blazor.Queue
 {
+    using RequestProcessCallback = Func<RaygunRequest, CancellationToken, Task>;
+
     internal sealed class ThrottledBackgroundMessageProcessor : IDisposable
     {
         // When the "BackgroundMessageWorkerBreakpoint" setting is not set, we default to 25.
@@ -27,7 +28,7 @@ namespace Raygun.Blazor.Queue
 
         private readonly CancellationTokenSource _globalCancellationSource;
         private readonly int _maxQueueSize;
-        private readonly Func<RaygunRequest, CancellationToken, Task> _processCallback;
+        private readonly RequestProcessCallback _processCallback;
         private readonly int _maxWorkerTasks;
         private readonly int _workerQueueBreakpoint;
         private readonly object _workerTaskMutex = new();
@@ -42,7 +43,7 @@ namespace Raygun.Blazor.Queue
         public ThrottledBackgroundMessageProcessor(int maxQueueSize,
             int maxWorkerTasks,
             int workerQueueBreakpoint,
-            Func<RaygunRequest, CancellationToken, Task> onProcessMessageFunc,
+            RequestProcessCallback onProcessMessageFunc,
             IRaygunLogger? raygunLogger = null)
         {
             _raygunLogger = raygunLogger;
@@ -254,7 +255,7 @@ namespace Raygun.Blazor.Queue
         /// Actual task run by the worker. This method will take a message from the queue and process it.
         /// </summary>
         private static async Task RaygunMessageWorker(ConcurrentQueue<RaygunRequest> messageQueue,
-            Func<RaygunRequest, CancellationToken, Task> callback,
+            RequestProcessCallback callback,
             CancellationToken cancellationToken)
         {
             try

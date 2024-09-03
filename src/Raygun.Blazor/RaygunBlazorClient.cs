@@ -59,11 +59,12 @@ namespace Raygun.Blazor
         /// <param name="httpClientFactory">The <see cref="IHttpClientFactory" /> injected into the DI container by calling services.AddRaygunBlazor().</param>
         /// <param name="browserInterop"></param>
         /// <param name="userManager">Optional, provides <see cref="UserDetails"/> to attach to reported errors.</param>
+        /// <param name="offlineStore">Optional, stores Raygun requests that failed to send to try again later.</param>
         /// <remarks>
         /// You should not usually create a new instance yourself, instead get a usable instance from the DI container by injecting it into the Blazor page directly.
         /// </remarks>
         public RaygunBlazorClient(IOptions<RaygunSettings> raygunSettings, IHttpClientFactory httpClientFactory,
-            RaygunBrowserInterop browserInterop, IRaygunUserProvider? userManager = null)
+            RaygunBrowserInterop browserInterop, IRaygunUserProvider? userManager = null, OfflineStoreBase? offlineStore = null)
         {
             RaygunSettings settings = raygunSettings.Value;
             _raygunLogger = RaygunLogger.Create(settings.LogLevel);
@@ -95,6 +96,10 @@ namespace Raygun.Blazor
                     settings.BackgroundMessageWorkerCount, settings.BackgroundMessageWorkerBreakpoint, Send,
                     _raygunLogger);
             }
+
+            // Setup offline store and callback
+            _offlineStore = offlineStore;
+            _offlineStore?.SetSendCallback(SendOfflinePayloadAsync);
 
             _raygunLogger?.Debug("[RaygunBlazorClient] Initialized.");
         }
@@ -273,7 +278,18 @@ namespace Raygun.Blazor
 
         #region Internal Methods
 
+        private async Task SendOfflinePayloadAsync(RaygunRequest payload, CancellationToken cancellationToken)
+        {
+            // Send with offline store disabled to prevent storing the same message again.
+            await Send(payload, cancellationToken, useOfflineStore: false).ConfigureAwait(false);
+        }
+
         private async Task Send(RaygunRequest request, CancellationToken cancellationToken)
+        {
+            await Send(request, cancellationToken, useOfflineStore: true);
+        }
+
+        private async Task Send(RaygunRequest request, CancellationToken cancellationToken, bool useOfflineStore)
         {
             bool shouldStoreMessage = false;
 
@@ -316,16 +332,16 @@ namespace Raygun.Blazor
                 shouldStoreMessage = true;
             }
 
-            if (shouldStoreMessage)
+            if (shouldStoreMessage && useOfflineStore)
             {
                 if (_offlineStore != null)
                 {
                     // Store the message for later.
                     await _offlineStore.Save(request, cancellationToken).ConfigureAwait(false);
-                    
+
                     // Because the request is now stored to send later, we can clear the breadcrumbs.
                     _breadcrumbs.Clear();
-                    
+
                     _raygunLogger?.Debug("[RaygunBlazorClient] Request stored for offline processing.");
                 }
             }
