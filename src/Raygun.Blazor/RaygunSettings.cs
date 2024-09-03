@@ -70,7 +70,9 @@ namespace Raygun.Blazor
         /// Defaults to Environment.ProcessorCount * 2 &gt;= 8 ? 8 : Environment.ProcessorCount * 2
         /// </remarks>
         public int BackgroundMessageWorkerCount { get; set; } =
-            Environment.ProcessorCount * 2 >= 8 ? 8 : Environment.ProcessorCount * 2;
+            Environment.ProcessorCount * 2 >= ThrottledBackgroundMessageProcessor.MaxWorkerCountDefault
+                ? ThrottledBackgroundMessageProcessor.MaxWorkerCountDefault
+                : Environment.ProcessorCount * 2;
 
         /// <summary>
         /// Used to determine how many messages are in the queue before the background processor will add another worker to help process the queue.

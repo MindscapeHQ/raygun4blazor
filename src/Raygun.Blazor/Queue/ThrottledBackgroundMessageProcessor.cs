@@ -14,7 +14,11 @@ namespace Raygun.Blazor.Queue
 {
     internal sealed class ThrottledBackgroundMessageProcessor : IDisposable
     {
+        // When the "BackgroundMessageWorkerBreakpoint" setting is not set, we default to 25.
         internal const int WorkerQueueBreakpointDefaultValue = 25;
+        
+        // When the "BackgroundMessageWorkerCount" setting is not set, we default to 8 max workers.
+        internal const int MaxWorkerCountDefault = 8;
         
         // This was a BlockingCollection<T> which used .Take to dequeue items, but since we will have 0 workers when the queue is empty
         // we don't need to block the thread waiting for an item to be enqueued. A concurrent queue is more appropriate.
