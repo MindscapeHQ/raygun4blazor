@@ -164,6 +164,34 @@ You can adjust the following background processor settings as well:
 
 Check the `RaygunSettings` class for a complete documentation of these parameters and their default values.
 
+### Modifying or cancelling requests
+
+The RaygunClient exposes the `OnBeforeSend` event listener, which allows you to modify or cancel error message requests before they are sent to Raygun.
+
+To cancel sending a request, set the `Cancel` property to `false` inside your listener:
+
+```cs
+RaygunClient.OnBeforeSend += (sender, args) =>
+{
+  // Example of how to cancel sending a message to Raygun
+  if (args.Request.Details.Error.Message == "Cancel me")
+  {
+    // If the error message is "Cancel me"
+    // then cancel the send
+    args.Cancel = true;
+  }
+}
+```
+
+As well, you can modify the `Request` payload:
+
+```cs
+RaygunClient.OnBeforeSend += (sender, args) =>
+{
+  args.Request.Details.Error.Message = "Changed message";
+};
+```
+
 ### Internal logger
 
 Raygun for Blazor uses an internal logger to help facilitate the integration of the package.

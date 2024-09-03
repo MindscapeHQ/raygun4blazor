@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Bunit;
-using Bunit.TestDoubles;
 using CloudNimble.Breakdance.Blazor;
 using FluentAssertions;
 using KristofferStrube.Blazor.Window;
@@ -12,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MockHttp;
 using Raygun.Blazor;
-using Raygun.Blazor.Extensions;
 using Raygun.Blazor.Interfaces;
 using Raygun.Blazor.Models;
 
@@ -163,6 +161,55 @@ namespace Raygun.Tests.Blazor
             raygunMsg.Details.Breadcrumbs[0].Message.Should().Be("About to send the test exception");
             raygunMsg.Details.Breadcrumbs[0].Type.Should().Be(BreadcrumbType.Manual);
             raygunMsg.Details.Breadcrumbs[0].Category.Should().Be("Unit Tests");
+        }
+
+        /// <summary>
+        /// OnBeforeSend can modify the request
+        /// </summary>
+        [TestMethod]
+        public async Task RaygunBlazorClient_BasicException_OnBeforeSend_ShouldModifyAndSend()
+        {
+            var raygunClient = TestHost.Services.GetService<RaygunBlazorClient>();
+            raygunClient.Should().NotBeNull();
+
+            // Add a handler that changes the error message
+            raygunClient.OnBeforeSend += (sender, args) => args.Request.Details.Error.Message = "MODIFIED";
+
+            Func<Task> recordException = async () => await raygunClient.RecordExceptionAsync(new Exception("Test"));
+            await recordException.Should().NotThrowAsync();
+
+            await Task.Delay(500);
+
+            // Obtain requested data
+            var request = _mockHttp.InvokedRequests[0].Request;
+            var content = await request.Content?.ReadAsStringAsync()!;
+
+            // Deserialize request
+            var raygunMsg = JsonSerializer.Deserialize<RaygunRequest>(content, _jsonSerializerOptions)!;
+
+            // Check error details
+            raygunMsg.Details.Error.Message.Should().Be("MODIFIED");
+        }
+
+        /// <summary>
+        /// OnBeforeSend can cancel the request
+        /// </summary>
+        [TestMethod]
+        public async Task RaygunBlazorClient_BasicException_OnBeforeSend_ShouldCancel()
+        {
+            var raygunClient = TestHost.Services.GetService<RaygunBlazorClient>();
+            raygunClient.Should().NotBeNull();
+
+            // Add a handler that cancels the send operation
+            raygunClient.OnBeforeSend += (sender, args) => args.Cancel = true;
+
+            Func<Task> recordException = async () => await raygunClient.RecordExceptionAsync(new Exception("Test"));
+            await recordException.Should().NotThrowAsync();
+
+            await Task.Delay(500);
+
+            // Ensure no requests were made
+            _mockHttp.InvokedRequests.Should().BeEmpty();
         }
 
         #endregion
