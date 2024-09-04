@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Raygun.Blazor.Offline;
+namespace Raygun.Blazor.Offline.SendStrategy;
 
 /// <summary>
 /// 

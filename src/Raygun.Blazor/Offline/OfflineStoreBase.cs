@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Raygun.Blazor.Models;
+using Raygun.Blazor.Offline.SendStrategy;
 
 namespace Raygun.Blazor.Offline;
 

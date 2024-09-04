@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Raygun.Blazor.Logging;
 using Raygun.Blazor.Models;
+using Raygun.Blazor.Offline.SendStrategy;
 
 namespace Raygun.Blazor.Offline.Storage;
 
@@ -99,11 +100,7 @@ public class FileSystemCrashReportStore : OfflineStoreBase
                 return false;
             }
 
-            var cacheEntry = new CrashReportStoreEntry
-            {
-                Id = cacheEntryId,
-                MessagePayload = payload
-            };
+            var cacheEntry = new CrashReportStoreEntry(cacheEntryId, payload);
             var filePath = GetFilePathForCacheEntry(cacheEntryId);
             var jsonContent = JsonSerializer.Serialize(cacheEntry, _jsonSerializerOptions);
 
