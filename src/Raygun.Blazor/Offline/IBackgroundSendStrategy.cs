@@ -3,9 +3,23 @@ using System.Threading.Tasks;
 
 namespace Raygun.Blazor.Offline;
 
+/// <summary>
+/// 
+/// </summary>
 public interface IBackgroundSendStrategy : IDisposable
 {
-  public event Func<Task> OnSendAsync;
-  public void Start();
-  public void Stop();
+    /// <summary>
+    /// 
+    /// </summary>
+    public event Func<Task> OnSendAsync;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void Start();
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void Stop();
 }
