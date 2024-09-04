@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using Raygun.Blazor.Offline.SendStrategy;
 
 namespace Raygun.Blazor.Offline.Storage;
 
