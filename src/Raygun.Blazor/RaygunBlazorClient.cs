@@ -99,7 +99,10 @@ namespace Raygun.Blazor
 
             // Setup offline store and callback
             _offlineStore = offlineStore;
-            _offlineStore?.SetSendCallback(SendOfflinePayloadAsync);
+            if (_offlineStore != null)
+            {
+                _offlineStore.SendCallback = SendOfflinePayloadAsync;
+            }
 
             _raygunLogger?.Debug("[RaygunBlazorClient] Initialized.");
         }

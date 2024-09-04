@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Raygun.Blazor.Offline;
-using Raygun.Blazor.Server.Storage;
+using Raygun.Blazor.Offline.Storage;
 
 namespace Raygun.Blazor.Server.Extensions
 {

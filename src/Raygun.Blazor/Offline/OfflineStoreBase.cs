@@ -24,7 +24,7 @@ public abstract class OfflineStoreBase
     /// <summary>
     /// 
     /// </summary>
-    protected SendHandler? SendCallback { get; set; }
+    protected internal SendHandler? SendCallback { get; set; }
 
 
     /// <summary>
@@ -42,16 +42,7 @@ public abstract class OfflineStoreBase
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="sendHandler"></param>
-    public virtual void SetSendCallback(SendHandler sendHandler)
-    {
-        SendCallback = sendHandler;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    protected virtual async Task ProcessOfflineCrashReports()
+    private async Task ProcessOfflineCrashReports()
     {
         if (SendCallback is null)
         {
@@ -71,7 +62,7 @@ public abstract class OfflineStoreBase
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public abstract Task<List<CrashReportStoreEntry>> GetAll(CancellationToken cancellationToken);
+    protected abstract Task<List<CrashReportStoreEntry>> GetAll(CancellationToken cancellationToken);
 
     /// <summary>
     /// 
@@ -79,7 +70,7 @@ public abstract class OfflineStoreBase
     /// <param name="crashPayload"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public abstract Task<bool> Save(RaygunRequest crashPayload, CancellationToken cancellationToken);
+    internal abstract Task<bool> Save(RaygunRequest crashPayload, CancellationToken cancellationToken);
 
     /// <summary>
     /// 
@@ -87,5 +78,5 @@ public abstract class OfflineStoreBase
     /// <param name="cacheEntryId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public abstract Task<bool> Remove(Guid cacheEntryId, CancellationToken cancellationToken);
+    protected abstract Task<bool> Remove(Guid cacheEntryId, CancellationToken cancellationToken);
 }

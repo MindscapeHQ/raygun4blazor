@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Raygun.Blazor.Logging;
 using Raygun.Blazor.Models;
-using Raygun.Blazor.Offline;
 
-namespace Raygun.Blazor.Server.Storage;
+namespace Raygun.Blazor.Offline.Storage;
 
 /// <summary>
 /// 
@@ -22,6 +21,7 @@ public class FileSystemCrashReportStore : OfflineStoreBase
     private readonly string _storageDirectory;
     private readonly int _maxOfflineFiles;
     private readonly ConcurrentDictionary<Guid, string> _cacheLocationMap = new();
+    private readonly IRaygunLogger? _raygunLogger;
 
     private readonly JsonSerializerOptions _jsonSerializerOptions =
         new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, };
@@ -32,12 +32,14 @@ public class FileSystemCrashReportStore : OfflineStoreBase
     /// <param name="backgroundSendStrategy"></param>
     /// <param name="storageDirectory"></param>
     /// <param name="maxOfflineFiles"></param>
-    public FileSystemCrashReportStore(IBackgroundSendStrategy backgroundSendStrategy, string storageDirectory,
-        int maxOfflineFiles = 50)
+    /// <param name="raygunLogger"></param>
+    internal FileSystemCrashReportStore(IBackgroundSendStrategy backgroundSendStrategy, string storageDirectory,
+        int maxOfflineFiles = 50, IRaygunLogger? raygunLogger = null)
         : base(backgroundSendStrategy)
     {
         _storageDirectory = storageDirectory;
         _maxOfflineFiles = maxOfflineFiles;
+        _raygunLogger = raygunLogger;
     }
 
     /// <summary>
@@ -45,7 +47,7 @@ public class FileSystemCrashReportStore : OfflineStoreBase
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public override async Task<List<CrashReportStoreEntry>> GetAll(CancellationToken cancellationToken)
+    protected override async Task<List<CrashReportStoreEntry>> GetAll(CancellationToken cancellationToken)
     {
         var crashFiles = Directory.GetFiles(_storageDirectory, $"*.{CacheFileExtension}");
         var errorRecords = new List<CrashReportStoreEntry>();
@@ -58,16 +60,17 @@ public class FileSystemCrashReportStore : OfflineStoreBase
                 using var gzipStream = new GZipStream(fileStream, CompressionMode.Decompress);
                 using var reader = new StreamReader(gzipStream, Encoding.UTF8);
 
-                Trace.WriteLine($"Attempting to load offline crash at {crashFile}");
+                _raygunLogger?.Verbose($"[FileSystemCrashReportStore] Attempting to load offline crash at {crashFile}");
                 var jsonString = await reader.ReadToEndAsync(cancellationToken);
-                var errorRecord = JsonSerializer.Deserialize<CrashReportStoreEntry>(jsonString, _jsonSerializerOptions);
+                var errorRecord =
+                    JsonSerializer.Deserialize<CrashReportStoreEntry>(jsonString, _jsonSerializerOptions)!;
 
                 errorRecords.Add(errorRecord);
                 _cacheLocationMap[errorRecord.Id] = crashFile;
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("Error deserializing offline crash: {0}", ex.ToString());
+                _raygunLogger?.Error($"[FileSystemCrashReportStore] Error deserializing offline crash: {ex}");
                 File.Move(crashFile, $"{crashFile}.failed");
             }
         }
@@ -81,7 +84,7 @@ public class FileSystemCrashReportStore : OfflineStoreBase
     /// <param name="payload"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public override async Task<bool> Save(RaygunRequest payload, CancellationToken cancellationToken)
+    internal override async Task<bool> Save(RaygunRequest payload, CancellationToken cancellationToken)
     {
         var cacheEntryId = Guid.NewGuid();
         try
@@ -91,7 +94,8 @@ public class FileSystemCrashReportStore : OfflineStoreBase
             var crashFiles = Directory.GetFiles(_storageDirectory, $"*.{CacheFileExtension}");
             if (crashFiles.Length >= _maxOfflineFiles)
             {
-                Trace.WriteLine($"Maximum offline files of [{_maxOfflineFiles}] has been reached");
+                _raygunLogger?.Warning(
+                    $"[FileSystemCrashReportStore] Maximum offline files of [{_maxOfflineFiles}] has been reached");
                 return false;
             }
 
@@ -107,7 +111,7 @@ public class FileSystemCrashReportStore : OfflineStoreBase
             using var gzipStream = new GZipStream(fileStream, CompressionLevel.Optimal);
             using var writer = new StreamWriter(gzipStream, Encoding.UTF8);
 
-            Trace.WriteLine($"Saving crash {cacheEntry.Id} to {filePath}");
+            _raygunLogger?.Verbose($"[FileSystemCrashReportStore] Saving crash {cacheEntry.Id} to {filePath}");
             await writer.WriteAsync(jsonContent);
             await writer.FlushAsync(cancellationToken);
 
@@ -115,7 +119,7 @@ public class FileSystemCrashReportStore : OfflineStoreBase
         }
         catch (Exception ex)
         {
-            Trace.WriteLine($"Error adding crash [{cacheEntryId}] to store: {ex}");
+            _raygunLogger?.Error($"[FileSystemCrashReportStore] Error adding crash [{cacheEntryId}] to store: {ex}");
             return false;
         }
     }
@@ -126,7 +130,7 @@ public class FileSystemCrashReportStore : OfflineStoreBase
     /// <param name="cacheId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public override Task<bool> Remove(Guid cacheId, CancellationToken cancellationToken)
+    protected override Task<bool> Remove(Guid cacheId, CancellationToken cancellationToken)
     {
         try
         {
@@ -139,7 +143,7 @@ public class FileSystemCrashReportStore : OfflineStoreBase
         }
         catch (Exception ex)
         {
-            Trace.WriteLine($"Error remove crash [{cacheId}] from store: {ex}");
+            _raygunLogger?.Error($"[FileSystemCrashReportStore] Error remove crash [{cacheId}] from store: {ex}");
         }
 
         return Task.FromResult(false);
