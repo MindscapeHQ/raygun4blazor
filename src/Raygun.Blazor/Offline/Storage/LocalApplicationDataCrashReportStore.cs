@@ -3,6 +3,11 @@ using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using Raygun.Blazor.Interfaces;
+using Raygun.Blazor.Models;
 using Raygun.Blazor.Offline.SendStrategy;
 
 namespace Raygun.Blazor.Offline.Storage;
@@ -11,7 +16,7 @@ namespace Raygun.Blazor.Offline.Storage;
 /// Stores a cached copy of crash reports that failed to send in Local App Data
 /// Creates a directory if specified, otherwise creates a unique directory based off the location of the application
 /// </summary>
-public sealed class LocalApplicationDataCrashReportStore : FileSystemCrashReportStore
+internal sealed class LocalApplicationDataCrashReportStore : FileSystemCrashReportStore 
 {
     private const int DefaultMaxOfflineFiles = 50;
 
@@ -20,9 +25,11 @@ public sealed class LocalApplicationDataCrashReportStore : FileSystemCrashReport
     /// </summary>
     /// <param name="backgroundSendStrategy"></param>
     /// <param name="settings"></param>
-    public LocalApplicationDataCrashReportStore(IBackgroundSendStrategy backgroundSendStrategy, RaygunSettings settings)
-        : base(backgroundSendStrategy, GetLocalAppDirectory(settings.DirectoryName),
-            settings.MaxOfflineFiles ?? DefaultMaxOfflineFiles)
+    internal LocalApplicationDataCrashReportStore(IBackgroundSendStrategy backgroundSendStrategy,
+        IOptions<RaygunSettings> settings)
+        : base(backgroundSendStrategy, GetLocalAppDirectory(settings.Value.DirectoryName),
+            settings.Value.MaxOfflineFiles ?? DefaultMaxOfflineFiles,
+            Logging.RaygunLogger.Create(settings.Value.LogLevel))
     {
     }
 

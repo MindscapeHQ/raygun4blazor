@@ -16,13 +16,12 @@ namespace Raygun.Blazor.Offline.Storage;
 /// <summary>
 /// 
 /// </summary>
-public class FileSystemCrashReportStore : OfflineStoreBase
+internal class FileSystemCrashReportStore : OfflineStoreBase
 {
     private const string CacheFileExtension = "rgcrash";
     private readonly string _storageDirectory;
     private readonly int _maxOfflineFiles;
     private readonly ConcurrentDictionary<Guid, string> _cacheLocationMap = new();
-    private readonly IRaygunLogger? _raygunLogger;
 
     private readonly JsonSerializerOptions _jsonSerializerOptions =
         new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, };
@@ -36,11 +35,10 @@ public class FileSystemCrashReportStore : OfflineStoreBase
     /// <param name="raygunLogger"></param>
     internal FileSystemCrashReportStore(IBackgroundSendStrategy backgroundSendStrategy, string storageDirectory,
         int maxOfflineFiles = 50, IRaygunLogger? raygunLogger = null)
-        : base(backgroundSendStrategy)
+        : base(backgroundSendStrategy, raygunLogger)
     {
         _storageDirectory = storageDirectory;
         _maxOfflineFiles = maxOfflineFiles;
-        _raygunLogger = raygunLogger;
     }
 
     /// <summary>
@@ -61,7 +59,8 @@ public class FileSystemCrashReportStore : OfflineStoreBase
                 using var gzipStream = new GZipStream(fileStream, CompressionMode.Decompress);
                 using var reader = new StreamReader(gzipStream, Encoding.UTF8);
 
-                _raygunLogger?.Verbose($"[FileSystemCrashReportStore] Attempting to load offline crash at {crashFile}");
+               RaygunLogger?.Verbose(
+                    $"[FileSystemCrashReportStore] Attempting to load offline crash at {crashFile}");
                 var jsonString = await reader.ReadToEndAsync(cancellationToken);
                 var errorRecord =
                     JsonSerializer.Deserialize<CrashReportStoreEntry>(jsonString, _jsonSerializerOptions)!;
@@ -71,7 +70,7 @@ public class FileSystemCrashReportStore : OfflineStoreBase
             }
             catch (Exception ex)
             {
-                _raygunLogger?.Error($"[FileSystemCrashReportStore] Error deserializing offline crash: {ex}");
+                RaygunLogger?.Error($"[FileSystemCrashReportStore] Error deserializing offline crash: {ex}");
                 File.Move(crashFile, $"{crashFile}.failed");
             }
         }
@@ -95,7 +94,7 @@ public class FileSystemCrashReportStore : OfflineStoreBase
             var crashFiles = Directory.GetFiles(_storageDirectory, $"*.{CacheFileExtension}");
             if (crashFiles.Length >= _maxOfflineFiles)
             {
-                _raygunLogger?.Warning(
+                RaygunLogger?.Warning(
                     $"[FileSystemCrashReportStore] Maximum offline files of [{_maxOfflineFiles}] has been reached");
                 return false;
             }
@@ -108,7 +107,7 @@ public class FileSystemCrashReportStore : OfflineStoreBase
             using var gzipStream = new GZipStream(fileStream, CompressionLevel.Optimal);
             using var writer = new StreamWriter(gzipStream, Encoding.UTF8);
 
-            _raygunLogger?.Verbose($"[FileSystemCrashReportStore] Saving crash {cacheEntry.Id} to {filePath}");
+            RaygunLogger?.Verbose($"[FileSystemCrashReportStore] Saving crash {cacheEntry.Id} to {filePath}");
             await writer.WriteAsync(jsonContent);
             await writer.FlushAsync(cancellationToken);
 
@@ -116,7 +115,8 @@ public class FileSystemCrashReportStore : OfflineStoreBase
         }
         catch (Exception ex)
         {
-            _raygunLogger?.Error($"[FileSystemCrashReportStore] Error adding crash [{cacheEntryId}] to store: {ex}");
+            RaygunLogger?.Error(
+                $"[FileSystemCrashReportStore] Error adding crash [{cacheEntryId}] to store: {ex}");
             return false;
         }
     }
@@ -140,7 +140,8 @@ public class FileSystemCrashReportStore : OfflineStoreBase
         }
         catch (Exception ex)
         {
-            _raygunLogger?.Error($"[FileSystemCrashReportStore] Error remove crash [{cacheId}] from store: {ex}");
+            RaygunLogger?.Error(
+                $"[FileSystemCrashReportStore] Error remove crash [{cacheId}] from store: {ex}");
         }
 
         return Task.FromResult(false);

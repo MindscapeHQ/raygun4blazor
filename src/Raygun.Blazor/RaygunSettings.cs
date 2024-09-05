@@ -96,6 +96,7 @@ namespace Raygun.Blazor
         /// </summary>
         /// <remarks>
         /// Defaults to false.
+        /// This feature is only available in Blazor Server.
         /// </remarks>
         public bool UseOfflineStore { get; set; } = false;
 
