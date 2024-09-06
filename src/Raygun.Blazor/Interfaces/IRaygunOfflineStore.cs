@@ -17,7 +17,7 @@ public interface IRaygunOfflineStore
     /// <summary>
     /// Set the send callback.
     /// </summary>
-    protected internal void SetSendCallback(SendHandler sendHandler);
+    public void SetSendCallback(SendHandler sendHandler);
 
     /// <summary>
     /// Saves the crash report to be sent later.
@@ -25,5 +25,5 @@ public interface IRaygunOfflineStore
     /// <param name="crashPayload">Raygun error request to store</param>
     /// <param name="cancellationToken">Task cancellation token</param>
     /// <returns>true if saved correctly</returns>
-    protected internal Task<bool> Save(RaygunRequest crashPayload, CancellationToken cancellationToken);
+    public Task<bool> Save(RaygunRequest crashPayload, CancellationToken cancellationToken);
 }

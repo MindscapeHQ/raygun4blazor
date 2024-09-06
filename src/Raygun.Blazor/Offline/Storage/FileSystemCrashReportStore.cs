@@ -48,6 +48,11 @@ internal class FileSystemCrashReportStore : OfflineStoreBase
     /// <returns></returns>
     protected override async Task<List<CrashReportStoreEntry>> GetAll(CancellationToken cancellationToken)
     {
+        if (!Directory.Exists(_storageDirectory))
+        {
+            return [];
+        }
+
         var crashFiles = Directory.GetFiles(_storageDirectory, $"*.{CacheFileExtension}");
         var errorRecords = new List<CrashReportStoreEntry>();
 

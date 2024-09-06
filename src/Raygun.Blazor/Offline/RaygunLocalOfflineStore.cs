@@ -30,7 +30,7 @@ public class RaygunLocalOfflineStore : IRaygunOfflineStore
     /// <summary>
     /// Sets the send callback.
     /// </summary>
-    void IRaygunOfflineStore.SetSendCallback(SendHandler sendHandler)
+    public void SetSendCallback(SendHandler sendHandler)
     {
         _offlineStore.SendCallback = sendHandler;
     }
@@ -41,7 +41,7 @@ public class RaygunLocalOfflineStore : IRaygunOfflineStore
     /// <param name="crashPayload">Raygun error request to store</param>
     /// <param name="cancellationToken">Task cancellation token</param>
     /// <returns>true if saved correctly</returns>
-    Task<bool> IRaygunOfflineStore.Save(RaygunRequest crashPayload, CancellationToken cancellationToken)
+    public Task<bool> Save(RaygunRequest crashPayload, CancellationToken cancellationToken)
     {
         return _offlineStore.Save(crashPayload, cancellationToken);
     }
