@@ -14,10 +14,11 @@ using Raygun.Blazor.Offline.SendStrategy;
 namespace Raygun.Blazor.Offline.Storage;
 
 /// <summary>
-/// 
+/// File system based crash report store.
 /// </summary>
 internal class FileSystemCrashReportStore : OfflineStoreBase
 {
+    internal const int MaxOfflineFiles = 50;
     private const string CacheFileExtension = "rgcrash";
     private readonly string _storageDirectory;
     private readonly int _maxOfflineFiles;
@@ -27,14 +28,14 @@ internal class FileSystemCrashReportStore : OfflineStoreBase
         new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, };
 
     /// <summary>
-    /// 
+    /// Creates a new instance of the <see cref="FileSystemCrashReportStore"/> class.
     /// </summary>
-    /// <param name="backgroundSendStrategy"></param>
-    /// <param name="storageDirectory"></param>
-    /// <param name="maxOfflineFiles"></param>
-    /// <param name="raygunLogger"></param>
+    /// <param name="backgroundSendStrategy">Send strategy</param>
+    /// <param name="storageDirectory">Storage directory</param>
+    /// <param name="maxOfflineFiles">Maximum amount of stored reports</param>
+    /// <param name="raygunLogger">Internal logger class</param>
     internal FileSystemCrashReportStore(IBackgroundSendStrategy backgroundSendStrategy, string storageDirectory,
-        int maxOfflineFiles = 50, IRaygunLogger? raygunLogger = null)
+        int maxOfflineFiles = MaxOfflineFiles, IRaygunLogger? raygunLogger = null)
         : base(backgroundSendStrategy, raygunLogger)
     {
         _storageDirectory = storageDirectory;
@@ -42,7 +43,7 @@ internal class FileSystemCrashReportStore : OfflineStoreBase
     }
 
     /// <summary>
-    /// 
+    /// Obtain all stored crash reports.
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
@@ -84,12 +85,12 @@ internal class FileSystemCrashReportStore : OfflineStoreBase
     }
 
     /// <summary>
-    /// 
+    /// Store a report
     /// </summary>
-    /// <param name="payload"></param>
+    /// <param name="raygunRequest"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    internal override async Task<bool> Save(RaygunRequest payload, CancellationToken cancellationToken)
+    internal override async Task<bool> Save(RaygunRequest raygunRequest, CancellationToken cancellationToken)
     {
         var cacheEntryId = Guid.NewGuid();
         try
@@ -104,7 +105,7 @@ internal class FileSystemCrashReportStore : OfflineStoreBase
                 return false;
             }
 
-            var cacheEntry = new CrashReportStoreEntry(cacheEntryId, payload);
+            var cacheEntry = new CrashReportStoreEntry(cacheEntryId, raygunRequest);
             var filePath = GetFilePathForCacheEntry(cacheEntryId);
             var jsonContent = JsonSerializer.Serialize(cacheEntry, _jsonSerializerOptions);
 
@@ -127,7 +128,7 @@ internal class FileSystemCrashReportStore : OfflineStoreBase
     }
 
     /// <summary>
-    /// 
+    /// Removes a stored crash report, should be called after being sent.
     /// </summary>
     /// <param name="cacheId"></param>
     /// <param name="cancellationToken"></param>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Raygun.Blazor.Offline.SendStrategy;
 
 /// <summary>
-/// 
+/// Send strategy based on a background timer.
 /// </summary>
 public class TimerBasedSendStrategy : IBackgroundSendStrategy
 {
@@ -15,19 +15,19 @@ public class TimerBasedSendStrategy : IBackgroundSendStrategy
   private readonly Timer _backgroundTimer;
   
   /// <summary>
-  /// 
+  /// Event to trigger send events.
   /// </summary>
   public event Func<Task>? OnSendAsync;
 
   /// <summary>
-  /// 
+  /// Time interval between send events.
   /// </summary>
   public TimeSpan Interval { get; }
 
   /// <summary>
-  /// 
+  /// Constructor for the timer based send strategy.
   /// </summary>
-  /// <param name="interval"></param>
+  /// <param name="interval">Time interval between send events</param>
   public TimerBasedSendStrategy(TimeSpan? interval = null)
   {
     Interval = interval ?? DefaultInternal;
@@ -58,7 +58,7 @@ public class TimerBasedSendStrategy : IBackgroundSendStrategy
   }
 
   /// <summary>
-  /// 
+  /// Called when the send strategy should start.
   /// </summary>
   public void Start()
   {
@@ -68,7 +68,7 @@ public class TimerBasedSendStrategy : IBackgroundSendStrategy
   }
 
   /// <summary>
-  /// 
+  /// Called when the send strategy should stop.
   /// </summary>
   public void Stop()
   {
@@ -76,7 +76,7 @@ public class TimerBasedSendStrategy : IBackgroundSendStrategy
   }
 
   /// <summary>
-  /// 
+  /// The timer based send strategy is disposed.
   /// </summary>
   public void Dispose()
   {

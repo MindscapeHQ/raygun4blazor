@@ -55,7 +55,7 @@ internal abstract class OfflineStoreBase
         RaygunLogger?.Verbose($"[OfflineStoreBase] Found {cachedCrashReports.Count} offline crash reports");
         foreach (var crashReport in cachedCrashReports)
         {
-            var result = await SendCallback(crashReport.MessagePayload, CancellationToken.None);
+            var result = await SendCallback(crashReport.RaygunRequest, CancellationToken.None);
             if (result)
             {
                 RaygunLogger?.Verbose($"[OfflineStoreBase] Sent offline crash report: {crashReport.Id}");

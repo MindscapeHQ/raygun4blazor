@@ -1,5 +1,6 @@
 ﻿using System;
 using Raygun.Blazor.Logging;
+using Raygun.Blazor.Offline.Storage;
 using Raygun.Blazor.Queue;
 
 namespace Raygun.Blazor
@@ -114,7 +115,7 @@ namespace Raygun.Blazor
         /// <remarks>
         /// Defaults to 50 if not set.
         /// </remarks>
-        public int? MaxOfflineFiles { get; set; }
+        public int MaxOfflineFiles { get; set; } = FileSystemCrashReportStore.MaxOfflineFiles;
 
         #endregion
     }
