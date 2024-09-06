@@ -6,7 +6,7 @@ namespace Raygun.Blazor.Events
     /// <summary>
     /// Can be used to modify the request before sending, or to cancel the send operation.
     /// </summary>
-    public class RaygunRequestSendEventArgs: CancelEventArgs
+    public class RaygunRequestSendEventArgs : CancelEventArgs
     {
 
         /// <summary>

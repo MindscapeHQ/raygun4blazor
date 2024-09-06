@@ -321,7 +321,7 @@ namespace Raygun.Blazor
                     // Clear the breadcrumbs after a successful send.
                     _breadcrumbs.Clear();
                     _raygunLogger?.Debug("[RaygunBlazorClient] Request sent to Raygun: " + response.StatusCode);
-                    
+
                     // Message was sent successfully.
                     return true;
                 }

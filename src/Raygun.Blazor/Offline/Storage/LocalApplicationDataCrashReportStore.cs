@@ -15,7 +15,7 @@ namespace Raygun.Blazor.Offline.Storage;
 /// <summary>
 /// Configures the FileSystemCrashReportStore to store crash reports in the local application data folder.
 /// </summary>
-internal sealed class LocalApplicationDataCrashReportStore : FileSystemCrashReportStore 
+internal sealed class LocalApplicationDataCrashReportStore : FileSystemCrashReportStore
 {
     /// <summary>
     /// Creates a new instance of the <see cref="LocalApplicationDataCrashReportStore"/> class.

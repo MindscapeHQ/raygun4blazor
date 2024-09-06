@@ -65,8 +65,8 @@ internal class FileSystemCrashReportStore : OfflineStoreBase
                 using var gzipStream = new GZipStream(fileStream, CompressionMode.Decompress);
                 using var reader = new StreamReader(gzipStream, Encoding.UTF8);
 
-               RaygunLogger?.Verbose(
-                    $"[FileSystemCrashReportStore] Attempting to load offline crash at {crashFile}");
+                RaygunLogger?.Verbose(
+                     $"[FileSystemCrashReportStore] Attempting to load offline crash at {crashFile}");
                 var jsonString = await reader.ReadToEndAsync(cancellationToken);
                 var errorRecord =
                     JsonSerializer.Deserialize<CrashReportStoreEntry>(jsonString, _jsonSerializerOptions)!;
