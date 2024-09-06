@@ -192,6 +192,27 @@ RaygunClient.OnBeforeSend += (sender, args) =>
 };
 ```
 
+### Offline storage configuration
+
+Raygun for Blazor supports storing error reports when they can't be sent, for example, if the communication between the server and Raygun is interrupted.
+
+You can enable offline storage support by setting the `UseOfflineStore` to `true`.
+
+```json
+{
+  "Raygun": {
+    "UseOfflineStore": true
+  }
+}
+```
+
+**Offline storage is disabled by default.**
+
+You can adjust the following offline store settings as well:
+
+- `DirectoryName` to set the folder to store crash reports.
+- `MaxOfflineFiles` to set the maximum number of stored reports, defaults to 50.
+
 ### Internal logger
 
 Raygun for Blazor uses an internal logger to help facilitate the integration of the package.
