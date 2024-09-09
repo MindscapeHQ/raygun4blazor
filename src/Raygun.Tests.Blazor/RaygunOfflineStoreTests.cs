@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -11,7 +10,6 @@ using Raygun.Blazor;
 using Raygun.Blazor.Interfaces;
 using Raygun.Blazor.Models;
 using Raygun.Blazor.Offline;
-using Raygun.Blazor.Offline.SendStrategy;
 
 namespace Raygun.Tests.Blazor
 {
@@ -81,36 +79,6 @@ namespace Raygun.Tests.Blazor
 
             // Should have called the send handler
             called.Should().BeTrue();
-        }
-    }
-
-    public class TestSendStrategy : IBackgroundSendStrategy
-    {
-        public event Func<Task> OnSendAsync;
-
-        public async Task SendAll()
-        {
-            var invocationList = OnSendAsync?.GetInvocationList();
-            if (invocationList != null)
-            {
-                var tasks = invocationList.OfType<Func<Task>>().Select(handler => handler());
-                await Task.WhenAll(tasks);
-            }
-        }
-
-        public void Dispose()
-        {
-            // Nothing
-        }
-
-        public void Start()
-        {
-            // Nothing
-        }
-
-        public void Stop()
-        {
-            // Nothing
         }
     }
 }
