@@ -1,5 +1,6 @@
 ﻿using System;
 using Raygun.Blazor.Logging;
+using Raygun.Blazor.Offline.Storage;
 using Raygun.Blazor.Queue;
 
 namespace Raygun.Blazor
@@ -90,6 +91,31 @@ namespace Raygun.Blazor
         /// Defaults to false.
         /// </remarks>
         public bool UseBackgroundQueue { get; set; } = false;
+
+        /// <summary>
+        /// Specifies the use of offline storage for messages that failed to be sent to Raygun.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to false.
+        /// This feature is only available in Blazor Server.
+        /// </remarks>
+        public bool UseOfflineStore { get; set; } = false;
+
+        /// <summary>
+        /// Specifies the directory name to use for offline storage.
+        /// </summary>
+        /// <remarks>
+        /// If not set, it will default to the application name, otherwise it will be randomly generated.
+        /// </remarks>
+        public string? DirectoryName { get; set; }
+
+        /// <summary>
+        /// Specifies the maximum number of offline files to store.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to 50 if not set.
+        /// </remarks>
+        public int MaxOfflineFiles { get; set; } = FileSystemCrashReportStore.MaxOfflineFiles;
 
         #endregion
     }

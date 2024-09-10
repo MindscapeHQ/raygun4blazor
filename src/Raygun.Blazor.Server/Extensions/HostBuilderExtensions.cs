@@ -3,6 +3,10 @@ using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Raygun.Blazor.Interfaces;
+using Raygun.Blazor.Offline;
+using Raygun.Blazor.Offline.SendStrategy;
+using Raygun.Blazor.Offline.Storage;
 
 namespace Raygun.Blazor.Server.Extensions
 {
@@ -22,6 +26,8 @@ namespace Raygun.Blazor.Server.Extensions
             builder.Services.Configure<RaygunSettings>(builder.Configuration.GetSection(configSectionName));
             builder.Services.AddScoped<RaygunBrowserInterop>();
             builder.Services.AddScoped<IWindowService, WindowService>();
+            builder.Services.AddScoped<IBackgroundSendStrategy, TimerBasedSendStrategy>();
+            builder.Services.AddScoped<IRaygunOfflineStore, RaygunLocalOfflineStore>();
 
             builder.Services.AddHttpClient("Raygun")
                 .ConfigureHttpClient((sp, client) =>

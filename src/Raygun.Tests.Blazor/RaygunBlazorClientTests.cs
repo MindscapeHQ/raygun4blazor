@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -8,11 +9,14 @@ using CloudNimble.Breakdance.Blazor;
 using FluentAssertions;
 using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MockHttp;
 using Raygun.Blazor;
 using Raygun.Blazor.Interfaces;
 using Raygun.Blazor.Models;
+using Raygun.Blazor.Offline;
+using Raygun.Blazor.Offline.SendStrategy;
 
 namespace Raygun.Tests.Blazor
 {
@@ -26,13 +30,34 @@ namespace Raygun.Tests.Blazor
 
         private MockHttpHandler _mockHttp = null!;
         private HttpClient _httpClient = null!;
-        private readonly JsonSerializerOptions _jsonSerializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, };
+        private TestSendStrategy _testSendStrategy = null!;
+        private RaygunLocalOfflineStore _raygunOfflineStore = null!;
+
+        private readonly JsonSerializerOptions _jsonSerializerOptions =
+            new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, };
 
         [TestInitialize]
         public void Setup()
         {
             _mockHttp = new MockHttpHandler();
             _httpClient = new HttpClient(_mockHttp);
+
+            // Raygun Offline Store section
+            // See RaygunOfflineStoreTests.cs
+            var tempDirName = "TestDirectory";
+            IOptions<RaygunSettings> options = Options.Create(new RaygunSettings
+            {
+                DirectoryName = tempDirName,
+            });
+            var tempDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                tempDirName);
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+
+            _testSendStrategy = new TestSendStrategy();
+            _raygunOfflineStore = new RaygunLocalOfflineStore(_testSendStrategy, options);
 
             TestHostBuilder.ConfigureServices((context, services) =>
             {
@@ -52,16 +77,19 @@ namespace Raygun.Tests.Blazor
                 services.AddWindowService();
                 services.AddSingleton<IHttpClientFactory>(new MockHttpClientFactory(_httpClient));
                 services.AddSingleton<IRaygunUserProvider>(new FakeRaygunUserProvider());
+
+                // Set up a local offline store
+                services.AddSingleton<IRaygunOfflineStore>(_raygunOfflineStore);
+
                 services.AddScoped<RaygunBlazorClient>();
 
                 // Mock entries requests
                 _mockHttp.When(match => match.Method(HttpMethod.Post).RequestUri("https://api.raygun.com/entries"))
-                         .Respond(x =>
-                         {
-                             x.Body("OK");
-                             x.StatusCode(HttpStatusCode.Accepted);
-                         }).Verifiable();
-
+                    .Respond(x =>
+                    {
+                        x.Body("OK");
+                        x.StatusCode(HttpStatusCode.Accepted);
+                    }).Verifiable();
             });
 
             // See: https://bunit.dev/docs/test-doubles/emulating-ijsruntime.html
@@ -131,7 +159,6 @@ namespace Raygun.Tests.Blazor
             // Check user details from userDetails argument in RecordExceptionAsync
             raygunMsg.Details.User.FullName.Should().Be("Custom Test User");
             raygunMsg.Details.User.Email.Should().Be("custom@example.com");
-
         }
 
         /// <summary>
@@ -210,6 +237,46 @@ namespace Raygun.Tests.Blazor
 
             // Ensure no requests were made
             _mockHttp.InvokedRequests.Should().BeEmpty();
+        }
+
+        /// <summary>
+        /// Store failed to send report into offline store, then attempt to send it again
+        /// </summary>
+        [TestMethod]
+        public async Task RaygunBlazorClient_StoreFailedReportAndSendAfter()
+        {
+            // Request will fail with a 500 error, so it will be stored
+            _mockHttp.When(match => match.Method(HttpMethod.Post).RequestUri("https://api.raygun.com/entries"))
+                .Respond(x => x.StatusCode(HttpStatusCode.InternalServerError)).Verifiable();
+
+            var raygunClient = TestHost.Services.GetService<RaygunBlazorClient>();
+            raygunClient.Should().NotBeNull();
+
+            Func<Task> recordException = async () => await raygunClient.RecordExceptionAsync(new Exception("Test"));
+            await recordException.Should().NotThrowAsync();
+
+            await Task.Delay(500);
+
+            // Ensure the request was made 
+            _mockHttp.InvokedRequests.Should().HaveCount(1);
+
+            // Trigger sending stored reports
+            await _testSendStrategy.SendAll();
+            await Task.Delay(500);
+
+            // A new request is made
+            _mockHttp.InvokedRequests.Should().HaveCount(2);
+
+            // Obtain requested data
+            var request = _mockHttp.InvokedRequests[1].Request;
+            var content = await request.Content?.ReadAsStringAsync()!;
+
+            // Deserialize request
+            var raygunMsg = JsonSerializer.Deserialize<RaygunRequest>(content, _jsonSerializerOptions)!;
+
+            // Check error details
+            raygunMsg.Details.Error.ClassName.Should().Be("System.Exception");
+            raygunMsg.Details.Error.Message.Should().Be("Test");
         }
 
         #endregion
