@@ -220,7 +220,7 @@ For example:
   "Raygun": {
     "UseOfflineStore": true,
     "DirectoryName": "MyApp",
-    "MaxOfflineFiles": 100,
+    "MaxOfflineFiles": 100
   }
 }
 ```
