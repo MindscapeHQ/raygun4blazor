@@ -278,17 +278,41 @@ namespace Raygun.Blazor
 
         #region Internal Methods
 
-        private async Task<bool> SendOfflinePayloadAsync(RaygunRequest payload, CancellationToken cancellationToken)
+        /// <summary>
+        /// Called by the Offline Store to send a stored request.
+        /// </summary>
+        /// <param name="request">The stored <see cref="RaygunRequest" /> to send.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken" /> to allow you to cancel the current request, if necessary.</param>
+        /// <returns>True if the request is sent successfully</returns>
+        /// <remarks>
+        /// If the request is sent successfully, the offline store will delete the stored request.
+        /// Otherwise, the stored request will remain and tried again later.
+        /// </remarks>
+        private async Task<bool> SendOfflinePayloadAsync(RaygunRequest request, CancellationToken cancellationToken)
         {
             // Send with offline store disabled to prevent storing the same message again.
-            return await Send(payload, cancellationToken, useOfflineStore: false).ConfigureAwait(false);
+            return await Send(request, cancellationToken, useOfflineStore: false).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Sends a <see cref="RaygunRequest" /> to the Raygun API.
+        /// This method overloads the Send method, hiding the useOfflineStore parameter and setting it to true for convenience.
+        /// </summary>
+        /// <param name="request">The <see cref="RaygunRequest" /> to send.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken" /> to allow you to cancel the current request, if necessary.</param>
+        /// <returns>True if the request is sent successfully</returns>
         private async Task<bool> Send(RaygunRequest request, CancellationToken cancellationToken)
         {
             return await Send(request, cancellationToken, useOfflineStore: true);
         }
 
+        /// <summary>
+        /// Sends a <see cref="RaygunRequest" /> to the Raygun API.
+        /// </summary>
+        /// <param name="request">The <see cref="RaygunRequest" /> to send.</param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken" /> to allow you to cancel the current request, if necessary.</param>
+        /// <param name="useOfflineStore">Whether to use the offline store to save the request if it fails to send.</param>
+        /// <returns>True if the request is sent successfully</returns>
         private async Task<bool> Send(RaygunRequest request, CancellationToken cancellationToken, bool useOfflineStore)
         {
             bool shouldStoreMessage = false;
