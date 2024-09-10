@@ -210,8 +210,22 @@ You can enable offline storage support by setting the `UseOfflineStore` to `true
 
 You can adjust the following offline store settings as well:
 
-- `DirectoryName` to set the folder to store crash reports.
+- `DirectoryName` to set the folder to store crash reports, relative to the system local application data.
 - `MaxOfflineFiles` to set the maximum number of stored reports, defaults to 50.
+
+For example:
+
+```json
+{
+  "Raygun": {
+    "UseOfflineStore": true,
+    "DirectoryName": "MyApp",
+    "MaxOfflineFiles": 100,
+  }
+}
+```
+
+With this configuration, Raygun will store a maximum of 100 Raygun offline reports under `C:\Users\<USER>\AppData\Local\MyApp`.
 
 ### Internal logger
 
