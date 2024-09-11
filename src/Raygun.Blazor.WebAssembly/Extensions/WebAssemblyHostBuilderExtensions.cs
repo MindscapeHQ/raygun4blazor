@@ -41,7 +41,6 @@ namespace Raygun.Blazor.WebAssembly.Extensions
                     client.DefaultRequestHeaders.Add("X-ApiKey", raygunSettings.ApiKey);
                     client.DefaultRequestHeaders.CacheControl =
                         Raygun_Blazor_IServiceCollectionExtensions.CacheControlHeaderValue;
-                    // TODO: RWM: Set user agent
                 });
 
             builder.Services.AddSingleton<RaygunBlazorClient>();

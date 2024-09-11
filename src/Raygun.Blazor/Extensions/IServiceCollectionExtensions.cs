@@ -54,7 +54,6 @@ namespace Raygun.Blazor.Extensions
                     client.BaseAddress = new Uri(raygunSettings.Endpoint);
                     client.DefaultRequestHeaders.Add("X-ApiKey", raygunSettings.ApiKey);
                     client.DefaultRequestHeaders.CacheControl = CacheControlHeaderValue;
-                    // TODO: RWM: Set user agent
                 });
 
             services.AddScoped<RaygunBlazorClient>();
