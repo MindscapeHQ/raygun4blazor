@@ -60,8 +60,19 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.82" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Raygun.Blazor.Maui\Raygun.Blazor.Maui.csproj" />
+      <ProjectReference Include="..\Raygun.Blazor\Raygun.Blazor.csproj" />
+    </ItemGroup>
+
+        <ItemGroup>
+            <None Remove="appsettings.json" />
+            <EmbeddedResource Include="appsettings.json">
+                <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            </EmbeddedResource>
+        </ItemGroup>
 </Project>
