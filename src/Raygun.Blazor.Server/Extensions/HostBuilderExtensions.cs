@@ -35,7 +35,6 @@ namespace Raygun.Blazor.Server.Extensions
                     var raygunSettings = sp.GetRequiredService<IOptions<RaygunSettings>>().Value;
                     client.BaseAddress = new Uri(raygunSettings.Endpoint);
                     client.DefaultRequestHeaders.Add("X-ApiKey", raygunSettings.ApiKey);
-                    // TODO: RWM: Set user agent
                 });
 
             builder.Services.AddScoped<RaygunBlazorClient>();

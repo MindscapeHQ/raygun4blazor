@@ -49,8 +49,6 @@ namespace Raygun.Tests.Blazor.Extensions
             TestHost.Services.GetService<RaygunBlazorClient>().Should().NotBeNull();
         }
 
-        // TODO: RWM: What happens if the ApiKey is null or whitespace?
-
         #endregion
     }
 }
