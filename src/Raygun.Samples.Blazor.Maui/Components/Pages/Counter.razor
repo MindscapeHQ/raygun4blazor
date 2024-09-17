@@ -1,4 +1,6 @@
 ﻿@page "/counter"
+@using Raygun.Blazor
+@inject RaygunBlazorClient RaygunBlazorClient
 
 <h1>Counter</h1>
 
@@ -12,5 +14,6 @@
     private void IncrementCount()
     {
         currentCount++;
+        RaygunBlazorClient.RecordExceptionAsync(new Exception($"Incrementing count: {currentCount}")).Wait();
     }
 }
