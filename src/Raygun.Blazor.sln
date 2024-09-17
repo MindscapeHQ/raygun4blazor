@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.Samples.Blazor.WebAs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.Samples.Blazor.Server", "Raygun.Samples.Blazor.Server\Raygun.Samples.Blazor.Server.csproj", "{333DF481-7A4F-4C9A-981F-63C954D0414D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raygun.Samples.Blazor.Maui", "Raygun.Samples.Blazor.Maui\Raygun.Samples.Blazor.Maui.csproj", "{9511EF9F-566B-401C-A553-FD137A425C20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,12 @@ Global
 		{333DF481-7A4F-4C9A-981F-63C954D0414D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{333DF481-7A4F-4C9A-981F-63C954D0414D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{333DF481-7A4F-4C9A-981F-63C954D0414D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9511EF9F-566B-401C-A553-FD137A425C20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9511EF9F-566B-401C-A553-FD137A425C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9511EF9F-566B-401C-A553-FD137A425C20}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9511EF9F-566B-401C-A553-FD137A425C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9511EF9F-566B-401C-A553-FD137A425C20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9511EF9F-566B-401C-A553-FD137A425C20}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +85,7 @@ Global
 		{A9A0782E-395E-413B-80E3-BE2C18E25ECB} = {B100EB75-8D39-4595-8B7E-8FF2B330273B}
 		{F05FD8B3-E379-4520-9008-013D0CD3C983} = {4DC8B2BE-3AB9-4068-BC72-F97B75716E85}
 		{CDBE774B-4AEA-4277-9044-A9718C03CEF6} = {A27A5729-C507-433E-8A2B-DEB55C3B6B66}
+		{9511EF9F-566B-401C-A553-FD137A425C20} = {A27A5729-C507-433E-8A2B-DEB55C3B6B66}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {07FC9E40-0B7C-4088-934B-9204C2719530}
