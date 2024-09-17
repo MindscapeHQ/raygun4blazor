@@ -11,9 +11,9 @@
 @code {
     private int currentCount = 0;
 
-    private void IncrementCount()
+    private async void IncrementCount()
     {
         currentCount++;
-        RaygunBlazorClient.RecordExceptionAsync(new Exception($"Incrementing count: {currentCount}")).Wait();
+        await RaygunBlazorClient.RecordExceptionAsync(new Exception($"Incrementing count: {currentCount}"));
     }
 }

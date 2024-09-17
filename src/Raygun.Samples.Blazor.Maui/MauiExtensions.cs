@@ -20,8 +20,6 @@ namespace Raygun.Samples.Blazor.Maui
             builder.Services.Configure<RaygunSettings>(builder.Configuration.GetSection(configSectionName));
             builder.Services.AddScoped<RaygunBrowserInterop>();
             builder.Services.AddScoped<IWindowService, WindowService>();
-            builder.Services.AddScoped<IBackgroundSendStrategy, TimerBasedSendStrategy>();
-            builder.Services.AddScoped<IRaygunOfflineStore, RaygunLocalOfflineStore>();
 
             builder.Services.AddHttpClient("Raygun")
                 .ConfigureHttpClient((sp, client) =>
