@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System.Reflection;
 
 namespace Raygun.Samples.Blazor.Maui
 {
@@ -6,7 +8,15 @@ namespace Raygun.Samples.Blazor.Maui
     {
         public static MauiApp CreateMauiApp()
         {
+            var a = Assembly.GetExecutingAssembly();
+            using var stream = a.GetManifestResourceStream("Raygun.Samples.Blazor.Maui.appsettings.json");
+
+            var config = new ConfigurationBuilder()
+                        .AddJsonStream(stream!)
+                        .Build();
+
             var builder = MauiApp.CreateBuilder();
+            builder.Configuration.AddConfiguration(config);
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
