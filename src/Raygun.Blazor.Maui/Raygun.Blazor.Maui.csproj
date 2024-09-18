@@ -16,11 +16,34 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+
+
+        <!-- NuGet Package config -->
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Version>0.0.2</Version>
+        <PackageVersion>0.0.2</PackageVersion>
+        <Authors>Raygun Limited</Authors>
+        <Title>Raygun for MAUI Blazor Hybrid</Title>
+        <Description>Raygun's Crash Reporting extension for MAUI Blazor Hybrid apps</Description>
+        <Product>Raygun4Blazor.Maui</Product>
+        <PackageTags>Raygun; Crash Reporting; Blazor; .NET; dotnet; MAUI Hybrid; MAUI</PackageTags>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <PackageIcon>Raygun-icon-128x128.png</PackageIcon>
+        <!-- End NuGet Package config -->
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 	</ItemGroup>
+
+    <ItemGroup>
+        <!-- Package Readme File at root of repo -->
+        <None Include="../../README.md" Pack="true" PackagePath="" />
+        <None Include="../../LICENSE.txt" Pack="true" PackagePath="" />
+        <None Include="../../Raygun-icon-128x128.png" Pack="true" PackagePath="" />
+    </ItemGroup>
 
 </Project>
