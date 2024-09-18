@@ -1,0 +1,20 @@
+﻿@page "/sample"
+@using Raygun.Blazor
+@inject RaygunBlazorClient RaygunBlazorClient
+
+<h1>Sample</h1>
+
+<button class="btn btn-primary" @onclick="RecordException">Record Exception</button>
+<button class="btn btn-primary" @onclick="ThrowException">Throw Exception</button>
+
+@code {
+    private async void RecordException()
+    {
+        await RaygunBlazorClient.RecordExceptionAsync(new Exception("Manually recorded exception"));
+    }
+
+    private void ThrowException()
+    {
+        throw new Exception("Thrown exception");
+    }
+}
