@@ -10,8 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// TODO: Move to package
-namespace Raygun.Samples.Blazor.Maui
+namespace Raygun.Blazor.Maui
 {
     public static class MauiExtensions
     {

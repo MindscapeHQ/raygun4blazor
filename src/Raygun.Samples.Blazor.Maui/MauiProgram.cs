@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
+using Raygun.Blazor.Maui;
 
 namespace Raygun.Samples.Blazor.Maui
 {

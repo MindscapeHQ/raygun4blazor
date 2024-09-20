@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Options;
-using Raygun.Blazor;
 
-namespace Raygun.Samples.Blazor.Maui
+namespace Raygun.Blazor.Maui
 {
 
     /// <summary>

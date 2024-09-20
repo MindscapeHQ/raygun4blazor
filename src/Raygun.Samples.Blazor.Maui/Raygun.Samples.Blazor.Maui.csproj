@@ -65,6 +65,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Raygun.Blazor.Maui\Raygun.Blazor.Maui.csproj" />
       <ProjectReference Include="..\Raygun.Blazor\Raygun.Blazor.csproj" />
     </ItemGroup>
 
@@ -75,7 +76,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="appsettings.json"/>
+        <None Remove="appsettings.json" />
         <EmbeddedResource Include="appsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </EmbeddedResource>
