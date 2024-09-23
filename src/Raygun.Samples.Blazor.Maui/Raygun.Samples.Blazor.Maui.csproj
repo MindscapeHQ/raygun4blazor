@@ -76,7 +76,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="appsettings.json" />
+        <Content Remove="appsettings.json" />
         <EmbeddedResource Include="appsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </EmbeddedResource>
