@@ -23,7 +23,7 @@ dotnet add package Raygun.Blazor --version x.y.z
 
 ### Setup
 
-See the section **Blazor WebAssembly** and **Blazor Server** for specific setup instructions depending on the project type.
+See the section **Blazor WebAssembly**, **Blazor Server** and **MAUI Blazor Hybrid** for specific setup instructions depending on the project type.
 
 #### Raygun Settings
 
@@ -361,6 +361,69 @@ To run the example:
 3. Run `dotnet watch` from the example folder.
 
 A browser window to `http://localhost:5010/` should automatically open.
+
+## MAUI Blazor Hybrid
+
+As .Net MAUI Blazor Hybrid applications are composed of both MAUI and Blazor, you will have to setup Raygun for MAUI and Raygun for Blazor separately.
+
+Check the package [Raygun4Maui](https://www.nuget.org/packages/Raygun4Maui/) for the MAUI setup instructions.
+
+### Installation
+
+Install the package `Raygun.Blazor.Maui` from NuGet.
+
+### Setup
+
+Add a scoped `RaygunBlazorClient` by calling to `UseRaygunBlazorMaui()` with your `MauiApp` builder.
+
+```cs
+var builder = MauiApp.CreateBuilder();
+
+builder
+  .UseMauiApp<App>()
+  // ... Other configuration
+  .UseRaygunBlazorMaui();
+```
+
+### Capturing unhandled exceptions
+
+Use `RaygunErrorBoundary` to wrap compoments and capture unhandled exceptions automatically.
+
+For example, in your `Components/Layout/MainLayout.razor`:
+
+```cs
+@using Raygun.Blazor.Maui
+
+...
+
+<article class="content px-4">
+  <RaygunErrorBoundary>
+    @Body
+  </RaygunErrorBoundary>
+</article>
+```
+
+### Example
+
+Example project is located in `src/Raygun.Samples.Blazor.Maui`
+
+To run the example:
+
+1. Install `dotnet-sdk` minimum version supported in `8.0.300`.
+2. Setup the required .Net MAUI platform frameworks.
+3. Add the `ApiKey` property to in `src/Raygun.Samples.Blazor.Maui/appsettings.json`
+
+```
+{
+  "Raygun": {
+    "ApiKey": "YOUR_API_KEY"
+  }
+}
+```
+
+4. Run `dotnet build -t:Run -f framework` from the example folder, replacing `framework` by the desired framework (e.g. `net8.0-windows`).
+
+The sample application will launch on the corresponding framework platform or device.
 
 ---
 
