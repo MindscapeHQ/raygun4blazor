@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">
+            $(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+        <!-- Uncomment to also build the tizen app. You will need to install tizen by following
+        this: https://github.com/Samsung/Tizen.NET -->
+        <!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
+        <UseMaui>true</UseMaui>
+        <SingleProject>true</SingleProject>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <!-- Generating documentation on Maui fails to build -->
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.2</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+        <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+
+
+        <!-- NuGet Package config -->
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Version>0.0.2</Version>
+        <PackageVersion>0.0.2</PackageVersion>
+        <Authors>Raygun Limited</Authors>
+        <Title>Raygun for MAUI Blazor Hybrid</Title>
+        <Description>Raygun's Crash Reporting extension for MAUI Blazor Hybrid apps</Description>
+        <Product>Raygun4Blazor.Maui</Product>
+        <PackageTags>Raygun; Crash Reporting; Blazor; .NET; dotnet; MAUI Hybrid; MAUI</PackageTags>
+        <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+        <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+        <PackageIcon>Raygun-icon-128x128.png</PackageIcon>
+        <!-- End NuGet Package config -->
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Raygun.Blazor\Raygun.Blazor.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Package Readme File at root of repo -->
+        <None Include="../../README.md" Pack="true" PackagePath="" />
+        <None Include="../../LICENSE.txt" Pack="true" PackagePath="" />
+        <None Include="../../Raygun-icon-128x128.png" Pack="true" PackagePath="" />
+    </ItemGroup>
+
+</Project>
