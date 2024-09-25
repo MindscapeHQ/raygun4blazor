@@ -405,7 +405,7 @@ For example, in your `Components/Layout/MainLayout.razor`:
 
 ### Example
 
-Example project is located in `src/Raygun.Samples.Blazor.Maui`
+An example project is located in `src/Raygun.Samples.Blazor.Maui`
 
 To run the example:
 
@@ -421,7 +421,7 @@ To run the example:
 }
 ```
 
-4. Run `dotnet build -t:Run -f framework` from the example folder, replacing `framework` by the desired framework (e.g. `net8.0-windows`).
+4. Run `dotnet build -t:Run -f <framework>` from the example folder, replacing `<framework>` by the desired framework (e.g. `net8.0-windows`).
 
 The sample application will launch on the corresponding framework platform or device.
 
