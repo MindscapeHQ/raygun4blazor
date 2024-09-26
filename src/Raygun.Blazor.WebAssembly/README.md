@@ -20,7 +20,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.UseRaygunBlazor();
 ```
 
-### Accessing `RaygunBlazorClient`
+## Accessing `RaygunBlazorClient`
 
 You can access the `RaygunBlazorClient` using `@inject` in your code:
 
@@ -32,9 +32,9 @@ You can access the `RaygunBlazorClient` using `@inject` in your code:
 RaygunClient.RecordExceptionAsync(...)
 ```
 
-### Capturing unhandled exceptions
+## Capturing unhandled exceptions
 
-Use `RaygunErrorBoundary` to wrap compoments and capture unhandled exceptions automatically.
+Use `RaygunErrorBoundary` to wrap components and capture unhandled exceptions automatically.
 
 For example, in your `MainLayout.razor`:
 

@@ -4,7 +4,7 @@
 
 Full usage instructions can be found in the [Raygun.Blazor](https://www.nuget.org/packages/Raygun.Blazor) package page.
 
-As .Net MAUI Blazor Hybrid applications are composed of both MAUI and Blazor, you will have to setup Raygun for MAUI and Raygun for Blazor separately.
+As .Net MAUI Blazor Hybrid applications are composed of both MAUI and Blazor, you will have to set up Raygun for MAUI and Raygun for Blazor separately.
 
 Check the package [Raygun4Maui](https://www.nuget.org/packages/Raygun4Maui/) for the MAUI setup instructions.
 
@@ -27,7 +27,7 @@ builder
 
 ## Capturing unhandled exceptions
 
-Use `RaygunErrorBoundary` to wrap compoments and capture unhandled exceptions automatically.
+Use `RaygunErrorBoundary` to wrap components and capture unhandled exceptions automatically.
 
 For example, in your `Components/Layout/MainLayout.razor`:
 

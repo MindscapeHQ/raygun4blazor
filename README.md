@@ -47,7 +47,7 @@ For all configuration values, check the `RaygunSettings` class under `src/Raygun
 
 See [Configuration in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-8.0) to learn more about managing application settings.
 
-#### Initalize the client
+#### Initialize the client
 
 Inject the `RaygunBlazorClient` in your code:
 
@@ -58,7 +58,7 @@ Inject the `RaygunBlazorClient` in your code:
 And call to `raygunClient.InitializeAsync()` at least once.
 
 This method should be called as early as possible in the course of using the app. The best place to do it is inside the
-`OnAfterRenderAsync` method of the main layout page. However it will also be called automatically before sending any
+`OnAfterRenderAsync` method of the main layout page. However, it will also be called automatically before sending any
 exceptions, just in case.
 
 ### Recording an error
@@ -70,7 +70,7 @@ This method accepts the following arguments:
 - `ex`: The `Exception` to send back to Raygun.
 - `userDetails`: Optional. Attach user details to exception, takes priority over `IRaygunUserProvider`.
 - `tags`: Optional. User-specified tags that should be applied to the error.
-- `userCustomData`: Optional. Any custom data that you you like sent with the report to assist with troubleshooting.
+- `userCustomData`: Optional. Any custom data that you like sent with the report to assist with troubleshooting.
 - `cancellationToken`: Optional. A `CancellationToken` to allow you to cancel the current request, if necessary.
 
 ### Recording a breadcrumb

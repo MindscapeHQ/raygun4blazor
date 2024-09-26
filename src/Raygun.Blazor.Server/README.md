@@ -34,7 +34,7 @@ RaygunClient.RecordExceptionAsync(...)
 
 ## Capturing unhandled exceptions
 
-Use `RaygunErrorBoundary` to wrap compoments and capture unhandled exceptions automatically.
+Use `RaygunErrorBoundary` to wrap components and capture unhandled exceptions automatically.
 
 Note: You have to set `@rendermode="InteractiveServer"` in your `HeadOutlet` and `Routes` component to enable error capturing, as explained in [Handle errors in ASP.NET Core Blazor apps](https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/handle-errors?view=aspnetcore-8.0#error-boundaries)
 

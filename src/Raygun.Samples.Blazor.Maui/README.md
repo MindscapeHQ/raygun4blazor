@@ -3,7 +3,7 @@
 To run the example:
 
 1. Install `dotnet-sdk` minimum version supported in `8.0.300`.
-2. Setup the required .Net MAUI platform frameworks.
+2. Set up the required .Net MAUI platform frameworks.
 3. Add the `ApiKey` property to in `src/Raygun.Samples.Blazor.Maui/appsettings.json`
 
 ```
