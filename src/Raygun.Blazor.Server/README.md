@@ -1,21 +1,21 @@
-# Raygun for Blazor WebAssembly
+# Raygun for Blazor Server
 
-[Raygun](http://raygun.com) provider for Blazor WebAssembly.
+[Raygun](http://raygun.com) provider for Blazor Server.
 
 Full usage instructions can be found in the [Raygun.Blazor](https://www.nuget.org/packages/Raygun.Blazor) package page.
 
 ## Installation
 
-Install the packages `Raygun.Blazor` and `Raygun.Blazor.WebAssembly` from NuGet.
+Install the packages `Raygun.Blazor` and `Raygun.Blazor.Server` from NuGet.
 
 ## Setup
 
-Add a scoped `RaygunBlazorClient` by calling to `UseRaygunBlazor()` with your `WebAssemblyHostBuilder` builder.
+Add a scoped `RaygunBlazorClient` by calling to `UseRaygunBlazor()` with your `WebApplication` builder.
 
 ```cs
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
+var builder = WebApplication.CreateBuilder(args);
 
-// ...
+...
 
 builder.UseRaygunBlazor();
 ```
@@ -36,10 +36,12 @@ RaygunClient.RecordExceptionAsync(...)
 
 Use `RaygunErrorBoundary` to wrap components and capture unhandled exceptions automatically.
 
+Note: You have to set `@rendermode="InteractiveServer"` in your `HeadOutlet` and `Routes` component to enable error capturing, as explained in [Handle errors in ASP.NET Core Blazor apps](https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/handle-errors?view=aspnetcore-8.0#error-boundaries)
+
 For example, in your `MainLayout.razor`:
 
 ```cs
-@using Raygun.Blazor.WebAssembly.Controls
+@using Raygun.Blazor.Server.Controls
 
 ...
 
@@ -65,5 +67,4 @@ You can set `ShowExceptionsUI="true` to display a custom error message:
 
 ## Example
 
-Example project is located in `src/Raygun.Samples.Blazor.WebAssembly`
-
+Example project is located in `src/Raygun.Samples.Blazor.Server`

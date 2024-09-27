@@ -23,7 +23,7 @@ dotnet add package Raygun.Blazor --version x.y.z
 
 ### Setup
 
-See the section **Blazor WebAssembly**, **Blazor Server** and **MAUI Blazor Hybrid** for specific setup instructions depending on the project type.
+See the packages [Blazor WebAssembly](https://www.nuget.org/packages/Raygun.Blazor.WebAssembly), [Blazor Server](https://www.nuget.org/packages/Raygun.Blazor.Server) and [MAUI Blazor Hybrid](https://www.nuget.org/packages/Raygun.Blazor.Maui) for specific setup instructions depending on the project type.
 
 #### Raygun Settings
 
@@ -47,7 +47,7 @@ For all configuration values, check the `RaygunSettings` class under `src/Raygun
 
 See [Configuration in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-8.0) to learn more about managing application settings.
 
-#### Initalize the client
+#### Initialize the client
 
 Inject the `RaygunBlazorClient` in your code:
 
@@ -58,7 +58,7 @@ Inject the `RaygunBlazorClient` in your code:
 And call to `raygunClient.InitializeAsync()` at least once.
 
 This method should be called as early as possible in the course of using the app. The best place to do it is inside the
-`OnAfterRenderAsync` method of the main layout page. However it will also be called automatically before sending any
+`OnAfterRenderAsync` method of the main layout page. However, it will also be called automatically before sending any
 exceptions, just in case.
 
 ### Recording an error
@@ -70,7 +70,7 @@ This method accepts the following arguments:
 - `ex`: The `Exception` to send back to Raygun.
 - `userDetails`: Optional. Attach user details to exception, takes priority over `IRaygunUserProvider`.
 - `tags`: Optional. User-specified tags that should be applied to the error.
-- `userCustomData`: Optional. Any custom data that you you like sent with the report to assist with troubleshooting.
+- `userCustomData`: Optional. Any custom data that you like sent with the report to assist with troubleshooting.
 - `cancellationToken`: Optional. A `CancellationToken` to allow you to cancel the current request, if necessary.
 
 ### Recording a breadcrumb
@@ -244,197 +244,3 @@ For example:
 ```
 
 For all configuration values, check the `RaygunLogLevel` enum under `src/Raygun.Blazor/Logging/RaygunLogLevel.cs`.
-
----
-
-## Blazor WebAssembly
-
-### Installation
-
-Install the package `Raygun.Blazor.WebAssembly` from NuGet.
-
-### Setup
-
-- [ ] TODO: setup WebAssembly instructions
-
-### Example
-
-Example project is located in `src/Raygun.Samples.Blazor.WebAssembly`
-
-To run the example:
-
-1. Install `dotnet-sdk` minimum version supported in `8.0.300`.
-2. Add the `ApiKey` property to in `src/Raygun.Samples.Blazor.WebAssembly/wwwroot/appsettings.json`
-
-```
-{
-  "Raygun": {
-    "ApiKey": "YOUR_API_KEY"
-  }
-}
-```
-
-3. Run `dotnet watch` from the example folder.
-
-A browser window to `http://localhost:5010/` should automatically open.
-
-## Blazor Server
-
-### Installation
-
-Install the package `Raygun.Blazor.Server` from NuGet.
-
-### Setup
-
-Add a scoped `RaygunBlazorClient` by calling to `UseRaygunBlazor()` with your `WebApplication` builder.
-
-```cs
-var builder = WebApplication.CreateBuilder(args);
-
-...
-
-builder.UseRaygunBlazor();
-```
-
-### Accessing `RaygunBlazorClient`
-
-You can access the `RaygunBlazorClient` using `@inject` in your code:
-
-```cs
-@inject RaygunBlazorClient RaygunClient
-
-...
-
-RaygunClient.RecordExceptionAsync(...)
-```
-
-### Capturing unhandled exceptions
-
-Use `RaygunErrorBoundary` to wrap compoments and capture unhandled exceptions automatically.
-
-Note: You have to set `@rendermode="InteractiveServer"` in your `HeadOutlet` and `Routes` component to enable error capturing, as explained in [Handle errors in ASP.NET Core Blazor apps](https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/handle-errors?view=aspnetcore-8.0#error-boundaries)
-
-For example, in your `MainLayout.razor`:
-
-```cs
-@using Raygun.Blazor.Server.Controls
-
-...
-
-<article class="content px-4">
-  <RaygunErrorBoundary>
-    @Body
-  </RaygunErrorBoundary>
-</article>
-```
-
-You can set `ShowExceptionsUI="true` to display a custom error message:
-
-```cs
-<RaygunErrorBoundary ShowExceptionUI="true">
-  <ChildContent>
-    @Body
-  </ChildContent>
-  <ErrorContent>
-    <p class="errorUI">👾 Error captured by Raygun!</p>
-  </ErrorContent>
-</RaygunErrorBoundary>
-```
-
-### Example
-
-Example project is located in `src/Raygun.Samples.Blazor.Server`
-
-To run the example:
-
-1. Install `dotnet-sdk` minimum version supported in `8.0.300`.
-2. Add the `ApiKey` property to in `src/Raygun.Samples.Blazor.Server/appsettings.Development.json`
-
-```
-{
-  "Raygun": {
-    "ApiKey": "YOUR_API_KEY"
-  }
-}
-```
-
-3. Run `dotnet watch` from the example folder.
-
-A browser window to `http://localhost:5010/` should automatically open.
-
-## MAUI Blazor Hybrid
-
-As .Net MAUI Blazor Hybrid applications are composed of both MAUI and Blazor, you will have to setup Raygun for MAUI and Raygun for Blazor separately.
-
-Check the package [Raygun4Maui](https://www.nuget.org/packages/Raygun4Maui/) for the MAUI setup instructions.
-
-### Installation
-
-Install the package `Raygun.Blazor.Maui` from NuGet.
-
-### Setup
-
-Add a scoped `RaygunBlazorClient` by calling to `UseRaygunBlazorMaui()` with your `MauiApp` builder.
-
-```cs
-var builder = MauiApp.CreateBuilder();
-
-builder
-  .UseMauiApp<App>()
-  // ... Other configuration
-  .UseRaygunBlazorMaui();
-```
-
-### Capturing unhandled exceptions
-
-Use `RaygunErrorBoundary` to wrap compoments and capture unhandled exceptions automatically.
-
-For example, in your `Components/Layout/MainLayout.razor`:
-
-```cs
-@using Raygun.Blazor.Maui
-
-...
-
-<article class="content px-4">
-  <RaygunErrorBoundary>
-    @Body
-  </RaygunErrorBoundary>
-</article>
-```
-
-### Example
-
-An example project is located in `src/Raygun.Samples.Blazor.Maui`
-
-To run the example:
-
-1. Install `dotnet-sdk` minimum version supported in `8.0.300`.
-2. Setup the required .Net MAUI platform frameworks.
-3. Add the `ApiKey` property to in `src/Raygun.Samples.Blazor.Maui/appsettings.json`
-
-```
-{
-  "Raygun": {
-    "ApiKey": "YOUR_API_KEY"
-  }
-}
-```
-
-4. Run `dotnet build -t:Run -f <framework>` from the example folder, replacing `<framework>` by the desired framework (e.g. `net8.0-windows`).
-
-The sample application will launch on the corresponding framework platform or device.
-
----
-
-## Development
-
-### To build a local nuget package
-
-- Open Visual Studio 22+
-- Open the `Raygun.Blazor.sln` solution
-- Right-click the project and select properties
-- Ensure the produce a NuGet package build option is checked
-- Under package, update the version name
-
-Each time you build your project a .nupkg file will be created in your bin directory.
