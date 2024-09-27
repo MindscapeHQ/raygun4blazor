@@ -26,8 +26,8 @@
         <!-- NuGet Package config -->
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <Version>0.0.2</Version>
-        <PackageVersion>0.0.2</PackageVersion>
+        <Version>1.0.0</Version>
+        <PackageVersion>1.0.0</PackageVersion>
         <Authors>Raygun Limited</Authors>
         <Title>Raygun for MAUI Blazor Hybrid</Title>
         <Description>Raygun's Crash Reporting extension for MAUI Blazor Hybrid apps</Description>
