@@ -8,7 +8,7 @@ namespace Raygun.Blazor.Models
     /// <summary>
     /// 
     /// </summary>
-    public class StackTraceDetails
+    public partial class StackTraceDetails
     {
         #region Public Properties
 
@@ -100,9 +100,7 @@ namespace Raygun.Blazor.Models
         /// <param name="frame">JavaScript stack trace</param>
         internal StackTraceDetails(string frame)
         {
-            var regex = new Regex(
-                @"(?<functionName>.+)@(?<fileName>.+):(?<lineNumber>\d+):(?<columnNumber>\d+)");
-            var match = regex.Match(frame);
+            var match = StackTraceRegex().Match(frame);
             if (match.Success)
             {
                 MethodName = match.Groups["functionName"].Value;
@@ -115,6 +113,9 @@ namespace Raygun.Blazor.Models
                 FileName = frame;
             }
         }
+
+        [GeneratedRegex(@"(?<functionName>.+)@(?<fileName>.+):(?<lineNumber>\d+):(?<columnNumber>\d+)")]
+        private static partial Regex StackTraceRegex();
 
         #endregion
     }
