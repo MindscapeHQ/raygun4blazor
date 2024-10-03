@@ -17,5 +17,5 @@ jobs:
           
       - name: Format
         working-directory: ./src
-        run: dotnet format --verify-no-changes 
+        run: dotnet format --verify-no-changes --no-restore
         
