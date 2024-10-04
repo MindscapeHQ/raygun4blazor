@@ -49,7 +49,6 @@ namespace Raygun.Blazor.Server.Controls
         /// <returns></returns>
         protected override async Task OnErrorAsync(Exception exception)
         {
-            Console.WriteLine("OnErrorAsync");
             if (!RaygunSettings.Value.CatchUnhandledExceptions) return;
 
             await RaygunClient.RecordExceptionAsync(exception, null, ["UnhandledException", "Blazor", ".NET"]);

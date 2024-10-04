@@ -1,3 +1,4 @@
+using Raygun.Blazor.Server.Extensions;
 using Raygun.Tests.Blazor.Server.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 var app = builder.Build();
+
+// Initialize Raygun
+builder.UseRaygunBlazor();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

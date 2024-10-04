@@ -2,15 +2,10 @@
 using CloudNimble.Breakdance.Blazor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
-using System.Net.Http;
 using System.Text.Json;
 using KristofferStrube.Blazor.Window;
-using Microsoft.Extensions.DependencyInjection;
 using Raygun.Blazor;
 using MockHttp;
-using System;
-using Raygun.Samples.Blazor.Server.Components.Pages;
-using Raygun.Tests.Blazor.Server.Components.Pages;
 using Raygun.Tests.Blazor.Server.Components;
 using Raygun.Blazor.Models;
 using FluentAssertions;
@@ -27,6 +22,7 @@ namespace Raygun.Tests.Blazor.Server
 
         private MockHttpHandler _mockHttp = null!;
         private HttpClient _httpClient = null!;
+        private HttpRequestMessage? _lastRequest;
 
         private readonly JsonSerializerOptions _jsonSerializerOptions =
             new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, };
@@ -39,15 +35,16 @@ namespace Raygun.Tests.Blazor.Server
 
             TestHostBuilder.ConfigureServices((context, services) =>
             {
-                //// Prepare fakes for BrowserSpecs and BrowserStats
-                //var browserSpecs = new BrowserSpecs();
-                //var browserStats = new BrowserStats();
-                //browserSpecs.UserAgent =
-                //    "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0";
 
-                //// BlazorBreakdanceTestBase exposes bunit JSInterop
-                //BUnitTestContext.JSInterop.Setup<BrowserSpecs>("getBrowserSpecs").SetResult(browserSpecs);
-                //BUnitTestContext.JSInterop.Setup<BrowserStats>("getBrowserStats").SetResult(browserStats);
+                // Prepare fakes for BrowserSpecs and BrowserStats
+                var browserSpecs = new BrowserSpecs();
+                var browserStats = new BrowserStats();
+                browserSpecs.UserAgent =
+                    "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0";
+
+                // BlazorBreakdanceTestBase exposes bunit JSInterop
+                BUnitTestContext.JSInterop.Setup<BrowserSpecs>("getBrowserSpecs").SetResult(browserSpecs);
+                BUnitTestContext.JSInterop.Setup<BrowserStats>("getBrowserStats").SetResult(browserStats);
 
                 // Create RaygunBlazorClient with mocked HttpClient
                 services.Configure<RaygunSettings>(context.Configuration.GetSection("Raygun"));
@@ -97,23 +94,20 @@ namespace Raygun.Tests.Blazor.Server
             // Arrange
             var cut = BUnitTestContext.RenderComponent<App>();
 
+            Console.WriteLine("Initialized");
+
             // Act
             cut.Find("button").Click();
 
-            // wait for the exception to be caught
-            await Task.Delay(1000);
-
             // Obtain requested data
-            _mockHttp.InvokedRequests.Should().HaveCount(1);    
+            var request = _mockHttp.InvokedRequests[0].Request;
+            var content = await request.Content?.ReadAsStringAsync()!;
 
-            //var request = _mockHttp.InvokedRequests[0].Request;
-            //var content = await request.Content?.ReadAsStringAsync()!;
-
-            //// Deserialize request
-            //var raygunMsg = JsonSerializer.Deserialize<RaygunRequest>(content, _jsonSerializerOptions)!;
+            // Deserialize request
+            var raygunMsg = JsonSerializer.Deserialize<RaygunRequest>(content, _jsonSerializerOptions)!;
 
             // Check error details
-            //raygunMsg.Details!.Error!.Message.Should().Be("Captured error!");
+            raygunMsg.Details!.Error!.Message.Should().Be("Captured error!");
         }
         #endregion
     }
