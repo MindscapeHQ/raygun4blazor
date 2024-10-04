@@ -10,6 +10,10 @@ using Raygun.Blazor;
 using MockHttp;
 using System;
 using Raygun.Samples.Blazor.Server.Components.Pages;
+using Raygun.Tests.Blazor.Server.Components.Pages;
+using Raygun.Tests.Blazor.Server.Components;
+using Raygun.Blazor.Models;
+using FluentAssertions;
 
 namespace Raygun.Tests.Blazor.Server
 {
@@ -88,18 +92,28 @@ namespace Raygun.Tests.Blazor.Server
 
         #region Tests
         [TestMethod]
-        public void RaygunExceptionCatcher_WhenExceptionIsThrown_ExceptionIsCaught()
+        public async Task RaygunExceptionCatcher_WhenExceptionIsThrown_ExceptionIsCaught()
         {
             // Arrange
-            var cut = BUnitTestContext.RenderComponent<Sample>();
-            //var context = new Bunit.TestContext();
-            //var cut = context.RenderComponent<Sample>();
+            var cut = BUnitTestContext.RenderComponent<App>();
 
             // Act
-            cut.Find("#throw").Click();
+            cut.Find("button").Click();
 
-            // Assert
-            //cut.WaitForAssertion(() => cut.MarkupMatches(@"<button>Click me</button>"));
+            // wait for the exception to be caught
+            await Task.Delay(1000);
+
+            // Obtain requested data
+            _mockHttp.InvokedRequests.Should().HaveCount(1);    
+
+            //var request = _mockHttp.InvokedRequests[0].Request;
+            //var content = await request.Content?.ReadAsStringAsync()!;
+
+            //// Deserialize request
+            //var raygunMsg = JsonSerializer.Deserialize<RaygunRequest>(content, _jsonSerializerOptions)!;
+
+            // Check error details
+            //raygunMsg.Details!.Error!.Message.Should().Be("Captured error!");
         }
         #endregion
     }
