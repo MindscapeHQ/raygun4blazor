@@ -35,6 +35,9 @@ public class TimerBasedSendStrategy : IBackgroundSendStrategy
         Start();
     }
 
+    /// <summary>
+    /// Class destructor. Disposes the timer.
+    /// </summary>
     ~TimerBasedSendStrategy()
     {
         Dispose();

@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
@@ -20,6 +20,16 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+    - name: Setup JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'microsoft'
+        java-version: '17'
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+    - name: Restore workloads
+      working-directory: ./src
+      run: dotnet workload restore
     - name: Restore dependencies
       working-directory: ./src
       run: dotnet restore

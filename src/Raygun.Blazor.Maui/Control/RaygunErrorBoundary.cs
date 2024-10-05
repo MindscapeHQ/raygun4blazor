@@ -18,13 +18,13 @@ namespace Raygun.Blazor.Maui
         /// 
         /// </summary>
         [Inject]
-        internal RaygunBlazorClient RaygunClient { get; set; }
+        required public RaygunBlazorClient RaygunClient { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         [Inject]
-        internal IOptions<RaygunSettings> RaygunSettings { get; set; }
+        required public IOptions<RaygunSettings> RaygunSettings { get; set; }
 
         #endregion
 
