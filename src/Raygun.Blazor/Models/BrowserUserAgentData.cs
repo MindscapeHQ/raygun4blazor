@@ -35,7 +35,7 @@ namespace Raygun.Blazor.Models
         public Dictionary<string, string>? BrandVersions { get; set; }
 
         /// <summary>
-        /// 
+        /// Calculated OS version based on the reported data.
         /// </summary>
         public string? CalculatedOSVersion => $"{Platform} {(
             Platform == "Windows" && Decimal.Parse(PlatformVersion?.Split(".")?[0] ?? "0") >= 13 ? "11" :
@@ -43,7 +43,7 @@ namespace Raygun.Blazor.Models
             PlatformVersion)}";
 
         /// <summary>
-        /// 
+        /// Platform architecture and bits calculated from the reported data.
         /// </summary>
         public string? CalculatedPlatform
         {
