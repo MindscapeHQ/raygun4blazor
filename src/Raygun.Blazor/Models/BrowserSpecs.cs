@@ -43,7 +43,7 @@ namespace Raygun.Blazor.Models
         public int ColorDepth { get; set; }
 
         /// <summary>
-        /// The company who manufactured the browser.
+        /// The company who manufactured the device.
         /// </summary>
         /// <remarks>
         /// Currently not set by the client.
