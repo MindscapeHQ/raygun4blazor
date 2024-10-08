@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Raygun.Tests.Blazor.Server</RootNamespace>
   </PropertyGroup>
 
     <ItemGroup>
@@ -26,7 +27,5 @@
     <ItemGroup>
         <ProjectReference Include="..\Raygun.Blazor\Raygun.Blazor.csproj" />
         <ProjectReference Include="..\Raygun.Blazor.Server\Raygun.Blazor.Server.csproj" />
-        <ProjectReference Include="..\Raygun.Samples.Blazor.Server\Raygun.Samples.Blazor.Server.csproj" />
     </ItemGroup>
-
 </Project>

@@ -8,7 +8,7 @@
     /// This exists because we need to parse some stuff from the browser to construct a proper <see cref="EnvironmentDetails" />
     /// instance. Also the <see cref="EnvironmentDetails" /> has serialization needs for Raygun that don't align with JSInterop.
     /// </remarks>
-    public record BrowserStats
+    internal record BrowserStats
     {
 
         #region Public Properties

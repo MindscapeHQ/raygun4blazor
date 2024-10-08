@@ -11,7 +11,7 @@ namespace Raygun.Blazor.Models
     /// Any value that is derived from the reported data is prefixed with the word "Calculated" to indicate
     /// that it is not directly reported by the browser.
     /// </remarks>
-    public record BrowserUserAgentData
+    internal record BrowserUserAgentData
     {
 
         #region Public Properties
