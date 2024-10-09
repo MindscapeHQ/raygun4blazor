@@ -72,5 +72,11 @@
         </AssemblyAttribute>
     </ItemGroup>
 
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>Raygun.Tests.Blazor.Server, $(StrongNamePublicKey)</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
 
 </Project>

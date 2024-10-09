@@ -1,0 +1,13 @@
+﻿@page "/"
+@using Raygun.Blazor.Server.Controls
+
+<h3>TestComponent</h3>
+
+<button @onclick="ThrowException">Throw exception</button>
+
+@code {
+    private void ThrowException(MouseEventArgs e)
+    {
+        throw new Exception("Captured error!");
+    }
+}
