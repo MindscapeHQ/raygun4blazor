@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -194,7 +195,7 @@ namespace Raygun.Blazor
         public async Task RecordExceptionAsync(Exception ex,
             UserDetails? userDetails = null,
             List<string>? tags = null,
-            Dictionary<string, string>? userCustomData = null,
+            Dictionary<string, object>? userCustomData = null,
             CancellationToken cancellationToken = default)
         {
             _raygunLogger?.Verbose("[RaygunBlazorClient] Recording exception: " + ex);
@@ -216,12 +217,28 @@ namespace Raygun.Blazor
                 user = await _userManager!.GetCurrentUser();
             }
 
+            EnvironmentDetails? environment;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Create("BROWSER")))
+            {
+                // If running on Browser, obtain environment details from the browser
+                environment = await _browserInterop.GetBrowserEnvironment();
+            }
+            else
+            {
+                // If running on Server, obtain environment details from the runtime
+                environment = EnvironmentDetails.FromRuntime();
+                // Add browser details to userCustomData
+                userCustomData ??= [];
+                userCustomData.Add("BrowserEnvironment", await _browserInterop.GetBrowserEnvironment());
+            }
+
+
             var request = new RaygunRequest
             {
                 Details = new EventDetails(appVersion)
                 {
                     Breadcrumbs = _breadcrumbs.ToList(),
-                    Environment = await _browserInterop.GetBrowserEnvironment(),
+                    Environment = environment,
                     Error = new ErrorDetails(ex),
                     Tags = tags,
                     User = user,

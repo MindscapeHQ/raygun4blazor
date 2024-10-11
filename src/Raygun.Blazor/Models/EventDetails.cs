@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 namespace Raygun.Blazor.Models
 {
 
+
     /// <summary>
     /// 
     /// </summary>
@@ -86,7 +87,7 @@ namespace Raygun.Blazor.Models
         /// These will be searchable on the dashboard.
         /// </remarks>
         [JsonInclude]
-        public Dictionary<string, string>? UserCustomData { get; set; }
+        public Dictionary<string, object>? UserCustomData { get; set; }
 
         #endregion
 
