@@ -218,18 +218,22 @@ namespace Raygun.Blazor
             }
 
             EnvironmentDetails? environment;
-            if (OperatingSystem.IsLinux() || OperatingSystem.IsWindows() || OperatingSystem.IsMacOS())
+            if (OperatingSystem.IsBrowser() || OperatingSystem.IsIOS() || OperatingSystem.IsAndroid())
             {
-                // If running on Server or Desktop device (MAUI Hybrid), obtain environment details from the runtime
-                environment = EnvironmentDetails.FromRuntime();
-                // Add browser details to userCustomData
-                userCustomData ??= [];
-                userCustomData.Add("BrowserEnvironment", await _browserInterop.GetBrowserEnvironment());
-            }
+                // If running on browser (e.g. WebAssembly)
+                // or Mobile MAUI Blazor Hybrid apps (iOS or Android),
+                // obtain environment details from the browser
+                environment = await _browserInterop.GetBrowserEnvironment();
+            } 
             else
             {
-                // If running Browser or Mobile device (MAUI Hybrid), obtain environment details from the browser
-                environment = await _browserInterop.GetBrowserEnvironment();
+                // If running on Server (Linux, Windows, MacOS, etc.)
+                // or Desktop MAUI Hybrid apps (Windows or Mac Catalyst),
+                // obtain environment details from the runtime
+                environment = EnvironmentDetails.FromRuntime();
+                // Add user browser details to userCustomData
+                userCustomData ??= [];
+                userCustomData.Add("BrowserEnvironment", await _browserInterop.GetBrowserEnvironment());
             }
 
 
