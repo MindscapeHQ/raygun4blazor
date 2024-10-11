@@ -212,7 +212,8 @@ namespace Raygun.Blazor.Models
         /// Creates a new instance of the <see cref="EnvironmentDetails" /> using runtime information.
         /// </summary>
         /// <remarks>
-        /// This method should not be called from Browser code (i.e. Blazor WebAssembly).
+        /// Some of the properties are not available in all environments.
+        /// e.g. Browsers, Android and iOS cannot access Process information.
         /// </remarks>
         /// <returns>
         /// Environment details for the current runtime.
@@ -239,7 +240,7 @@ namespace Raygun.Blazor.Models
             ProcessorCount = Environment.ProcessorCount,
             UtcOffset = (int)DateTimeOffset.Now.Offset.TotalHours,
 
-            // Disable warning on platform compatibility: Process not available for "browser"
+            // Disable warning on platform compatibility: Process not available on all platforms.
 #pragma warning disable CA1416 // Validate platform compatibility
             // Memory values obtained in Bytes and must be converted to Megabytes
             // Working Set: The amount of physical memory, in bytes, allocated for the associated process.
