@@ -88,8 +88,9 @@ namespace Raygun.Tests.Blazor
             result.Details.Tags[1].Should().Be("tag 2");
             result.Details.Tags[2].Should().Be("tag-3");
             result.Details.UserCustomData.Should().NotBeNull().And.HaveCount(2);
-            result.Details.UserCustomData["domain"].Should().Be("WORKPLACE");
-            result.Details.UserCustomData["area"].Should().Be("51");
+            // Cast to String to avoid issues with the dynamic object type.
+            result.Details.UserCustomData["domain"].ToString().Should().Be("WORKPLACE");
+            result.Details.UserCustomData["area"].ToString().Should().Be("51");
             result.Details.Request.Should().NotBeNull();
             result.Details.Request.HostName.Should().Be("https://raygun.io");
             result.Details.Request.Url.Should().Be("/documentation/integrations/api");
