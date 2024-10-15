@@ -230,9 +230,7 @@ namespace Raygun.Blazor.Models
             // Couldn't find a way to obtain Model or Manufacturer.
             DeviceName = Environment.MachineName,
 
-            // Convert Bytes to Gygabytes
-            // Each drive is listed individually
-            DiskSpaceFree = System.IO.DriveInfo.GetDrives().Select(d => Convert.ToDouble(d.TotalFreeSpace / 1024 / 1024 / 1024)).ToList(),
+            DiskSpaceFree = GetDiskSpaceFree(),
 
             Locale = System.Globalization.CultureInfo.CurrentCulture.Name,
             OSVersion = Environment.OSVersion.Version.ToString(),
@@ -250,6 +248,22 @@ namespace Raygun.Blazor.Models
             TotalVirtualMemory = Convert.ToUInt64(Process.GetCurrentProcess().VirtualMemorySize64 / 1024 / 1024),
 #pragma warning restore CA1416 // Validate platform compatibility
         };
+
+        static private List<double> GetDiskSpaceFree()
+        {
+            try
+            {
+                // Convert Bytes to Gygabytes
+                // Each drive is listed individually
+                return System.IO.DriveInfo.GetDrives().Select(d => Convert.ToDouble(d.TotalFreeSpace / 1024 / 1024 / 1024)).ToList();
+            }
+            catch (Exception)
+            {
+                // If we can't get the disk space, return an empty list.
+                // e.g. "System.IO.IOException: The device is not ready" when running on CI.
+                return [];
+            }
+        }
 
         #endregion
 
