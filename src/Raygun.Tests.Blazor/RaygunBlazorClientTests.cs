@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -131,6 +133,22 @@ namespace Raygun.Tests.Blazor
             // Check user details from FakeRaygunUserProvider
             raygunMsg.Details.User.FullName.Should().Be("Manager User");
             raygunMsg.Details.User.Email.Should().Be("manager@example.com");
+
+            // Check Environment details
+            raygunMsg.Details.Environment.Architecture.Should().NotBeEmpty();
+            raygunMsg.Details.Environment.Cpu.Should().NotBeEmpty();
+            raygunMsg.Details.Environment.DeviceName.Should().NotBeEmpty();
+            raygunMsg.Details.Environment.OSVersion.Should().NotBeEmpty();
+            raygunMsg.Details.Environment.ProcessorCount.Should().NotBeNull();
+            raygunMsg.Details.Environment.UtcOffset.Should().NotBeNull();
+            raygunMsg.Details.Environment.TotalPhysicalMemory.Should().NotBeNull();
+            raygunMsg.Details.Environment.TotalVirtualMemory.Should().NotBeNull();
+
+            // Check Browser environment details from UserCustomData
+            var browserEnvJson = raygunMsg.Details.UserCustomData["BrowserEnvironment"];
+            browserEnvJson.Should().NotBeNull();
+            var browserEnv = JsonSerializer.Deserialize<EnvironmentDetails>((JsonElement)browserEnvJson, _jsonSerializerOptions)!;
+            browserEnv.BrowserName.Should().Be("Firefox");
         }
 
         /// <summary>
