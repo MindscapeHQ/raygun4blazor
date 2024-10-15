@@ -224,7 +224,7 @@ namespace Raygun.Blazor
                 // or Mobile MAUI Blazor Hybrid apps (iOS or Android),
                 // obtain environment details from the browser
                 environment = await _browserInterop.GetBrowserEnvironment();
-            } 
+            }
             else
             {
                 // If running on Server (Linux, Windows, MacOS, etc.)
