@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -205,6 +206,63 @@ namespace Raygun.Blazor.Models
 
             BrowserManufacturer = uaBrowserVersionKey.Split(' ')[0];
             BrowserVersion = specs?.UAHints?.ComponentVersions?[uaBrowserVersionKey] ?? specs?.CalculatedBrowserVersion;
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="EnvironmentDetails" /> using runtime information.
+        /// </summary>
+        /// <remarks>
+        /// Some of the properties are not available in all environments.
+        /// e.g. Browsers, Android and iOS cannot access Process information.
+        /// </remarks>
+        /// <returns>
+        /// Environment details for the current runtime.
+        /// </returns>
+        static internal EnvironmentDetails FromRuntime() => new()
+        {
+            // In most cases the Architecture and the Cpu will be the same.
+            // The "ProcessArchitecture" is defined at compile time.
+            Architecture = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString(),
+            // The "OSArchitecture" is taken from the OS.
+            Cpu = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString(),
+
+            // The DeviceName is the machine name.
+            // Couldn't find a way to obtain Model or Manufacturer.
+            DeviceName = Environment.MachineName,
+
+            DiskSpaceFree = GetDiskSpaceFree(),
+
+            Locale = System.Globalization.CultureInfo.CurrentCulture.Name,
+            OSVersion = Environment.OSVersion.Version.ToString(),
+            Platform = Environment.OSVersion.Platform.ToString(),
+            ProcessorCount = Environment.ProcessorCount,
+            UtcOffset = (int)DateTimeOffset.Now.Offset.TotalHours,
+
+            // Disable warning on platform compatibility: Process not available on all platforms.
+#pragma warning disable CA1416 // Validate platform compatibility
+            // Memory values obtained in Bytes and must be converted to Megabytes
+            // Working Set: The amount of physical memory, in bytes, allocated for the associated process.
+            // See: https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.process.workingset64?view=net-8.0&redirectedfrom=MSDN#System_Diagnostics_Process_WorkingSet64
+            TotalPhysicalMemory = Convert.ToUInt64(Process.GetCurrentProcess().WorkingSet64 / 1024 / 1024),
+            // Virtual Memory Size: Gets the amount of the virtual memory, in bytes, allocated for the associated process.
+            TotalVirtualMemory = Convert.ToUInt64(Process.GetCurrentProcess().VirtualMemorySize64 / 1024 / 1024),
+#pragma warning restore CA1416 // Validate platform compatibility
+        };
+
+        static private List<double> GetDiskSpaceFree()
+        {
+            try
+            {
+                // Convert Bytes to Gygabytes
+                // Each drive is listed individually
+                return System.IO.DriveInfo.GetDrives().Select(d => Convert.ToDouble(d.TotalFreeSpace / 1024 / 1024 / 1024)).ToList();
+            }
+            catch (Exception)
+            {
+                // If we can't get the disk space, return an empty list.
+                // e.g. "System.IO.IOException: The device is not ready" when running on CI.
+                return [];
+            }
         }
 
         #endregion

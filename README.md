@@ -86,6 +86,61 @@ This method accepts the following arguments:
 - `category`: A custom value used to arbitrarily group this Breadcrumb.
 - `customData`: Any custom data you want to record about application state when the Breadcrumb was recorded.
 
+### Environment details
+
+Raygun for Blazor captures environment details differently depending on the platform where the error originated.
+
+The availability of each environment detail properties depend on the platform itself, so some of them may not be always available.
+
+For more information, you can check the `EnvironmentDetails.cs` file.
+
+#### Browser environment details
+
+When the application is running on a browser, for example when using Blazor WebAssembly, or when running MAUI Blazor Hybrid applications on mobile, the attached environment details are obtained from the browser layer on the client side.
+
+For example:
+
+```json
+"environment": {
+  "browser-Height": 982,
+  "browserName": "Mozilla",
+  "browser-Width": 1512,
+  "color-Depth": 24,
+  // etc ...
+}
+```
+
+#### Server environment details
+
+When the application is running on a server machine, for example when using Blazor Server, or when running MAUI Blazor Hybrid applications on desktop, the attached environment details are obtained from the operating system of the running platform.
+
+For example:
+
+```json
+"environment": {
+  "architecture": "X64",
+  "availablePhysicalMemory": 1,
+  "cpu": "X64",
+  "deviceName": "WINDOWS-PC",
+  // etc ...
+}
+```
+
+The client side environment details from the browser, if available, will be also attached as part of the **User Custom Data** under `BrowserEnvironment`:
+
+```json
+"userCustomData": {
+  "BrowserEnvironment": {
+    "browser-Height": 1392,
+    "browser": "Google",
+    "browserName": "Chrome",
+    "browser-Version": "129.0.6668.100",
+    "browser-Width": 2560,
+    // etc ...
+  }
+}   
+```
+
 ### Attaching user details
 
 Raygun for Blazor provides two ways to attach user details to error reports:
