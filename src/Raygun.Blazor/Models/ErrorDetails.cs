@@ -129,6 +129,22 @@ namespace Raygun.Blazor.Models
                     InnerError = new ErrorDetails(betterEx.InnerException);
                 }
             }
+            
+            if (StackTrace != null)
+            {
+                // If we have a stack trace then grab the debug info images, and put them into an array
+                // for the outgoing payload
+                Images = GetDebugInfoForStackFrames(StackTrace);
+            }
+        }
+        
+        #endregion
+
+        #region Privatate Methods
+
+        private static List<PEDebugDetails> GetDebugInfoForStackFrames(IEnumerable<StackTraceDetails> frames)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
