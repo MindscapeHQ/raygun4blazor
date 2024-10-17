@@ -130,45 +130,36 @@ namespace Raygun.Blazor.Models
                 {
                     InnerError = new ErrorDetails(betterEx.InnerException);
                 }
-            }
-            
-            if (StackTrace != null)
-            {
-                // If we have a stack trace then grab the debug info images, and put them into an array
-                // for the outgoing payload
-                Images = GetDebugInfoForStackFrames(StackTrace);
+
+                Images = GetDebugInfoForStackFrames(new EnhancedStackTrace(ex).GetExternalFrames());
             }
         }
-        
+
         #endregion
-        
+
         #region Private Properties
-        
+
         private static readonly ConcurrentDictionary<string, PEDebugDetails?> DebugInformationCache = new();
-        private static Func<string, PEReader?> AssemblyReaderProvider { get; set; } = PortableExecutableReaderExtensions.GetFileSystemPEReader;
-        
+
+        private static Func<string, PEReader?> AssemblyReaderProvider { get; set; } =
+            PortableExecutableReaderExtensions.GetFileSystemPEReader;
+
         #endregion
 
         #region Privatate Methods
 
-        private static List<PEDebugDetails> GetDebugInfoForStackFrames(IEnumerable<StackTraceDetails> frames)
+        private static List<PEDebugDetails> GetDebugInfoForStackFrames(IEnumerable<StackFrame> frames)
         {
-            if (DebugInformationCache.IsEmpty)
-            {
-                return [];
-            }
-      
-            var imageMap = DebugInformationCache.Values.Where(x => x?.Signature != null).ToDictionary(k => k!.Signature!);
             var imageSet = new HashSet<PEDebugDetails>();
-      
+
             foreach (var stackFrame in frames)
             {
-                if (stackFrame.ImageSignature != null && imageMap.TryGetValue(stackFrame.ImageSignature, out var image))
+                var methodBase = stackFrame.GetMethod();
+                if (methodBase == null) continue;
+                var debugInformation = TryGetDebugInformation(methodBase.Module.FullyQualifiedName);
+                if (debugInformation != null)
                 {
-                    if (image != null)
-                    {
-                        imageSet.Add(image);
-                    }
+                    imageSet.Add(debugInformation);
                 }
             }
 
