@@ -9,6 +9,8 @@ using MockHttp;
 using Raygun.Tests.Blazor.Server.Components;
 using Raygun.Blazor.Models;
 using FluentAssertions;
+using Raygun.Tests.Blazor.Server.Components.Pages;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace Raygun.Tests.Blazor.Server
 {
@@ -108,6 +110,23 @@ namespace Raygun.Tests.Blazor.Server
 
             // Check error details
             raygunMsg.Details!.Error!.Message.Should().Be("Captured error!");
+
+            // Check stacktrace
+            raygunMsg.Details!.Error!.StackTrace.Should().NotBeNullOrEmpty();
+
+            // First frame should be the exception origin
+            var frame = raygunMsg.Details!.Error!.StackTrace!.First();
+            frame.ClassName.Should().Be("Raygun.Tests.Blazor.Server.Components.Pages.TestComponent");
+            frame.ColumnNumber.Should().Be(9);
+            frame.LineNumber.Should().Be(11);
+            frame.MethodName.Should().Be("ThrowException");
+            frame.FileName.Should().EndWith("TestComponent.razor");
+
+            // Check PE Debug Image data
+            raygunMsg.Details!.Error!.Images.Should().NotBeNullOrEmpty();
+
+            // First Image data should contain the path to the test server debug data
+            raygunMsg.Details.Error.Images!.First().File.Should().EndWith("Raygun.Tests.Blazor.Server.pdb");
         }
         #endregion
     }
