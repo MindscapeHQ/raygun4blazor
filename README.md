@@ -88,7 +88,7 @@ This method accepts the following arguments:
 
 ### Stack traces and portable debug data
 
-Raygun for Blazor attaches both stack traces and portable debug data automatically.
+Raygun for Blazor attaches both stack traces and the necessary info for portable debug data automatically.
 
 #### Blazor stack traces
 
@@ -151,9 +151,9 @@ at causeErrors (https://localhost:7254/myfunctions.js:10:9)
 at window.onmessage (https://localhost:7254/:21:17)
 ```
 
-#### Portable PDB debug data
+#### Portable debug data (PDB)
 
-Raygun for Blazor supports debugging reports using Portable PDB files when running on Blazor Server and MAUI applications.
+Raygun for Blazor supports debugging reports using PDB files when running on Blazor Server and MAUI applications.
 The necessary image information will be attached automatically to error reports.
 
 The debug data can be found in the `error.images` property:
