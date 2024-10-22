@@ -18,9 +18,9 @@ window.raygunBlazor = {
     /**
      *
      */
-    recordBreadcrumb: function (message, category, level, customData) {
+    recordBreadcrumb: function (message, type, category, level, customData) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this._raygunInterop.invokeMethodAsync('RecordJsBreadcrumb', message, category, level, customData);
+            yield this._raygunInterop.invokeMethodAsync('RecordJsBreadcrumb', message, type, category, level, customData);
         });
     },
     /**

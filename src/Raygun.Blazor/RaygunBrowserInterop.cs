@@ -95,17 +95,18 @@ namespace Raygun.Blazor
         #region Public Methods
 
         /// <summary>
-        /// 
+        /// Method invoked by JavaScript to record a breadcrumb.
+        /// See Raygun.Blazor.ts for more information.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="breadcrumbType"></param>
         /// <param name="category"></param>
-        /// <param name="customData"></param>
         /// <param name="level"></param>
+        /// <param name="customData"></param>
         /// <returns></returns>
         [JSInvokable]
         public ValueTask RecordJsBreadcrumb(string message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual,
-            string? category = null, Dictionary<string, object>? customData = null, BreadcrumbLevel level = BreadcrumbLevel.Info)
+            string? category = null, BreadcrumbLevel level = Models.BreadcrumbLevel.Info, Dictionary<string, object>? customData = null)
         {
             _raygunLogger?.Verbose("[RaygunBrowserInterop] Recording breadcrumb: " + message);
             _breadcrumbAction!.Invoke(message, breadcrumbType, category, customData, "JavaScript", level);

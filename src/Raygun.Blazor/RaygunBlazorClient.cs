@@ -180,6 +180,16 @@ namespace Raygun.Blazor
             _breadcrumbs.Add(new BreadcrumbDetails(message, breadcrumbType, category, customData, platform, level));
             _raygunLogger?.Verbose("[RaygunBlazorClient] Breadcrumb recorded: " + message);
         }
+        
+        /// <summary>
+        /// Records a Breadcrumb to help you track what was going on in your application before an error occurred.
+        /// </summary>
+        /// <param name="breadcrumb">Breadcrumb details object</param>
+        public void RecordBreadcrumb(BreadcrumbDetails breadcrumb)
+        {
+            _breadcrumbs.Add(breadcrumb);
+            _raygunLogger?.Verbose("[RaygunBlazorClient] Breadcrumb recorded: " + breadcrumb.Message);
+        }
 
 
         /// <summary>
