@@ -73,6 +73,14 @@ namespace Raygun.Blazor.Models
         /// </summary>
         [JsonInclude]
         public BreadcrumbType Type { get; set; }
+        
+        /// <summary>
+        /// The level of the breadcrumb.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to <see cref="BreadcrumbLevel.Info"/>.
+        /// </remarks>
+        public BreadcrumbLevel Level { get; set; } = BreadcrumbLevel.Info;
 
         #endregion
 
@@ -98,7 +106,8 @@ namespace Raygun.Blazor.Models
         /// <param name="category">A custom value used to arbitrarily group this Breadcrumb.</param>
         /// <param name="customData">Any custom data you want to record about application state when the breadcrumb was recorded.</param>
         /// <param name="platform">Specifies the platform that the breadcrumb was recorded on. Possible values are "DotNet", and "JavaScript.</param>
-        public BreadcrumbDetails(string? message, BreadcrumbType type = BreadcrumbType.Manual, string? category = null, Dictionary<string, object>? customData = null, string? platform = "DotNet")
+        /// <param name="level">Set the severity level of this breadcrumb. Defaults to <see cref="BreadcrumbLevel.Info"/>.</param>
+        public BreadcrumbDetails(string? message, BreadcrumbType type = BreadcrumbType.Manual, string? category = null, Dictionary<string, object>? customData = null, string? platform = "DotNet", BreadcrumbLevel level = BreadcrumbLevel.Info)
         {
             Message = message;
             Type = type;
@@ -114,6 +123,7 @@ namespace Raygun.Blazor.Models
             ClassName = names.ClassName;
             MethodName = names.MethodName;
             LineNumber = stackFrame.GetFileLineNumber();
+            Level = level;
         }
 
         #endregion

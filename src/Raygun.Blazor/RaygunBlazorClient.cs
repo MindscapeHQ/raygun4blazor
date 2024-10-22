@@ -166,6 +166,7 @@ namespace Raygun.Blazor
         /// <param name="type">The <see cref="BreadcrumbType"> for the message. Defaults to <see cref="BreadcrumbType.Manual"/>.</param>
         /// <param name="category">A custom value used to arbitrarily group this Breadcrumb.</param>
         /// <param name="customData">Any custom data you want to record about application state when the Breadcrumb was recorded.</param>
+        /// <param name="level">Set the severity level of this breadcrumb. Defaults to <see cref="BreadcrumbLevel.Info"/>.</param>
         /// <remarks>
         /// Breadcrumbs will be queued internally by the <see cref="RaygunBlazorClient" /> and sent with the next Exception report.
         /// </remarks>
@@ -173,9 +174,10 @@ namespace Raygun.Blazor
         /// TBD
         /// </code>
         public void RecordBreadcrumb(string? message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual,
-            string? category = null, Dictionary<string, object>? customData = null, string? platform = "DotNet")
+            string? category = null, Dictionary<string, object>? customData = null, string? platform = "DotNet", 
+            BreadcrumbLevel level = BreadcrumbLevel.Info)
         {
-            _breadcrumbs.Add(new BreadcrumbDetails(message, breadcrumbType, category, customData, platform));
+            _breadcrumbs.Add(new BreadcrumbDetails(message, breadcrumbType, category, customData, platform, level));
             _raygunLogger?.Verbose("[RaygunBlazorClient] Breadcrumb recorded: " + message);
         }
 
