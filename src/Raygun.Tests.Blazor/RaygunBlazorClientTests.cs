@@ -188,7 +188,8 @@ namespace Raygun.Tests.Blazor
             var raygunClient = TestHost.Services.GetService<RaygunBlazorClient>();
             raygunClient.Should().NotBeNull();
 
-            raygunClient.RecordBreadcrumb("About to send the test exception", BreadcrumbType.Manual, "Unit Tests");
+            raygunClient.RecordBreadcrumb("About to send the test exception", BreadcrumbType.Manual,
+                "Unit Tests", new Dictionary<string, object>(), "DotNet", BreadcrumbLevel.Error);
 
             Func<Task> recordException = async () => await raygunClient.RecordExceptionAsync(new Exception("Test"));
             await recordException.Should().NotThrowAsync();
@@ -206,6 +207,7 @@ namespace Raygun.Tests.Blazor
             raygunMsg.Details.Breadcrumbs[0].Message.Should().Be("About to send the test exception");
             raygunMsg.Details.Breadcrumbs[0].Type.Should().Be(BreadcrumbType.Manual);
             raygunMsg.Details.Breadcrumbs[0].Category.Should().Be("Unit Tests");
+            raygunMsg.Details.Breadcrumbs[0].Level.Should().Be(BreadcrumbLevel.Error);
         }
 
         /// <summary>
