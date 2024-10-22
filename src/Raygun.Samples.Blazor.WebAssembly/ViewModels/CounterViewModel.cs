@@ -62,7 +62,7 @@ namespace Raygun.Samples.Blazor.WebAssembly.ViewModels
             var window = await _windowService.GetWindowAsync();
             await window.PostMessageAsync("recordException");
         }
-        
+
         public async Task SendCustomJsBreadcrumb()
         {
             var window = await _windowService.GetWindowAsync();

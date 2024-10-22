@@ -14,17 +14,17 @@ namespace Raygun.Blazor.Models
         /// Debug level breadcrumb.
         /// </summary>
         Debug,
-        
+
         /// <summary>
         /// Info level breadcrumb.
         /// </summary>
         Info,
-        
+
         /// <summary>
         /// Warning level breadcrumb.
         /// </summary>
         Warning,
-        
+
         /// <summary>
         /// Error level breadcrumb.
         /// </summary>

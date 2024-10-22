@@ -174,13 +174,13 @@ namespace Raygun.Blazor
         /// TBD
         /// </code>
         public void RecordBreadcrumb(string? message, BreadcrumbType breadcrumbType = BreadcrumbType.Manual,
-            string? category = null, Dictionary<string, object>? customData = null, string? platform = "DotNet", 
+            string? category = null, Dictionary<string, object>? customData = null, string? platform = "DotNet",
             BreadcrumbLevel level = BreadcrumbLevel.Info)
         {
             _breadcrumbs.Add(new BreadcrumbDetails(message, breadcrumbType, category, customData, platform, level));
             _raygunLogger?.Verbose("[RaygunBlazorClient] Breadcrumb recorded: " + message);
         }
-        
+
         /// <summary>
         /// Records a Breadcrumb to help you track what was going on in your application before an error occurred.
         /// </summary>

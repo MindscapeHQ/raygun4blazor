@@ -73,7 +73,7 @@ namespace Raygun.Blazor.Models
         /// </summary>
         [JsonInclude]
         public BreadcrumbType Type { get; set; }
-        
+
         /// <summary>
         /// The level of the breadcrumb.
         /// </summary>
