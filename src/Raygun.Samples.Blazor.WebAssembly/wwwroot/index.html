@@ -20,6 +20,21 @@
             if (e.data == "causeError") {
                 causeErrors();
             }
+            
+            if (e.data === "recordBreadcrumb") {
+                window.raygunBlazor.recordBreadcrumb(
+                    // message
+                    'Custom JS Breadcrumb Message',
+                    // type
+                    'console',
+                    // category
+                    'manual',
+                    // level
+                    'debug',
+                    // custom data
+                    {custom: 'data'}
+                );
+            }
 
             if (e.data == "recordException") {
                 let error = new Error();
