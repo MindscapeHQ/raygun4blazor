@@ -166,7 +166,7 @@ namespace Raygun.Blazor.Models
             return imageSet.ToList();
         }
 
-        private static PEDebugDetails? TryGetDebugInformation(string moduleName)
+        internal static PEDebugDetails? TryGetDebugInformation(string moduleName)
         {
             if (DebugInformationCache.TryGetValue(moduleName, out var cachedInfo))
             {

@@ -87,10 +87,22 @@ namespace Raygun.Blazor.Models
             ColumnNumber = frame.GetFileColumnNumber();
             FileName = frame.GetFileName();
             ILOffset = frame.GetILOffset();
-            //ImageSignature = frame.ImageSignature;
             LineNumber = frame.GetFileLineNumber();
             MethodName = names.MethodName;
             MethodToken = frame.GetMethod()?.MetadataToken;
+
+            // Attempt to get the image signature from the debug information
+            var method = frame.GetMethod();
+            if (method != null)
+            {
+                // Debug information gets cached
+                var debugInfo = ErrorDetails.TryGetDebugInformation(method.Module.FullyQualifiedName);
+                if (debugInfo != null)
+                {
+                    ImageSignature = debugInfo.Signature;
+                }
+            }
+
         }
 
         /// <summary>
