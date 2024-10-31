@@ -11,8 +11,8 @@
     /**
      * 
      */
-    recordBreadcrumb: async function(message: string, category: string, level: string, customData: Record<string, string>) {
-        await this._raygunInterop.invokeMethodAsync('RecordJsBreadcrumb', message, category, level, customData);
+    recordBreadcrumb: async function(message: string, type: string, category: string, level: string, customData: Record<string, string>) {
+        await this._raygunInterop.invokeMethodAsync('RecordJsBreadcrumb', message, type, category, level, customData);
     },
 
     /**

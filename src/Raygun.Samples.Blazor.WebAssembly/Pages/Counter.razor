@@ -14,8 +14,9 @@
 <button class="btn btn-primary" @onclick="@IncrementUserDetailsAsync">Handle Exception with UserDetails</button>
 <button class="btn btn-primary" @onclick="@Throw">Throw Unhandled JS Exception</button>
 <button class="btn btn-primary" @onclick="@(() => { var y = 0; var x = 3; var z = x / y; })">Throw .NET Exception</button>
-<button class="btn btn-primary" onclick="window.raygunBlazor.recordBreadcrumb('Clicked manual button', 'click-event');">Record JS Breadcrumb</button>
+<button class="btn btn-primary" onclick="window.raygunBlazor.recordBreadcrumb('Clicked manual button', 'click-event', null, 'warning', {});">Record JS Breadcrumb</button>
 <button class="btn btn-primary" @onclick="@SendCustomJsException">Send Custom JS Exception</button>
+<button class="btn btn-primary" @onclick="@SendCustomJsBreadcrumb">Send Custom JS Breadcrumb</button>
 
 @code {
 
@@ -61,6 +62,13 @@
     {
         RaygunClient.RecordBreadcrumb("Send Custom JS Exception", BreadcrumbType.ClickEvent);
         await ViewModel.SendCustomJsException();
+    }
+
+    protected async Task SendCustomJsBreadcrumb()
+    {
+        RaygunClient.RecordBreadcrumb(new BreadcrumbDetails(message: "Send Custom JS Breadcrumb",
+            type: BreadcrumbType.ClickEvent, level: BreadcrumbLevel.Debug));
+        await ViewModel.SendCustomJsBreadcrumb();
     }
 
 }
