@@ -141,7 +141,7 @@ namespace Raygun.Blazor.Models
 
         private static readonly ConcurrentDictionary<string, PEDebugDetails?> DebugInformationCache = new();
 
-        private static Func<string, PEReader?> AssemblyReaderProvider { get; set; } =
+        internal static Func<string, PEReader?> AssemblyReaderProvider { get; set; } =
             PortableExecutableReaderExtensions.GetFileSystemPEReader;
 
         #endregion
