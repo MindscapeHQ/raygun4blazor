@@ -31,7 +31,7 @@ internal static class AndroidUtilities
             // Not a valid android archive so nothing to return
             return null;
         }
-        
+
         // Open the apk file, and see if it has a manifest, if it does,
         // we are using the new assembly store method,
         // else it's just a normal zip with assemblies as archive entries

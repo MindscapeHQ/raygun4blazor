@@ -11,11 +11,11 @@ namespace Raygun.Blazor.Maui
     {
         public static MauiAppBuilder UseRaygunBlazorMaui(this MauiAppBuilder builder, string configSectionName = "Raygun")
         {
-            #if ANDROID
+#if ANDROID
             // Replace default AssemblyReaderProvider with the Android Assembly reader from Raygun4Maui
             ErrorDetails.AssemblyReaderProvider = AndroidUtilities.CreateAssemblyReader()!.TryGetReader;
-            #endif
-            
+#endif
+
             builder.Services.Configure<RaygunSettings>(builder.Configuration.GetSection(configSectionName));
             builder.Services.AddScoped<RaygunBrowserInterop>();
             builder.Services.AddScoped<IWindowService, WindowService>();
