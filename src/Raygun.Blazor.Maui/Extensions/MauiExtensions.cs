@@ -1,14 +1,9 @@
 ﻿using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.Options;
-using Raygun.Blazor;
-using Raygun.Blazor.Interfaces;
-using Raygun.Blazor.Offline;
-using Raygun.Blazor.Offline.SendStrategy;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui.Hosting;
+using Raygun.Blazor.Models;
 
 namespace Raygun.Blazor.Maui
 {
@@ -16,6 +11,11 @@ namespace Raygun.Blazor.Maui
     {
         public static MauiAppBuilder UseRaygunBlazorMaui(this MauiAppBuilder builder, string configSectionName = "Raygun")
         {
+#if ANDROID
+            // Replace default AssemblyReaderProvider with the Android Assembly reader from Raygun4Maui
+            ErrorDetails.AssemblyReaderProvider = AndroidUtilities.CreateAssemblyReader()!.TryGetReader;
+#endif
+
             builder.Services.Configure<RaygunSettings>(builder.Configuration.GetSection(configSectionName));
             builder.Services.AddScoped<RaygunBrowserInterop>();
             builder.Services.AddScoped<IWindowService, WindowService>();

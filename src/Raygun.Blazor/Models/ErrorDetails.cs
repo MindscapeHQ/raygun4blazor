@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text.Json.Serialization;
 using KristofferStrube.Blazor.WebIDL.Exceptions;
 using Raygun.Blazor.Extensions;
@@ -128,7 +130,66 @@ namespace Raygun.Blazor.Models
                 {
                     InnerError = new ErrorDetails(betterEx.InnerException);
                 }
+
+                Images = GetDebugInfoForStackFrames(new EnhancedStackTrace(ex).GetExternalFrames());
             }
+        }
+
+        #endregion
+
+        #region Private Properties
+
+        private static readonly ConcurrentDictionary<string, PEDebugDetails?> DebugInformationCache = new();
+
+        internal static Func<string, PEReader?> AssemblyReaderProvider { get; set; } =
+            PortableExecutableReaderExtensions.GetFileSystemPEReader;
+
+        #endregion
+
+        #region Privatate Methods
+
+        private static List<PEDebugDetails> GetDebugInfoForStackFrames(IEnumerable<StackFrame> frames)
+        {
+            var imageSet = new HashSet<PEDebugDetails>();
+
+            foreach (var stackFrame in frames)
+            {
+                var methodBase = stackFrame.GetMethod();
+                if (methodBase == null) continue;
+                var debugInformation = TryGetDebugInformation(methodBase.Module.FullyQualifiedName);
+                if (debugInformation != null)
+                {
+                    imageSet.Add(debugInformation);
+                }
+            }
+
+            return imageSet.ToList();
+        }
+
+        internal static PEDebugDetails? TryGetDebugInformation(string moduleName)
+        {
+            if (DebugInformationCache.TryGetValue(moduleName, out var cachedInfo))
+            {
+                return cachedInfo;
+            }
+
+            try
+            {
+                // Attempt to read out the Debug Info from the PE
+                var peReader = AssemblyReaderProvider(moduleName);
+
+                // If we got this far, the assembly/module exists, so whatever the result
+                // put it in the cache to prevent reading the disk over and over
+                peReader.TryGetDebugInformation(out var debugInfo);
+                DebugInformationCache.TryAdd(moduleName, debugInfo);
+                return debugInfo;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Could not load debug information: {ex}");
+            }
+
+            return null;
         }
 
         #endregion

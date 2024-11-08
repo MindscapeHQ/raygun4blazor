@@ -86,6 +86,95 @@ This method accepts the following arguments:
 - `category`: A custom value used to arbitrarily group this Breadcrumb.
 - `customData`: Any custom data you want to record about application state when the Breadcrumb was recorded.
 
+### Stack traces and portable debug data
+
+Raygun for Blazor attaches both stack traces and the necessary info for portable debug data automatically.
+
+#### Blazor stack traces
+
+Exceptions originating within the Blazor environment should contain a stack trace attached.
+For details, check the "Raw Data" tab on the Raygun error report. 
+The stack trace is contained inside `error.stackTrace` property.
+
+For example:
+
+```json
+"error": {
+  "className": "System.DivideByZeroException",
+  "message": "Attempted to divide by zero.",
+  "stackTrace": [
+    {
+      "className": "Raygun.Samples.Blazor.Server.Components.Pages.Sample",
+      "columnNumber": 75,
+      "fileName": "...\\src\\Raygun.Samples.Blazor.Server\\Components\\Pages\\Sample.razor",
+      "ilOffset": 5,
+      "lineNumber": 13,
+      "methodName": "",
+      "methodToken": 100663352
+    },
+    // ...
+  ]
+},
+```
+
+This also works for exceptions originating in Blazor WebAssembly applications.
+For example, this exception captured on WebAssembly:
+
+```json
+"error": {
+  "className": "System.DivideByZeroException",
+  "message": "Attempted to divide by zero.",
+  "stackTrace": [
+    {
+      "className": "Raygun.Samples.Blazor.WebAssembly.ViewModels.CounterViewModel",
+      "columnNumber": 17,
+      "fileName": "...\\src\\Raygun.Samples.Blazor.WebAssembly\\ViewModels\\CounterViewModel.cs",
+      "ilOffset": 34,
+      "lineNumber": 48,
+      "methodName": "IncrementCountAsync",
+      "methodToken": 100663343
+    },
+    // ...
+  ]
+},
+```
+
+#### JavaScript stack traces
+
+Exceptions happening in the JavaScript side of a Blazor application should contain a stack trace referring to the JavaScript code that caused the error.
+
+For example:
+
+```
+ReferenceError: undefinedfunction3 is not defined
+at causeErrors (https://localhost:7254/myfunctions.js:10:9)
+at window.onmessage (https://localhost:7254/:21:17)
+```
+
+#### Portable debug data (PDB)
+
+Raygun for Blazor supports debugging reports using PDB files when running on Blazor Server and MAUI applications.
+The necessary image information will be attached automatically to error reports.
+
+The debug data can be found in the `error.images` property:
+
+```json
+"error": {
+  "className": "System.DivideByZeroException",
+  "images": [
+    {
+      "signature": "a93d65be-ba53-4743-a1a5-4743716b7a42",
+      "checksum": "SHA256:BE653DA953BA4337A1A54743716B7A42A678F57568949BE3C375DB0BABF8EC35",
+      "file": "...\\src\\Raygun.Samples.Blazor.Server\\obj\\Debug\\net8.0\\Raygun.Samples.Blazor.Server.pdb",
+      "timestamp": "A1E84548"
+    },
+    // ...
+  ],
+},
+```
+
+You can learn more about Portable PDB Support [on Raygun's .Net Framework documentation](https://raygun.com/documentation/language-guides/dotnet/crash-reporting/net-framework/#portable-pdb-support).
+
 ### Environment details
 
 Raygun for Blazor captures environment details differently depending on the platform where the error originated.
