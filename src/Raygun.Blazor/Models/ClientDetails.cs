@@ -57,7 +57,7 @@ namespace Raygun.Blazor.Models
             Name = name;
             Version = Assembly.GetExecutingAssembly()
                               .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-                              ?.InformationalVersion ?? "1.0.0";
+                              ?.InformationalVersion ?? "1.1.0";
             ClientUrl = "https://github.com/MindscapeHQ/raygun4blazor";
         }
 
