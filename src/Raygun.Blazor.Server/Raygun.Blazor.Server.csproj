@@ -8,8 +8,8 @@
 
         <!-- NuGet Package config -->
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <Version>1.0.0</Version>
-        <PackageVersion>1.0.0</PackageVersion>
+        <Version>1.1.0</Version>
+        <PackageVersion>1.1.0</PackageVersion>
         <Authors>Raygun Limited</Authors>
         <Title>Raygun for Blazor Server</Title>
         <Description>Raygun's Crash Reporting extension for Blazor Server</Description>
