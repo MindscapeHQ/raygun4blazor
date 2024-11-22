@@ -27,18 +27,18 @@ jobs:
         java-version: '17'
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
+    
+    # Pre-build setup
     - name: Restore workloads
       working-directory: ./src
       run: dotnet workload restore
-    # - name: Restore dependencies
-    #   working-directory: ./src
-    #   run: dotnet restore
 
     # Raygun.Blazor
     - name: Build Raygun.Blazor
       continue-on-error: true
       working-directory: ./src
       run: dotnet build Raygun.Blazor/Raygun.Blazor.csproj
+    # Raygun.Blazor tests
     - name: Test Raygun.Blazor
       continue-on-error: true
       working-directory: ./src
@@ -49,44 +49,49 @@ jobs:
       continue-on-error: true
       working-directory: ./src
       run: dotnet build Raygun.Blazor.Server/Raygun.Blazor.Server.csproj
+    # Raygun.Blazor.Server tests
     - name: Test Raygun.Blazor.Server
       continue-on-error: true
       working-directory: ./src
       run: dotnet test Raygun.Tests.Blazor.Server/Raygun.Tests.Blazor.Server.csproj
+    # Raygun.Blazor.Server sample
+    - name: Build Raygun.Samples.Blazor.Server
+      continue-on-error: true
+      working-directory: ./src
+      run: dotnet build Raygun.Samples.Blazor.Server/Raygun.Samples.Blazor.Server.csproj
 
     # Raygun.Blazor.WebAssembly
     - name: Build Raygun.Blazor.WebAssembly
       continue-on-error: true
       working-directory: ./src
       run: dotnet build Raygun.Blazor.WebAssembly/Raygun.Blazor.WebAssembly.csproj
-
-    # Raygun.Blazor.Maui Windows build
-    - name: Build Raygun.Blazor.Maui
-      continue-on-error: true
-      working-directory: ./src
-      run: dotnet build Raygun.Blazor.Maui/Raygun.Blazor.Maui.csproj -f net8.0-windows10.0.19041.0
-
-    # Sample projects
-    - name: Build Raygun.Samples.Blazor.Server
-      continue-on-error: true
-      working-directory: ./src
-      run: dotnet build Raygun.Samples.Blazor.Server/Raygun.Samples.Blazor.Server.csproj
+    # Raygun.Blazor.WebAssembly sample
     - name: Build Raygun.Samples.Blazor.WebAssembly
       continue-on-error: true
       working-directory: ./src
       run: dotnet build Raygun.Samples.Blazor.Server/Raygun.Samples.Blazor.Server.csproj
+
+    # Raygun.Blazor.Maui
+    - name: Build Raygun.Blazor.Maui
+      continue-on-error: true
+      working-directory: ./src
+      run: dotnet build Raygun.Blazor.Maui/Raygun.Blazor.Maui.csproj
+    # Raygun.Blazor.Maui Windows sample
     - name: Build Raygun.Samples.Blazor.Maui Windows
       continue-on-error: true
       working-directory: ./src
       run: dotnet build Raygun.Samples.Blazor.Maui/Raygun.Samples.Blazor.Maui.csproj -f net8.0-windows10.0.19041.0
+    # Raygun.Blazor.Maui Android sample
     - name: Build Raygun.Samples.Blazor.Maui Android
       continue-on-error: true
       working-directory: ./src
       run: dotnet build Raygun.Samples.Blazor.Maui/Raygun.Samples.Blazor.Maui.csproj -f net8.0-android
+    # Raygun.Blazor.Maui iOS sample
     - name: Build Raygun.Samples.Blazor.Maui ios
       continue-on-error: true
       working-directory: ./src
       run: dotnet build Raygun.Samples.Blazor.Maui/Raygun.Samples.Blazor.Maui.csproj -f net8.0-ios
+    # Raygun.Blazor.Maui macOS sample
     - name: Build Raygun.Samples.Blazor.Maui maccatalyst
       continue-on-error: true
       working-directory: ./src
