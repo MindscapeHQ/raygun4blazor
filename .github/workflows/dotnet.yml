@@ -30,9 +30,9 @@ jobs:
     - name: Restore workloads
       working-directory: ./src
       run: dotnet workload restore
-    - name: Restore dependencies
-      working-directory: ./src
-      run: dotnet restore
+    # - name: Restore dependencies
+    #   working-directory: ./src
+    #   run: dotnet restore
     - name: Build Raygun.Blazor
       working-directory: ./src
       run: dotnet build Raygun.Blazor/Raygun.Blazor.csproj
