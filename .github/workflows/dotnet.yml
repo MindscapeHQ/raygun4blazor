@@ -33,21 +33,32 @@ jobs:
     # - name: Restore dependencies
     #   working-directory: ./src
     #   run: dotnet restore
+
+    # Raygun.Blazor
     - name: Build Raygun.Blazor
       working-directory: ./src
       run: dotnet build Raygun.Blazor/Raygun.Blazor.csproj
     - name: Test Raygun.Blazor
       working-directory: ./src
       run: dotnet test Raygun.Tests.Blazor/Raygun.Tests.Blazor.csproj
+      
+    # Raygun.Blazor.Server
     - name: Build Raygun.Blazor.Server
       working-directory: ./src
       run: dotnet build Raygun.Blazor.Server/Raygun.Blazor.Server.csproj
     - name: Test Raygun.Blazor.Server
       working-directory: ./src
       run: dotnet test Raygun.Tests.Blazor.Server/Raygun.Tests.Blazor.Server.csproj
+
+    # Raygun.Blazor.WebAssembly
     - name: Build Raygun.Blazor.WebAssembly
       working-directory: ./src
       run: dotnet build Raygun.Blazor.WebAssembly/Raygun.Blazor.WebAssembly.csproj
-    - name: Test Raygun.Blazor.WebAssembly
+
+    # Sample projects
+    - name: Build Raygun.Samples.Blazor.Server
       working-directory: ./src
-      run: dotnet test Raygun.Tests.Blazor.WebAssembly/Raygun.Tests.Blazor.WebAssembly.csproj
+      run: dotnet build Raygun.Samples.Blazor.Server/Raygun.Samples.Blazor.Server.csproj
+    - name: Build Raygun.Samples.Blazor.WebAssembly
+      working-directory: ./src
+      run: dotnet build Raygun.Samples.Blazor.Server/Raygun.Samples.Blazor.Server.csproj
