@@ -55,10 +55,10 @@ jobs:
       working-directory: ./src
       run: dotnet build Raygun.Blazor.WebAssembly/Raygun.Blazor.WebAssembly.csproj
 
-    # Raygun.Blazor.Maui
+    # Raygun.Blazor.Maui Windows build
     - name: Build Raygun.Blazor.Maui
       working-directory: ./src
-      run: dotnet build Raygun.Blazor.Maui/Raygun.Blazor.Maui.csproj
+      run: dotnet build Raygun.Blazor.Maui/Raygun.Blazor.Maui.csproj -f net8.0-windows10.0.19041.0
 
     # Sample projects
     - name: Build Raygun.Samples.Blazor.Server
