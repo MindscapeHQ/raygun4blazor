@@ -36,6 +36,6 @@ jobs:
     - name: Build Raygun.Blazor
       working-directory: ./src
       run: dotnet build Raygun.Blazor/Raygun.Blazor.csproj
-    - name: Test
+    - name: Test Raygun.Blazor
       working-directory: ./src
-      run: dotnet test
+      run: dotnet test Raygun.Blazor.Tests/Raygun.Blazor.Tests.csproj
