@@ -39,3 +39,15 @@ jobs:
     - name: Test Raygun.Blazor
       working-directory: ./src
       run: dotnet test Raygun.Tests.Blazor/Raygun.Tests.Blazor.csproj
+    - name: Build Raygun.Blazor.Server
+      working-directory: ./src
+      run: dotnet build Raygun.Blazor.Server/Raygun.Blazor.Server.csproj
+    - name: Test Raygun.Blazor.Server
+      working-directory: ./src
+      run: dotnet test Raygun.Tests.Blazor.Server/Raygun.Tests.Blazor.Server.csproj
+    - name: Build Raygun.Blazor.WebAssembly
+      working-directory: ./src
+      run: dotnet build Raygun.Blazor.WebAssembly/Raygun.Blazor.WebAssembly.csproj
+    - name: Test Raygun.Blazor.WebAssembly
+      working-directory: ./src
+      run: dotnet test Raygun.Tests.Blazor.WebAssembly/Raygun.Tests.Blazor.WebAssembly.csproj
