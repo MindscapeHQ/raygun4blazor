@@ -67,3 +67,15 @@ jobs:
     - name: Build Raygun.Samples.Blazor.WebAssembly
       working-directory: ./src
       run: dotnet build Raygun.Samples.Blazor.Server/Raygun.Samples.Blazor.Server.csproj
+    - name: Build Raygun.Samples.Blazor.Maui Windows
+      working-directory: ./src
+      run: dotnet build Raygun.Samples.Blazor.Maui/Raygun.Samples.Blazor.Maui.csproj -f net8.0-windows10.0.19041.0
+    - name: Build Raygun.Samples.Blazor.Maui Android
+      working-directory: ./src
+      run: dotnet build Raygun.Samples.Blazor.Maui/Raygun.Samples.Blazor.Maui.csproj -f net8.0-android
+    - name: Build Raygun.Samples.Blazor.Maui ios
+      working-directory: ./src
+      run: dotnet build Raygun.Samples.Blazor.Maui/Raygun.Samples.Blazor.Maui.csproj -f net8.0-ios
+    - name: Build Raygun.Samples.Blazor.Maui maccatalyst
+      working-directory: ./src
+      run: dotnet build Raygun.Samples.Blazor.Maui/Raygun.Samples.Blazor.Maui.csproj -f net8.0-maccatalyst
