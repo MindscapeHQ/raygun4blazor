@@ -33,9 +33,9 @@ jobs:
     - name: Restore dependencies
       working-directory: ./src
       run: dotnet restore
-    - name: Build
+    - name: Build Raygun.Blazor
       working-directory: ./src
-      run: dotnet build --no-restore
+      run: dotnet build Raygun.Blazor/Raygun.Blazor.csproj
     - name: Test
       working-directory: ./src
       run: dotnet test
