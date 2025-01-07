@@ -1,3 +1,8 @@
+## 1.2.0
+
+- feat: Support Net 9.0 (#62) (2025-01-07)
+- ci: Improvements in CI workflow (#60) (2024-11-24)
+
 ## 1.1.0
 
 - feat: Portable Debug Data images (#56)
