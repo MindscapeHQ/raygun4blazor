@@ -1,4 +1,6 @@
 <Project>
+    <Import Project="Version.props" />
+
 	<!-- Folder layout -->
 	<PropertyGroup>
 		<IsBenchmarkProject Condition="$(MSBuildProjectName.ToLower().Contains('.benchmarks.'))">true</IsBenchmarkProject>

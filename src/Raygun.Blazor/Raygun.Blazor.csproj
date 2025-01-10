@@ -14,8 +14,6 @@
 
         <!-- NuGet Package config -->
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <Version>1.1.0</Version>
-        <PackageVersion>1.1.0</PackageVersion>
         <Authors>Raygun Limited</Authors>
         <Title>Raygun for Blazor</Title>
         <Description>Raygun's Crash Reporting Provider for Blazor .NET</Description>
