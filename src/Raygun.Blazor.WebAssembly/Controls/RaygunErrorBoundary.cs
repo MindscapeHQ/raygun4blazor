@@ -14,7 +14,6 @@ namespace Raygun.Blazor.WebAssembly.Controls
     /// </summary>
     public class RaygunErrorBoundary : ErrorBoundary
     {
-
         #region Internal Parameters
 
         /// <summary>
@@ -56,6 +55,9 @@ namespace Raygun.Blazor.WebAssembly.Controls
         /// <returns></returns>
         protected override async Task OnErrorAsync(Exception exception)
         {
+            // Always call to parent OnErrorAsync to log the error with default logger.
+            await base.OnErrorAsync(exception);
+
             if (!RaygunSettings.Value.CatchUnhandledExceptions) return;
 
             await RaygunClient.RecordExceptionAsync(exception, null, ["UnhandledException", "Blazor", ".NET"]);
