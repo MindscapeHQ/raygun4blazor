@@ -14,6 +14,7 @@ namespace Raygun.Blazor.WebAssembly.Controls
     /// </summary>
     public class RaygunErrorBoundary : ErrorBoundary
     {
+
         #region Internal Parameters
 
         /// <summary>
