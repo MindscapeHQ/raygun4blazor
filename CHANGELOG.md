@@ -1,3 +1,7 @@
+## 1.2.1
+
+- fix: #64 call to base OnErrorAsync in RaygunErrorBoundary (#65) (2025-01-22)
+
 ## 1.2.0
 
 - feat: Support Net 9.0 (#62) (2025-01-07)
