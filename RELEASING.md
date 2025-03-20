@@ -1,6 +1,6 @@
-# Releasing Raygun4Flutter
+# Releasing Raygun4Blazor
 
-Raygun for Flutter is published on NuGet as [`Raygun.Blazor`](https://www.nuget.org/packages/Raygun.Blazor).
+Raygun for Blazor is published on NuGet as [`Raygun.Blazor`](https://www.nuget.org/packages/Raygun.Blazor).
 
 ## Semantic versioning
 
