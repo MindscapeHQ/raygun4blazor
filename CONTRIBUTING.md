@@ -1,4 +1,4 @@
-# Contributing to Raygun4Flutter
+# Contributing to Raygun4Blazor
 
 ## Project and library organisation
 
