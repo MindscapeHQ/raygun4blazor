@@ -23,7 +23,7 @@ where `x.y.z` is the Major, Minor and Patch release numbers.
 
 ### Update version
 
-Update the `Version` and `PackageVersion` in the `src/Version/props` file.
+Update the `Version` and `PackageVersion` in the `src/Version.props` file.
 
 ### Update CHANGELOG.md
 
