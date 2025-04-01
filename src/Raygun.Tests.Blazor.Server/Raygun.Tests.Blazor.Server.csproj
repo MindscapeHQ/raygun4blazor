@@ -21,7 +21,7 @@
         <PackageReference Include="Breakdance.Blazor" Version="7.*-*" />
         <PackageReference Include="bunit" Version="1.*" />
         <PackageReference Include="bunit.web" Version="1.*" />
-        <PackageReference Include="skwas.MockHttp" Version="4.3.1" />
+        <PackageReference Include="skwas.MockHttp" Version="4.5.0" />
     </ItemGroup>
 
     <ItemGroup>
