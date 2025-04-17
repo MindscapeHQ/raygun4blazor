@@ -1,3 +1,9 @@
+## 1.2.2
+
+- fix: support UtcOffset as decimal (#70) (2025-04-17)
+- docs: add releasing and update contributing (#67) (2025-03-21)
+- chore(deps): bump skwas.MockHttp from 4.3.1 to 4.5.0 in /src (#68) (2025-04-01)
+
 ## 1.2.1
 
 - fix: #64 call to base OnErrorAsync in RaygunErrorBoundary (#65) (2025-01-22)
