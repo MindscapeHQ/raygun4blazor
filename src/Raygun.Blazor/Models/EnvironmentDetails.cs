@@ -157,7 +157,7 @@ namespace Raygun.Blazor.Models
         /// <summary>
         /// Number of hours offset from UTC.
         /// </summary>
-        public int? UtcOffset { get; set; }
+        public decimal? UtcOffset { get; set; }
 
         #endregion
 
