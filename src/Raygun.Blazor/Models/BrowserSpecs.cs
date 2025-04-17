@@ -127,7 +127,7 @@ namespace Raygun.Blazor.Models
         /// <summary>
         /// UTC offset in minutes. From `new Date().getTimezoneOffset() / -60`.
         /// </summary>
-        public int UtcOffset { get; set; }
+        public decimal UtcOffset { get; set; }
 
         #endregion
 
