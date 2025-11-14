@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.11.34929.205
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11205.157 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raygun.Blazor", "Raygun.Blazor\Raygun.Blazor.csproj", "{8A3CFEA0-2E8B-4C45-91A8-2FD075486B11}"
 EndProject

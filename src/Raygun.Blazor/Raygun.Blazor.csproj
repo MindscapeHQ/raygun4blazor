@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
         <DocumentationFile>$(DocumentationFile)\$(AssemblyName).xml</DocumentationFile>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
@@ -40,6 +40,12 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="[10.*, 11.0.0)" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="[10.*, 11.0.0)" />
+        <PackageReference Include="Microsoft.JSInterop" Version="[10.*, 11.0.0)" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
