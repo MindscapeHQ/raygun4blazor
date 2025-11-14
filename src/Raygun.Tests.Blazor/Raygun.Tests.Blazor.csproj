@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net10.0</TargetFramework>
+		<TargetFrameworks>net8.0;net10.0</TargetFrameworks>
 		<RootNamespace>Raygun.Tests.Blazor</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Breakdance.Blazor" Version="7.*-*" />
+		<PackageReference Include="Breakdance.Blazor" Version="8.*-*" />
 		<PackageReference Include="bunit" Version="1.*" />
 		<PackageReference Include="bunit.web" Version="1.*" />
 		<PackageReference Include="skwas.MockHttp" Version="4.5.0" />
