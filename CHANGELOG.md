@@ -1,3 +1,12 @@
+## 2.0.0
+
+- feat(sdk): .NET 10 support (#76) (2025-12-08)
+- Merge pull request #74 from MindscapeHQ/dependabot/nuget/src/FluentAssertions-8.8.0 (2025-11-02)
+- chore: Bump FluentAssertions from 8.7.0 to 8.8.0 (2025-11-01)
+- chore: Bump FluentAssertions from 8.6.0 to 8.7.0 (#73) (2025-10-02)
+- chore: Bump FluentAssertions from 6.12.2 to 8.6.0 (#72) (2025-09-02)
+- Merge pull request #71 from MindscapeHQ/release/1.2.2 (2025-04-18)
+
 ## 1.2.2
 
 - fix: support UtcOffset as decimal (#70) (2025-04-17)
