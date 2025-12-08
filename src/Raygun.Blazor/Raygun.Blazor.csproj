@@ -7,6 +7,9 @@
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
         <Nullable>enable</Nullable>
 
+        <TypeScriptModuleKind>commonjs</TypeScriptModuleKind>
+        <TypeScriptTarget>ES2020</TypeScriptTarget>
+        <TypeScriptOutDir>wwwroot</TypeScriptOutDir>
         <RootNamespace>Raygun.Blazor</RootNamespace>
 
         <!-- NuGet Package config -->
@@ -27,17 +30,18 @@
         <None Include="../../README.md" Pack="true" PackagePath="" />
         <None Include="../../LICENSE.txt" Pack="true" PackagePath="" />
         <None Include="../../Raygun-icon-128x128.png" Pack="true" PackagePath="" />
-        <Content Remove="wwwroot/Raygun.Blazor.ts" />
-        <!--<None Include="wwwroot\Raygun.Blazor.ts" />-->
-        <Content Remove="wwwroot/Raygun.Blazor.js" />
-        <!--<None Include="wwwroot\Raygun.Blazor.js" />-->
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Ben.Demystifier" Version="[0.*, 1.0.0)" />
         <PackageReference Include="KristofferStrube.Blazor.Window" Version="0.*-*" />
         <PackageReference Include="MyCSharp.HttpUserAgentParser" Version="[3.*, 4.0.0]" />
+        <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.6.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
+
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="[10.*, 11.0.0)" />

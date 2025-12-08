@@ -1,14 +1,12 @@
 {
-  "compileOnSave": true,
   "compilerOptions": {
     "alwaysStrict": false,
     "noImplicitAny": false,
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": false,
-    "target": "es2020",
-    "module": "commonjs",
-    "outDir": "wwwroot"
+    "target": "ES6",
+    "module": "ES2015"
   },
   "include": [
     "wwwroot/**/*.ts"
