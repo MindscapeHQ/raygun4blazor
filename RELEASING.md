@@ -48,25 +48,16 @@ Then push the branch and open a new PR, ask the team to review it.
 
 Once the PR has been approved, you can publish the provider.
 
-### Build the package in release mode
+### Package download
 
-Build each package in release mode, e.g:
+The "Build and Pack NuGet Packages" CI Action takes care of building the packages and archiving the files.
 
-```
-dotnet build --configuration Release Raygun.Blazor
-```
+To download the archived packages:
 
-You need to run this method for each of the four packages.
-
-### Pack NuGet package
-
-Pack the packages to upload them, e.g:
-
-```
-dotnet pack Raygun.Blazor
-```
-
-You need to run this method for each of the four packages.
+1. Go to the [Actions](https://github.com/MindscapeHQ/raygun4blazor/actions) tab on GitHub.
+2. Select the most recent "Build and Pack NuGet Packages" workflow run for your release branch.
+3. Scroll down to the "Artifacts" section at the bottom of the workflow run summary.
+4. Click on the artifact(s) to download the packaged `.nupkg` files.
 
 ### Upload to NuGet
 
@@ -74,7 +65,6 @@ You will need https://www.nuget.org/ credentials to publish,
 as well as being part of the [Raygun organization](https://www.nuget.org/profiles/Raygun).
 
 Upload the packages generated previously.
-Packages are located in `src/(project)/bin/Release`.
 
 Uploading the package is a manual process, and needs to be done for the four packages.
 
@@ -90,4 +80,3 @@ Go to https://github.com/MindscapeHQ/raygun4blazor/releases and create a new Rel
 GitHub will create a tag for you, you don't need to create the tag manually.
 
 You can also generate the release notes automatically.
-

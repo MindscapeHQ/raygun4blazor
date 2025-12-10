@@ -1,0 +1,71 @@
+name: Build and Pack NuGet Packages
+
+on:
+  push:
+    branches: [ "main", "release/*" ]
+  pull_request:
+    branches: [ "main", "release/*" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.100
+
+    - name: Setup JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'microsoft'
+        java-version: '17'
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Restore workloads
+      working-directory: ./src
+      run: dotnet workload restore
+
+    - name: Build Raygun.Blazor
+      working-directory: ./src
+      run: dotnet build Raygun.Blazor/Raygun.Blazor.csproj --configuration Release
+
+    - name: Build Raygun.Blazor.Maui
+      working-directory: ./src
+      run: dotnet build Raygun.Blazor.Maui/Raygun.Blazor.Maui.csproj --configuration Release
+
+    - name: Build Raygun.Blazor.WebAssembly
+      working-directory: ./src
+      run: dotnet build Raygun.Blazor.WebAssembly/Raygun.Blazor.WebAssembly.csproj --configuration Release
+
+    - name: Build Raygun.Blazor.Server
+      working-directory: ./src
+      run: dotnet build Raygun.Blazor.Server/Raygun.Blazor.Server.csproj --configuration Release
+
+    - name: Pack Raygun.Blazor
+      working-directory: ./src
+      run: dotnet pack Raygun.Blazor/Raygun.Blazor.csproj --configuration Release --no-build --output nupkgs
+
+    - name: Pack Raygun.Blazor.Maui
+      working-directory: ./src
+      run: dotnet pack Raygun.Blazor.Maui/Raygun.Blazor.Maui.csproj --configuration Release --no-build --output nupkgs
+
+    - name: Pack Raygun.Blazor.WebAssembly
+      working-directory: ./src
+      run: dotnet pack Raygun.Blazor.WebAssembly/Raygun.Blazor.WebAssembly.csproj --configuration Release --no-build --output nupkgs
+
+    - name: Pack Raygun.Blazor.Server
+      working-directory: ./src
+      run: dotnet pack Raygun.Blazor.Server/Raygun.Blazor.Server.csproj --configuration Release --no-build --output nupkgs
+
+    - name: Upload NuGet Packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-packages
+        path: src/nupkgs/*.nupkg
