@@ -50,9 +50,14 @@ Once the PR has been approved, you can publish the provider.
 
 ### Package download
 
-The "Build and Publish NuGet Packages" CI Actions takes care of building the packages and archiving the files.
+The "Build and Pack NuGet Packages" CI Action takes care of building the packages and archiving the files.
 
-...
+To download the archived packages:
+
+1. Go to the [Actions](https://github.com/MindscapeHQ/raygun4blazor/actions) tab on GitHub.
+2. Select the most recent "Build and Pack NuGet Packages" workflow run for your release branch.
+3. Scroll down to the "Artifacts" section at the bottom of the workflow run summary.
+4. Click on the artifact(s) to download the packaged `.nupkg` files.
 
 ### Upload to NuGet
 

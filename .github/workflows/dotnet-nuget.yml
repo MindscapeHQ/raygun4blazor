@@ -1,4 +1,4 @@
-name: Build and Publish NuGet Packages
+name: Build and Pack NuGet Packages
 
 on:
   push:
@@ -17,13 +17,19 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 10.0.x
+        dotnet-version: 10.0.100
 
-    - name: Install MAUI Workload
-      run: dotnet workload install maui
+    - name: Setup JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'microsoft'
+        java-version: '17'
 
-    - name: Restore dependencies
-      run: dotnet restore src/Raygun.Blazor.sln
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Restore .NET Workloads
+      run: dotnet workload restore
 
     - name: Build Raygun.Blazor
       run: dotnet build src/Raygun.Blazor/Raygun.Blazor.csproj --configuration Release --no-restore
