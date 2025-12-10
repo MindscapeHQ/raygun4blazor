@@ -48,25 +48,11 @@ Then push the branch and open a new PR, ask the team to review it.
 
 Once the PR has been approved, you can publish the provider.
 
-### Build the package in release mode
+### Package download
 
-Build each package in release mode, e.g:
+The "Build and Publish NuGet Packages" CI Actions takes care of building the packages and archiving the files.
 
-```
-dotnet build --configuration Release Raygun.Blazor
-```
-
-You need to run this method for each of the four packages.
-
-### Pack NuGet package
-
-Pack the packages to upload them, e.g:
-
-```
-dotnet pack Raygun.Blazor
-```
-
-You need to run this method for each of the four packages.
+...
 
 ### Upload to NuGet
 
