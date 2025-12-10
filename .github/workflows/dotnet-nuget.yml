@@ -1,0 +1,56 @@
+name: Build and Publish NuGet Packages
+
+on:
+  push:
+    branches: [ "main", "release/*" ]
+  pull_request:
+    branches: [ "main", "release/*" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Install MAUI Workload
+      run: dotnet workload install maui
+
+    - name: Restore dependencies
+      run: dotnet restore src/Raygun.Blazor.sln
+
+    - name: Build Raygun.Blazor
+      run: dotnet build src/Raygun.Blazor/Raygun.Blazor.csproj --configuration Release --no-restore
+
+    - name: Build Raygun.Blazor.Maui
+      run: dotnet build src/Raygun.Blazor.Maui/Raygun.Blazor.Maui.csproj --configuration Release --no-restore
+
+    - name: Build Raygun.Blazor.WebAssembly
+      run: dotnet build src/Raygun.Blazor.WebAssembly/Raygun.Blazor.WebAssembly.csproj --configuration Release --no-restore
+
+    - name: Build Raygun.Blazor.Server
+      run: dotnet build src/Raygun.Blazor.Server/Raygun.Blazor.Server.csproj --configuration Release --no-restore
+
+    - name: Pack Raygun.Blazor
+      run: dotnet pack src/Raygun.Blazor/Raygun.Blazor.csproj --configuration Release --no-build --output nupkgs
+
+    - name: Pack Raygun.Blazor.Maui
+      run: dotnet pack src/Raygun.Blazor.Maui/Raygun.Blazor.Maui.csproj --configuration Release --no-build --output nupkgs
+
+    - name: Pack Raygun.Blazor.WebAssembly
+      run: dotnet pack src/Raygun.Blazor.WebAssembly/Raygun.Blazor.WebAssembly.csproj --configuration Release --no-build --output nupkgs
+
+    - name: Pack Raygun.Blazor.Server
+      run: dotnet pack src/Raygun.Blazor.Server/Raygun.Blazor.Server.csproj --configuration Release --no-build --output nupkgs
+
+    - name: Upload NuGet Packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-packages
+        path: nupkgs/*.nupkg
