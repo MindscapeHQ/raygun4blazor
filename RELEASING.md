@@ -65,7 +65,6 @@ You will need https://www.nuget.org/ credentials to publish,
 as well as being part of the [Raygun organization](https://www.nuget.org/profiles/Raygun).
 
 Upload the packages generated previously.
-Packages are located in `src/(project)/bin/Release`.
 
 Uploading the package is a manual process, and needs to be done for the four packages.
 
@@ -81,4 +80,3 @@ Go to https://github.com/MindscapeHQ/raygun4blazor/releases and create a new Rel
 GitHub will create a tag for you, you don't need to create the tag manually.
 
 You can also generate the release notes automatically.
-
