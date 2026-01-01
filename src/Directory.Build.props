@@ -113,7 +113,7 @@
 		<PackageReference Include="MSTest" Version="3.*" />
 		
 		<!-- @robertmclaws: Temporary workaround for 8.0 bug: https://github.com/microsoft/vstest/pull/4792 -->
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*-*" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
 		<PackageReference Include="Microsoft.TestPlatform" Version="17.*-*" />
 	</ItemGroup>
 
