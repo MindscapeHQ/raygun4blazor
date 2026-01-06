@@ -7,7 +7,7 @@
 
 	<ItemGroup>
         <PackageReference Include="Breakdance.Blazor" Version="[7.0.0, 8.0.0)" />
-		<PackageReference Include="bunit" Version="1.*" />
+		<PackageReference Include="bunit" Version="2.4.2" />
 		<PackageReference Include="bunit.web" Version="1.*" />
 		<PackageReference Include="skwas.MockHttp" Version="4.5.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="10.0.0-*" />
