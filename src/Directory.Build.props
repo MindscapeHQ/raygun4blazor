@@ -110,10 +110,10 @@
 	<ItemGroup Condition=" $(IsTestProject) == 'true' ">
 		<PackageReference Include="FluentAssertions" Version="8.8.0" PrivateAssets="All" />
 		<PackageReference Include="FluentAssertions.Analyzers" Version="0.*" PrivateAssets="All" />
-		<PackageReference Include="MSTest" Version="3.*" />
+		<PackageReference Include="MSTest" Version="4.0.2" />
 		
 		<!-- @robertmclaws: Temporary workaround for 8.0 bug: https://github.com/microsoft/vstest/pull/4792 -->
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*-*" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
 		<PackageReference Include="Microsoft.TestPlatform" Version="17.*-*" />
 	</ItemGroup>
 
