@@ -1,5 +1,6 @@
 ﻿using Bunit;
 using CloudNimble.Breakdance.Blazor;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
 using System.Text.Json;
@@ -94,12 +95,12 @@ namespace Raygun.Tests.Blazor.Server
         public async Task RaygunExceptionCatcher_WhenExceptionIsThrown_ExceptionIsCaught()
         {
             // Arrange
-            var cut = BUnitTestContext.RenderComponent<App>();
+            var cut = BUnitTestContext.Render<App>();
 
             Console.WriteLine("Initialized");
 
             // Act
-            cut.Find("button").Click();
+            cut.Find("button").Click(new MouseEventArgs());
 
             // Obtain requested data
             var request = _mockHttp.InvokedRequests[0].Request;
