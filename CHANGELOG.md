@@ -1,3 +1,18 @@
+## 2.0.1
+
+- chore: fix test projects (#94) (2026-02-03)
+- chore: Bump Microsoft.SourceLink.GitHub from 8.0.0 to 10.0.102 (#92) (2026-02-02)
+- chore: Bump Breakdance.Blazor from 7.0.0 to 8.0.2 (#88) (2026-02-02)
+- chore: Bump Microsoft.Extensions.DependencyInjection from 10.0.1 to 10.0.2 (#93) (2026-02-02)
+- chore: Bump Microsoft.AspNetCore.Components from 10.0.1 to 10.0.2 (#90) (2026-02-02)
+- chore: Bump bunit from 2.4.2 to 2.5.3 (#89) (2026-02-02)
+- chore: Bump Microsoft.AspNetCore.Components from 10.0.0 to 10.0.1 (#84) (2026-01-15)
+- chore: Bump bunit from 1.40.0 to 2.4.2 (#83) (2026-01-15)
+- chore: Bump Breakdance.Blazor and bunit (#82) (2026-01-15)
+- chore: Bump Microsoft.Extensions.DependencyInjection from 10.0.0 to 10.0.1 (#85) (2026-01-15)
+- chore: Bump Microsoft.NET.Test.Sdk and MSTest (#87) (2026-01-15)
+- ci: build nuget packages automatically (#81) (2025-12-10)
+
 ## 2.0.0
 
 - feat(sdk): .NET 10 support (#76) (2025-12-08)
