@@ -1,3 +1,11 @@
+## 2.0.2
+
+- chore: Bump Microsoft.Extensions.DependencyInjection from 10.0.2 to 10.0.3 (#99) (2026-03-02)
+- chore: Bump Microsoft.SourceLink.GitHub from 10.0.102 to 10.0.103 (#101) (2026-03-02)
+- chore: Bump Microsoft.NET.Test.Sdk from 18.0.1 to 18.3.0 (#100) (2026-03-02)
+- chore: Bump Microsoft.AspNetCore.Components from 10.0.2 to 10.0.3 (#98) (2026-03-02)
+- chore: Bump bunit from 2.5.3 to 2.6.2 (#97) (2026-03-02)
+
 ## 2.0.1
 
 - chore: fix test projects (#94) (2026-02-03)
