@@ -1,5 +1,4 @@
-﻿using KristofferStrube.Blazor.Window;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -31,7 +30,6 @@ namespace Raygun.Blazor.WebAssembly.Extensions
         {
             builder.Services.Configure<RaygunSettings>(builder.Configuration.GetSection(configSectionName));
             builder.Services.AddSingleton<RaygunBrowserInterop>();
-            builder.Services.AddSingleton<IWindowService, WindowService>();
 
             builder.Services.AddHttpClient("Raygun")
                 .ConfigureHttpClient((sp, client) =>
