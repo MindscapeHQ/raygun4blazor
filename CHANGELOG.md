@@ -1,3 +1,16 @@
+## 2.0.3
+
+- chore: Bump Microsoft.AspNetCore.Components from 10.0.5 to 10.0.7 (#110) (2026-05-05)
+- chore: Bump Microsoft.NET.Test.Sdk from 18.3.0 to 18.5.1 (#112) (2026-05-05)
+- chore: Bump Microsoft.Extensions.DependencyInjection from 10.0.5 to 10.0.7 (#111) (2026-05-05)
+- chore: Bump Microsoft.SourceLink.GitHub from 10.0.201 to 10.0.203 (#113) (2026-05-05)
+- chore: Bump Microsoft.TestPlatform from 17.14.1 to 18.5.1 (#114) (2026-05-05)
+- chore: Bump FluentAssertions from 8.8.0 to 8.9.0 (#104) (2026-04-29)
+- chore: Bump Microsoft.Extensions.DependencyInjection from 10.0.3 to 10.0.5 (#106) (2026-04-01)
+- chore: Bump Microsoft.SourceLink.GitHub from 10.0.103 to 10.0.201 (#107) (2026-04-01)
+- chore: Bump Microsoft.AspNetCore.Components from 10.0.3 to 10.0.5 (#105) (2026-04-01)
+- chore: Bump bunit from 2.6.2 to 2.7.2 (#103) (2026-04-01)
+
 ## 2.0.2
 
 - chore: Bump Microsoft.Extensions.DependencyInjection from 10.0.2 to 10.0.3 (#99) (2026-03-02)
