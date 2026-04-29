@@ -1,43 +1,43 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
-using KristofferStrube.Blazor.Window;
+using Microsoft.JSInterop;
 using Raygun.Blazor;
 
 namespace Raygun.Samples.Blazor.WebAssembly.ViewModels
 {
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class CounterViewModel
     {
 
         private readonly RaygunBlazorClient _raygunClient;
-        private readonly IWindowService _windowService;
+        private readonly IJSRuntime _jsRuntime;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public int CurrentCount { get; private set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Action? StateHasChanged { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="raygunClient"></param>
-        /// <param name="windowService"></param>
-        public CounterViewModel(RaygunBlazorClient raygunClient, IWindowService windowService)
+        /// <param name="jsRuntime"></param>
+        public CounterViewModel(RaygunBlazorClient raygunClient, IJSRuntime jsRuntime)
         {
             _raygunClient = raygunClient;
-            _windowService = windowService;
+            _jsRuntime = jsRuntime;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public Task IncrementCountAsync()
@@ -53,20 +53,17 @@ namespace Raygun.Samples.Blazor.WebAssembly.ViewModels
 
         public async Task ThrowException()
         {
-            var window = await _windowService.GetWindowAsync();
-            await window.PostMessageAsync("causeError");
+            await _jsRuntime.InvokeVoidAsync("postMessage", "causeError", "*");
         }
 
         public async Task SendCustomJsException()
         {
-            var window = await _windowService.GetWindowAsync();
-            await window.PostMessageAsync("recordException");
+            await _jsRuntime.InvokeVoidAsync("postMessage", "recordException", "*");
         }
 
         public async Task SendCustomJsBreadcrumb()
         {
-            var window = await _windowService.GetWindowAsync();
-            await window.PostMessageAsync("recordBreadcrumb");
+            await _jsRuntime.InvokeVoidAsync("postMessage", "recordBreadcrumb", "*");
         }
     }
 }
