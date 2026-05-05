@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http.Headers;
-using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -45,7 +44,6 @@ namespace Raygun.Blazor.Extensions
         {
             services.Configure<RaygunSettings>(configuration.GetSection(configSectionName));
             services.AddScoped<RaygunBrowserInterop>();
-            services.AddWindowService();
 
             services.AddHttpClient("Raygun")
                 .ConfigureHttpClient((sp, client) =>

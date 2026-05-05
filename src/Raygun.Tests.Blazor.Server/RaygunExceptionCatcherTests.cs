@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Net;
 using System.Text.Json;
-using KristofferStrube.Blazor.Window;
 using Raygun.Blazor;
 using MockHttp;
 using Raygun.Tests.Blazor.Server.Components;
@@ -52,7 +51,6 @@ namespace Raygun.Tests.Blazor.Server
                 // Create RaygunBlazorClient with mocked HttpClient
                 services.Configure<RaygunSettings>(context.Configuration.GetSection("Raygun"));
                 services.AddScoped<RaygunBrowserInterop>();
-                services.AddWindowService();
                 services.AddSingleton<IHttpClientFactory>(new MockHttpClientFactory(_httpClient));
                 services.AddScoped<RaygunBlazorClient>();
 
