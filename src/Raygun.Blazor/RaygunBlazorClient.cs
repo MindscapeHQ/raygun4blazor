@@ -9,8 +9,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using KristofferStrube.Blazor.WebIDL.Exceptions;
-using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.Options;
 using Raygun.Blazor.Events;
 using Raygun.Blazor.Interfaces;
@@ -154,7 +152,7 @@ namespace Raygun.Blazor
         {
             if (_browserInterop.RaygunScriptReference is null)
             {
-                await _browserInterop.InitializeAsync(OnUnhandledJsException, RecordBreadcrumb, RecordExceptionAsync);
+                await _browserInterop.InitializeAsync(RecordBreadcrumb, RecordExceptionAsync);
                 _raygunLogger?.Debug("[RaygunBlazorClient] JavaScript Interop initialized.");
             }
         }
@@ -401,26 +399,6 @@ namespace Raygun.Blazor
 
             // If we get here, the message was not sent successfully.
             return false;
-        }
-
-        /// <summary>
-        /// Processes unhandled exceptions from JavaScript and reports them to Raygun.
-        /// </summary>
-        /// <param name="errorEvent">The <see cref="ErrorEvent" /> passed up from the DOM.</param>
-        /// <remarks>
-        /// This method signature is passed to the <see cref="RaygunBrowserInterop" /> during initialization.
-        /// </remarks>
-        private async Task OnUnhandledJsException(ErrorEvent errorEvent)
-        {
-            _raygunLogger?.Verbose("[RaygunBlazorClient] Unhandled JavaScript exception caught: " + errorEvent);
-            WebIDLException? exception = await errorEvent.GetErrorAsExceptionAsync();
-            if (exception is null)
-            {
-                _raygunLogger?.Warning("[RaygunBlazorClient] Failed to convert JavaScript error to WebIDLException.");
-                return;
-            }
-
-            await RecordExceptionAsync(exception, null, ["UnhandledException", "Blazor", "JavaScript"]);
         }
 
         #endregion

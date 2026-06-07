@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text.Json.Serialization;
-using KristofferStrube.Blazor.WebIDL.Exceptions;
 using Raygun.Blazor.Extensions;
 using NonGeneric = System.Collections;
 
@@ -94,22 +93,22 @@ namespace Raygun.Blazor.Models
         /// <param name="ex">The <see cref="Exception" /> to use to populate this <see cref="ErrorDetails" /> instance.</param>
         internal ErrorDetails(Exception ex)
         {
-            if (ex is WebIDLException webIdlException)
+            if (ex is JsUnhandledException jsException)
             {
                 // JS Exception
-                ClassName = webIdlException.GetType().FullName;
-                Data = webIdlException.Data;
-                Message = webIdlException.Message;
-                if (webIdlException.StackTrace != null)
+                ClassName = jsException.JsName ?? jsException.GetType().FullName;
+                Data = jsException.Data;
+                Message = jsException.Message;
+                if (jsException.StackTrace != null)
                 {
-                    var frames = webIdlException.StackTrace.Split('\n')
+                    var frames = jsException.StackTrace.Split('\n')
                         .Where(frame => !string.IsNullOrWhiteSpace(frame));
-                    StackTrace = frames.Select(frame => new StackTraceDetails(frame)).ToList();
+                    StackTrace = frames.Select(frame => new StackTraceDetails(frame.Trim())).ToList();
                 }
 
-                if (webIdlException.InnerException is not null)
+                if (jsException.InnerException is not null)
                 {
-                    InnerError = new ErrorDetails(webIdlException.InnerException);
+                    InnerError = new ErrorDetails(jsException.InnerException);
                 }
             }
             else
