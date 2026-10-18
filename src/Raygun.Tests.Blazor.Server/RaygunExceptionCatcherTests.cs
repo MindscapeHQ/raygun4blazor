@@ -25,7 +25,6 @@ namespace Raygun.Tests.Blazor.Server
 
         private MockHttpHandler _mockHttp = null!;
         private HttpClient _httpClient = null!;
-        private HttpRequestMessage? _lastRequest;
 
         private readonly JsonSerializerOptions _jsonSerializerOptions =
             new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, };
