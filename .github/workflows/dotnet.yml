@@ -71,7 +71,7 @@ jobs:
     - name: Build Raygun.Samples.Blazor.WebAssembly
       continue-on-error: true
       working-directory: ./src
-      run: dotnet build Raygun.Samples.Blazor.Server/Raygun.Samples.Blazor.Server.csproj
+      run: dotnet build Raygun.Samples.Blazor.WebAssembly/Raygun.Samples.Blazor.WebAssembly.csproj
 
     # Raygun.Blazor.Maui
     - name: Build Raygun.Blazor.Maui
