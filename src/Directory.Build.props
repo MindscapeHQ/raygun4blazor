@@ -80,6 +80,9 @@
 
 	<PropertyGroup Condition=" $(IsSampleProject) == 'true' ">
 		<NoWarn>$(NoWarn);CA1001;CA1707;CA1716;CA1801;CA1822</NoWarn>
+
+		<!-- Samples are not shipped, and strong naming them warns (CS8002) about every unsigned dependency. -->
+		<SignAssembly>false</SignAssembly>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(IsPrimaryProject)' == 'true' ">
