@@ -5,6 +5,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Raygun.Tests.Blazor.Server</RootNamespace>
+
+    <!-- Program.cs hosts the test app and is the entry point, so the Test SDK's generated Main is never used -->
+    <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
 
     <ItemGroup>
