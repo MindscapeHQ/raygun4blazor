@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using KristofferStrube.Blazor.DOM;
-using KristofferStrube.Blazor.WebIDL;
-using KristofferStrube.Blazor.WebIDL.Exceptions;
-using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 using Raygun.Blazor.Logging;
@@ -22,11 +18,9 @@ namespace Raygun.Blazor
         #region Private Members
 
         private readonly DotNetObjectReference<RaygunBrowserInterop> _dotNetReference;
-        private EventListener<ErrorEvent>? _errorEventListener;
         private readonly IJSRuntime _jsRuntime;
         private readonly RaygunSettings _raygunSettings;
         private readonly IRaygunLogger? _raygunLogger;
-        private readonly IWindowService _windowService;
         private Action<string, BreadcrumbType, string?, Dictionary<string, object>?, string?, BreadcrumbLevel>? _breadcrumbAction;
         private Func<Exception, UserDetails?, List<string>?, Dictionary<string, object>?, CancellationToken, Task>? _exceptionAction;
 
@@ -54,11 +48,6 @@ namespace Raygun.Blazor
         /// </summary>
         internal BrowserStats? LatestBrowserStats { get; private set; }
 
-        /// <summary>
-        /// A reference to the Browser's Window object, in case we want to do other things with it.
-        /// </summary>
-        internal Window? Window { get; private set; }
-
         #endregion
 
         #region Constructors
@@ -69,9 +58,6 @@ namespace Raygun.Blazor
         /// <param name="jsRuntime">
         /// The <see cref="IJSRuntime" /> instance to use for JS Interop.
         /// </param>
-        /// <param name="windowService">
-        /// The <see cref="WindowService" /> used to get a reference to the Browser Window object.
-        /// </param>
         /// <param name="raygunSettings">
         /// The <see cref="RaygunSettings" /> instance from DI to use in configuring exception handling
         /// .</param>
@@ -79,12 +65,10 @@ namespace Raygun.Blazor
         //      See https://learn.microsoft.com/en-us/aspnet/core/blazor/javascript-interoperability/call-dotnet-from-javascript?view=aspnetcore-8.0#avoid-trimming-javascript-invokable-net-methods
         [DynamicDependency(nameof(RecordJsBreadcrumb))]
         [DynamicDependency(nameof(RecordJsException))]
-        public RaygunBrowserInterop(IJSRuntime jsRuntime, IWindowService windowService,
-            IOptions<RaygunSettings> raygunSettings)
+        public RaygunBrowserInterop(IJSRuntime jsRuntime, IOptions<RaygunSettings> raygunSettings)
         {
             _dotNetReference = DotNetObjectReference.Create(this);
             _jsRuntime = jsRuntime;
-            _windowService = windowService;
             _raygunSettings = raygunSettings.Value;
             _raygunLogger = RaygunLogger.Create(raygunSettings.Value.LogLevel);
             _raygunLogger?.Verbose("[RaygunBrowserInterop] Created.");
@@ -114,17 +98,17 @@ namespace Raygun.Blazor
         }
 
         /// <summary>
-        /// 
+        /// Method invoked by JavaScript to record an exception.
         /// </summary>
-        /// <param name="error">JavaScript Error object</param>
-        /// <param name="tags"></param>
-        /// <param name="customData"></param>
+        /// <param name="error">JavaScript error details, built by Raygun.Blazor.ts.</param>
+        /// <param name="tags">Optional tags to attach to the report.</param>
+        /// <param name="customData">Optional custom data to attach to the report.</param>
         /// <returns></returns>
         [JSInvokable]
-        public async ValueTask RecordJsException(JSError error, List<string>? tags = null, Dictionary<string, object>? customData = null)
+        public async ValueTask RecordJsException(JsErrorPayload error, List<string>? tags = null, Dictionary<string, object>? customData = null)
         {
             _raygunLogger?.Verbose("[RaygunBrowserInterop] Recording JS exception: " + error.Message);
-            var exception = new WebIDLException($"{error.Name}: \"{error.Message}\"", error.Stack, error.InnerException);
+            var exception = new JsUnhandledException(error.Name, error.Message, error.Stack);
             await _exceptionAction!.Invoke(exception, null, tags, customData, CancellationToken.None);
         }
 
@@ -152,10 +136,9 @@ namespace Raygun.Blazor
         /// <summary>
         /// Properly configures Raygun Blazor for use with JavaScript.
         /// </summary>
-        /// <param name="onUnhandledJsException"></param>
         /// <param name="breadcrumbAction"></param>
         /// <param name="exceptionAction"></param>
-        internal async Task InitializeAsync(Func<ErrorEvent, Task> onUnhandledJsException,
+        internal async Task InitializeAsync(
             Action<string, BreadcrumbType, string?, Dictionary<string, object>?, string?, BreadcrumbLevel>? breadcrumbAction,
             Func<Exception, UserDetails?, List<string>?, Dictionary<string, object>?, CancellationToken, Task>? exceptionAction)
         {
@@ -185,9 +168,7 @@ namespace Raygun.Blazor
             }
 
             // RWM: Register a handler for unhandled JS exceptions.
-            Window = await _windowService.GetWindowAsync();
-            _errorEventListener = await EventListener<ErrorEvent>.CreateAsync(_jsRuntime, onUnhandledJsException);
-            await Window.AddOnErrorEventListenerAsync(_errorEventListener);
+            await _jsRuntime.InvokeVoidAsync("window.raygunBlazor.attachErrorListener");
             _raygunLogger?.Verbose("[RaygunBrowserInterop] Registered unhandled JS exception handler.");
         }
 
@@ -200,17 +181,6 @@ namespace Raygun.Blazor
         /// </summary>
         public async ValueTask DisposeAsync()
         {
-            if (_errorEventListener is not null && Window is not null)
-            {
-                await Window.RemoveOnErrorEventListenerAsync(_errorEventListener);
-                await _errorEventListener.DisposeAsync();
-            }
-
-            if (Window is not null)
-            {
-                await Window.DisposeAsync();
-            }
-
             if (RaygunScriptReference is not null)
             {
                 await RaygunScriptReference.DisposeAsync();
