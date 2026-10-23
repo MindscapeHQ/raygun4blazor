@@ -5,6 +5,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Raygun.Tests.Blazor.Server</RootNamespace>
+
+    <!-- Program.cs hosts the test app and is the entry point, so the Test SDK's generated Main is never used -->
+    <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
 
     <ItemGroup>
@@ -19,7 +22,7 @@
 
     <ItemGroup>
         <PackageReference Include="Breakdance.Blazor" Version="8.0.2" />
-        <PackageReference Include="bunit" Version="2.7.2" />
+        <PackageReference Include="bunit" Version="2.11.3" />
         <PackageReference Include="skwas.MockHttp" Version="4.5.0" />
     </ItemGroup>
 

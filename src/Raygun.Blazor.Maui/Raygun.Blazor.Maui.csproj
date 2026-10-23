@@ -17,6 +17,9 @@
         <!-- Generating documentation on Maui fails to build -->
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
 
+        <!-- The MAUI assemblies are not strong-named, so referencing them from this signed assembly always warns -->
+        <NoWarn>$(NoWarn);CS8002</NoWarn>
+
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.2</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
