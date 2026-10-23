@@ -1,5 +1,4 @@
-﻿using KristofferStrube.Blazor.Window;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Hosting;
@@ -18,7 +17,6 @@ namespace Raygun.Blazor.Maui
 
             builder.Services.Configure<RaygunSettings>(builder.Configuration.GetSection(configSectionName));
             builder.Services.AddScoped<RaygunBrowserInterop>();
-            builder.Services.AddScoped<IWindowService, WindowService>();
 
             builder.Services.AddHttpClient("Raygun")
                 .ConfigureHttpClient((sp, client) =>

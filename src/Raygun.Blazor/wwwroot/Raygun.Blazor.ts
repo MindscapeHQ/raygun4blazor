@@ -1,11 +1,30 @@
 (<any>window).raygunBlazor = {
     _raygunInterop: null,
+    _errorListener: null,
 
     /**
      * 
      */
     initialize: function(raygunInterop: any) {
         this._raygunInterop = raygunInterop;
+    },
+
+    /**
+     * Reports unhandled JavaScript errors to .NET. Safe to call more than once; the listener is only attached once
+     * per window, and reports through whichever .NET reference was most recently passed to initialize().
+     */
+    attachErrorListener: function() {
+        if (this._errorListener !== null) {
+            return;
+        }
+
+        this._errorListener = (event: ErrorEvent) => {
+            // event.error is null on iOS/Safari and for cross-origin scripts, so fall back to event.message.
+            this._raygunInterop.invokeMethodAsync('RecordJsException', this._toJsError(event.error, event.message),
+                ['UnhandledException', 'Blazor', 'JavaScript'], null)
+                .catch(() => {});
+        };
+        window.addEventListener('error', this._errorListener);
     },
 
     /**
@@ -19,7 +38,19 @@
      * 
      */
     recordException: async function(exception: Error, tags: string[], customData: Record<string, string>) {
-        await this._raygunInterop.invokeMethodAsync('RecordJsException', exception, tags, customData);
+        await this._raygunInterop.invokeMethodAsync('RecordJsException', this._toJsError(exception, null), tags, customData);
+    },
+
+    /**
+     * Copies a thrown value into the JsErrorPayload shape expected by .NET. An Error cannot be passed to .NET as-is,
+     * because its properties are not enumerable and it serializes as {}.
+     */
+    _toJsError: function(error: any, fallbackMessage: string | null) {
+        return {
+            Name: typeof error?.name === 'string' ? error.name : null,
+            Message: typeof error?.message === 'string' ? error.message : fallbackMessage,
+            Stack: typeof error?.stack === 'string' ? error.stack : null,
+        };
     },
 };
 

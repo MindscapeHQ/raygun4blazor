@@ -9,11 +9,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 window.raygunBlazor = {
     _raygunInterop: null,
+    _errorListener: null,
     /**
      *
      */
     initialize: function (raygunInterop) {
         this._raygunInterop = raygunInterop;
+    },
+    /**
+     * Reports unhandled JavaScript errors to .NET. Safe to call more than once; the listener is only attached once
+     * per window, and reports through whichever .NET reference was most recently passed to initialize().
+     */
+    attachErrorListener: function () {
+        if (this._errorListener !== null) {
+            return;
+        }
+        this._errorListener = (event) => {
+            // event.error is null on iOS/Safari and for cross-origin scripts, so fall back to event.message.
+            this._raygunInterop.invokeMethodAsync('RecordJsException', this._toJsError(event.error, event.message), ['UnhandledException', 'Blazor', 'JavaScript'], null)
+                .catch(() => { });
+        };
+        window.addEventListener('error', this._errorListener);
     },
     /**
      *
@@ -28,8 +44,19 @@ window.raygunBlazor = {
      */
     recordException: function (exception, tags, customData) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this._raygunInterop.invokeMethodAsync('RecordJsException', exception, tags, customData);
+            yield this._raygunInterop.invokeMethodAsync('RecordJsException', this._toJsError(exception, null), tags, customData);
         });
+    },
+    /**
+     * Copies a thrown value into the JsErrorPayload shape expected by .NET. An Error cannot be passed to .NET as-is,
+     * because its properties are not enumerable and it serializes as {}.
+     */
+    _toJsError: function (error, fallbackMessage) {
+        return {
+            Name: typeof (error === null || error === void 0 ? void 0 : error.name) === 'string' ? error.name : null,
+            Message: typeof (error === null || error === void 0 ? void 0 : error.message) === 'string' ? error.message : fallbackMessage,
+            Stack: typeof (error === null || error === void 0 ? void 0 : error.stack) === 'string' ? error.stack : null,
+        };
     },
 };
 /**
