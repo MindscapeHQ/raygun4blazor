@@ -1,3 +1,24 @@
+## 3.0.0
+
+Breaking changes:
+
+- `IWindowService` is no longer registered and `KristofferStrube.Blazor.Window` is no longer a transitive dependency. Apps that used either must reference the package and call `AddWindowService()` themselves.
+- The `RaygunBrowserInterop` constructor no longer takes `IWindowService`, and `RecordJsException` takes `JsErrorPayload` instead of `JSError`.
+- JS errors now report the JS error name (e.g. `TypeError`) as the class name instead of a `KristofferStrube.Blazor.WebIDL.Exceptions` type, so existing JS error groups in Raygun will likely split after upgrading.
+
+- chore: initialise Raygun in the Server and MAUI sample layouts (2026-10-25)
+- chore: remove KristofferStrube.Blazor.Window dependency (2026-10-18)
+- fix: report unhandled JS errors through Raygun's own listener (2026-10-18)
+- build: remove stale package pins from the unit test project (2026-10-18)
+- chore: Bump Microsoft.Extensions.DependencyInjection from 10.0.8 to 10.0.9 (#121) (2026-10-18)
+- chore: Bump Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 (#122) (2026-10-18)
+- chore: Bump MSTest from 4.0.2 to 4.2.3 (#124) (2026-10-18)
+- chore: Bump Microsoft.AspNetCore.Components from 10.0.7 to 10.0.8 (#116) (2026-06-07)
+- chore: Bump FluentAssertions from 8.9.0 to 8.10.0 (#115) (2026-06-07)
+- chore: Bump Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0 (#118) (2026-06-07)
+- chore: Bump Microsoft.Extensions.DependencyInjection from 10.0.7 to 10.0.8 (#117) (2026-06-07)
+- chore: Bump Microsoft.SourceLink.GitHub from 10.0.203 to 10.0.300 (#119) (2026-06-07)
+
 ## 2.0.3
 
 - chore: Bump Microsoft.AspNetCore.Components from 10.0.5 to 10.0.7 (#110) (2026-05-05)

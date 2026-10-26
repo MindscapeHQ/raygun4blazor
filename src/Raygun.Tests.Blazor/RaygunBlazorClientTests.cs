@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Bunit;
 using CloudNimble.Breakdance.Blazor;
 using FluentAssertions;
-using KristofferStrube.Blazor.Window;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -76,7 +75,6 @@ namespace Raygun.Tests.Blazor
                 // Create RaygunBlazorClient with mocked HttpClient
                 services.Configure<RaygunSettings>(context.Configuration.GetSection("Raygun"));
                 services.AddScoped<RaygunBrowserInterop>();
-                services.AddWindowService();
                 services.AddSingleton<IHttpClientFactory>(new MockHttpClientFactory(_httpClient));
                 services.AddSingleton<IRaygunUserProvider>(new FakeRaygunUserProvider());
 
