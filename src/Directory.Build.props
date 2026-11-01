@@ -114,7 +114,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition=" $(IsTestProject) == 'true' ">
-		<PackageReference Include="FluentAssertions" Version="8.10.0" PrivateAssets="All" />
+		<PackageReference Include="FluentAssertions" Version="8.11.0" PrivateAssets="All" />
 		<PackageReference Include="FluentAssertions.Analyzers" Version="0.*" PrivateAssets="All" />
 		<PackageReference Include="MSTest" Version="4.2.3" />
 		
