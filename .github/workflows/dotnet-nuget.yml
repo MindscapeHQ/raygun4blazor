@@ -30,9 +30,9 @@ jobs:
       with:
         packages: platform-tools
 
-    - name: Restore workloads
+    - name: Install workloads
       working-directory: ./src
-      run: dotnet workload restore
+      run: dotnet workload install maui-windows maccatalyst ios android wasm-tools
 
     - name: Build Raygun.Blazor
       working-directory: ./src
