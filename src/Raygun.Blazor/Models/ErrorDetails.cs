@@ -101,9 +101,12 @@ namespace Raygun.Blazor.Models
                 Message = jsException.Message;
                 if (jsException.StackTrace != null)
                 {
-                    var frames = jsException.StackTrace.Split('\n')
-                        .Where(frame => !string.IsNullOrWhiteSpace(frame));
-                    StackTrace = frames.Select(frame => new StackTraceDetails(frame)).ToList();
+                    var frames = RemoveJsStackHeader(jsException.StackTrace, jsException.JsName, jsException.Message)
+                        .Split('\n', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                    if (frames.Length > 0)
+                    {
+                        StackTrace = frames.Select(frame => new StackTraceDetails(frame)).ToList();
+                    }
                 }
 
                 if (jsException.InnerException is not null)
@@ -146,6 +149,59 @@ namespace Raygun.Blazor.Models
         #endregion
 
         #region Privatate Methods
+
+        /// <summary>
+        /// Removes the header that Chrome and Edge put before the frames of a JavaScript stack.
+        /// </summary>
+        /// <remarks>
+        /// The header is the error's "name: message" text, not a frame, and the message can span several
+        /// lines (Blazor puts a whole .NET exception in it, and a message can contain another error's
+        /// stack). It is matched exactly first. Chrome fixes the message in the header when the error is
+        /// created (it reads the name later), so if the message was changed afterwards the exact match
+        /// fails; the header is then everything before the first V8 frame line. Firefox and Safari stacks
+        /// have no header and no V8 frame lines, so they are returned unchanged.
+        /// </remarks>
+        private static string RemoveJsStackHeader(string stack, string? name, string? message)
+        {
+            // V8 frame lines start with four spaces; .NET stack lines in a message start with three.
+            const string V8FrameLineStart = "    at ";
+
+            string? header;
+
+            if (string.IsNullOrEmpty(name))
+            {
+                header = message;
+            }
+            else if (string.IsNullOrEmpty(message))
+            {
+                header = name;
+            }
+            else
+            {
+                header = $"{name}: {message}";
+            }
+
+            if (!string.IsNullOrEmpty(header) && stack.StartsWith(header, StringComparison.Ordinal))
+            {
+                var isWholeLine = stack.Length == header.Length
+                    || stack[header.Length] == '\n'
+                    || stack[header.Length] == '\r';
+
+                if (isWholeLine)
+                {
+                    return stack[header.Length..];
+                }
+            }
+
+            if (stack.StartsWith(V8FrameLineStart, StringComparison.Ordinal))
+            {
+                return stack;
+            }
+
+            var firstFrameLine = stack.IndexOf("\n" + V8FrameLineStart, StringComparison.Ordinal);
+
+            return firstFrameLine >= 0 ? stack[firstFrameLine..] : stack;
+        }
 
         private static List<PEDebugDetails> GetDebugInfoForStackFrames(IEnumerable<StackFrame> frames)
         {

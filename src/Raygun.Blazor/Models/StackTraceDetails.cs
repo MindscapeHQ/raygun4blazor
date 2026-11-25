@@ -106,30 +106,83 @@ namespace Raygun.Blazor.Models
         }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="StackTraceDetails" /> class from a JavaScript stack trace frame.
-        /// Example: "causeErrors@http://localhost:5010/myfunctions.js:4:9"
+        /// Creates a new instance of the <see cref="StackTraceDetails" /> class from one trimmed line of a
+        /// JavaScript stack trace.
+        /// Examples: "at causeErrors (http://localhost:5010/myfunctions.js:4:9)" (Chrome, Edge),
+        /// "causeErrors@http://localhost:5010/myfunctions.js:4:9" (Firefox, Safari).
         /// </summary>
-        /// <param name="frame">JavaScript stack trace</param>
+        /// <remarks>
+        /// A frame with no line and column, such as "at Array.forEach (&lt;anonymous&gt;)" or
+        /// "forEach@[native code]", keeps its method name and uses the location text as the file name.
+        /// An anonymous function's method name is "?", as raygun4js sends it.
+        /// A line that matches neither frame form is kept whole as the file name.
+        /// </remarks>
+        /// <param name="frame">One line of a JavaScript stack trace, without leading or trailing whitespace.</param>
         internal StackTraceDetails(string frame)
         {
-            var match = StackTraceRegex().Match(frame);
-            if (match.Success)
+            var match = V8FrameRegex().Match(frame);
+            if (!match.Success)
             {
-                MethodName = match.Groups["functionName"].Value;
-                FileName = match.Groups["fileName"].Value;
-                LineNumber = int.Parse(match.Groups["lineNumber"].Value);
-                ColumnNumber = int.Parse(match.Groups["columnNumber"].Value);
+                match = GeckoFrameWithUrlRegex().Match(frame);
+            }
+
+            if (!match.Success)
+            {
+                match = GeckoFrameRegex().Match(frame);
+            }
+
+            if (!match.Success)
+            {
+                FileName = frame;
+                return;
+            }
+
+            var functionName = match.Groups["functionName"].Value;
+            var location = match.Groups["location"].Value;
+            var locationMatch = LocationRegex().Match(location);
+
+            MethodName = functionName.Length > 0 ? functionName : AnonymousFunctionName;
+
+            if (locationMatch.Success
+                && int.TryParse(locationMatch.Groups["lineNumber"].Value, out var lineNumber)
+                && int.TryParse(locationMatch.Groups["columnNumber"].Value, out var columnNumber))
+            {
+                FileName = locationMatch.Groups["fileName"].Value;
+                LineNumber = lineNumber;
+                ColumnNumber = columnNumber;
             }
             else
             {
-                FileName = frame;
+                FileName = location.Length > 0 ? location : null;
             }
         }
 
-        // NonBacktracking: the frame text can come from a client, and this pattern backtracks
-        // catastrophically on lines that do not match.
-        [GeneratedRegex(@"(?<functionName>.+)@(?<fileName>.+):(?<lineNumber>\d+):(?<columnNumber>\d+)", RegexOptions.NonBacktracking)]
-        private static partial Regex StackTraceRegex();
+        // What raygun4js sends as the method name of an anonymous function (TraceKit's UNKNOWN_FUNCTION).
+        private const string AnonymousFunctionName = "?";
+
+        // Every pattern uses NonBacktracking, because the frame text can come from a client. Under a
+        // backtracking engine the V8 pattern takes seconds on a long line that does not match; the
+        // others stay linear, but the same engine keeps a later edit from reintroducing the problem.
+
+        // Chrome and Edge: "at name (location)", "at location", or "at async location" for an
+        // awaited anonymous function, where "async" is not part of the URL.
+        [GeneratedRegex(@"^at\s+(?:(?<functionName>.+?)\s+\((?<location>.+)\)|(?:async\s+)?(?<location>.+))$", RegexOptions.NonBacktracking)]
+        private static partial Regex V8FrameRegex();
+
+        // Firefox and Safari: "name@location", where name may be empty. Both name and URL can contain
+        // "@" (Safari names a function after its object key, e.g. "./node_modules/@scope/pkg/index.js",
+        // and URLs can be "https://unpkg.com/react@18.2.0/..."), so this splits at the first "@"
+        // followed by a URL scheme or "[", as in "forEach@[native code]".
+        [GeneratedRegex(@"^(?<functionName>.*?)@(?<location>(?:[A-Za-z][A-Za-z0-9+.\-]*:|\[).*)$", RegexOptions.NonBacktracking)]
+        private static partial Regex GeckoFrameWithUrlRegex();
+
+        // Firefox and Safari, when the location has no URL scheme: splits at the first "@".
+        [GeneratedRegex(@"^(?<functionName>[^@]*)@(?<location>.*)$", RegexOptions.NonBacktracking)]
+        private static partial Regex GeckoFrameRegex();
+
+        // "file:line:column". [0-9] rather than \d, which also matches non-ASCII digits.
+        [GeneratedRegex(@"^(?<fileName>.+):(?<lineNumber>[0-9]+):(?<columnNumber>[0-9]+)$", RegexOptions.NonBacktracking)]
+        private static partial Regex LocationRegex();
 
         #endregion
     }

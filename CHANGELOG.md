@@ -5,6 +5,7 @@ Breaking changes:
 - `IWindowService` is no longer registered and `KristofferStrube.Blazor.Window` is no longer a transitive dependency. Apps that used either must reference the package and call `AddWindowService()` themselves.
 - The `RaygunBrowserInterop` constructor no longer takes `IWindowService`, and `RecordJsException` takes `JsErrorPayload` instead of `JSError`.
 - JS errors now report the JS error name (e.g. `TypeError`) as the class name instead of a `KristofferStrube.Blazor.WebIDL.Exceptions` type, so existing JS error groups in Raygun will likely split after upgrading.
+- JS stack frames are parsed differently, which may also split existing JS error groups: Chrome and Edge frames and anonymous Firefox and Safari frames are now parsed into method, file, line and column, with `?` as the method name of an anonymous function as in raygun4js (except Chrome/Edge `at async <url>` frames, which raygun4js names `async`); function names and URLs that contain `@` are kept whole; frames with no line and column (e.g. `forEach@[native code]`) keep their method name; and the Chrome/Edge header line is removed.
 
 - chore: initialise Raygun in the Server and MAUI sample layouts (2026-10-25)
 - chore: remove KristofferStrube.Blazor.Window dependency (2026-10-18)
