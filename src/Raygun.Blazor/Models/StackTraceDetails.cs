@@ -126,7 +126,9 @@ namespace Raygun.Blazor.Models
             }
         }
 
-        [GeneratedRegex(@"(?<functionName>.+)@(?<fileName>.+):(?<lineNumber>\d+):(?<columnNumber>\d+)")]
+        // NonBacktracking: the frame text can come from a client, and this pattern backtracks
+        // catastrophically on lines that do not match.
+        [GeneratedRegex(@"(?<functionName>.+)@(?<fileName>.+):(?<lineNumber>\d+):(?<columnNumber>\d+)", RegexOptions.NonBacktracking)]
         private static partial Regex StackTraceRegex();
 
         #endregion
