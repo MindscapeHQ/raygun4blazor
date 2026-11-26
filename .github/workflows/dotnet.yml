@@ -73,9 +73,9 @@ jobs:
         packages: platform-tools
     
     # Pre-build setup
-    - name: Restore workloads
+    - name: Install workloads
       working-directory: ./src
-      run: dotnet workload restore
+      run: dotnet workload install maui-windows maccatalyst ios android wasm-tools
 
     # Raygun.Blazor.Maui
     - name: Build Raygun.Blazor.Maui
